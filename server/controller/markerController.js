@@ -1,7 +1,5 @@
 let Marker = require('../models/markerModel');
 
-//FIX restrict outside GEOrgia 41.1063, 43.5879 lat 40  46.73644)
-
 async function addMarker(req, res, next) {
   try {
     const { name, coords, icon } = req.body;
@@ -100,7 +98,7 @@ async function getMyMarkers(req, res, next) {
     res.status(200).json({
       status: 'success',
       data: markersWithIcons,
-    }); 
+    });
   } catch (err) {
     console.log(err.message);
   }

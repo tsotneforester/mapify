@@ -8,9 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 const API_URL = import.meta.env.VITE_API_URL;
 const MAP_PROVIDER = import.meta.env.VITE_MAP_PROVIDER;
 
-// import MarkerClusterGroup from 'react-leaflet-markercluster';
-// import 'react-leaflet-markercluster/dist/styles.min.css'; //
-
 //INFO geogjson - lon, lat / leaflet - lat, lon
 
 export default function DefaultMap({ center = [41.967, 43.855], data = [], editable, zoom = 7, children, forceRender, point }) {
@@ -37,13 +34,16 @@ export default function DefaultMap({ center = [41.967, 43.855], data = [], edita
   });
 
   const handleDelete = async markerId => {
-    //FIX error handling
-    const formData = new FormData();
-    formData.append('id', markerId);
+    try {
+      const formData = new FormData();
+      formData.append('id', markerId);
 
-    let response = await axios.delete(`${API_URL}/api/marker/${markerId}`, formData);
-    forceRender();
-    toast.success(response.data);
+      let response = await axios.delete(`${API_URL}/api/marker/${markerId}`, formData);
+      forceRender();
+      toast.success(response.data);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const attribution = '&copy; 2024 &middot; <a href="https://maps.omniscale.com/">Omniscale</a> ' + '&middot; Tsotneforester at GEOJS.ONE';
@@ -51,7 +51,6 @@ export default function DefaultMap({ center = [41.967, 43.855], data = [], edita
   return (
     <MapContainer zoomControl={false} scrollWheelZoom={true} center={center} zoom={zoom} style={{ height: '100%', width: '100%' }}>
       <TileLayer attribution={attribution} url={MAP_PROVIDER} />
-      {/* <MarkerClusterGroup> */}
 
       {point && (
         <Marker position={point} icon={defaultIcon}>
@@ -76,7 +75,7 @@ export default function DefaultMap({ center = [41.967, 43.855], data = [], edita
           </Marker>
         );
       })}
-      {/* </MarkerClusterGroup> */}
+
       {children}
     </MapContainer>
   );
@@ -84,10 +83,6 @@ export default function DefaultMap({ center = [41.967, 43.855], data = [], edita
 
 const S = {};
 S.DeleteAnchor = styled.div`
-  border-top: 2px gray dotted; //FIX
+  border-top: 2px gray dotted;
   padding: 2px;
 `;
-
-//TODO performance issues
-// i have react + node + mongo app of leaflet map, whin nearly 10000 markers on it, each marker icon has its document in "icons" table with image buffer. loading map is quite slow, what is pattern to display thousands of markers without mush delay?
-//i have react + node + mongo app of leaflet map, i want to be able only add markers within predefined rectangle on map

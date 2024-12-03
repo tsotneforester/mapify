@@ -11,19 +11,15 @@ import MyMap from './pages/MyMap';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-//FEATURE react-toastify, .env, reactleaflet cluster
-
 const App = () => {
   return (
     <Router>
       <S.Navbar>
         <div>
-          {/* FIX cotainer name */}
           <S.NavLink to="/">Home</S.NavLink>
           <S.NavLink to="/mymap">My Map</S.NavLink>
         </div>
         <div>
-          {/* FIX cotainer name */}
           <S.NavLink to="/marker">marker</S.NavLink>
           <S.NavLink to="/icons">icons</S.NavLink>
         </div>

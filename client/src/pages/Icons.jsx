@@ -79,7 +79,7 @@ const Icons = () => {
   };
 
   function removeLastDotAndExtension(filename) {
-    //FIX export out of
+    //FIX export out of component
     const lastDotIndex = filename.lastIndexOf('.');
     if (lastDotIndex !== -1) {
       return filename.substring(0, lastDotIndex);
