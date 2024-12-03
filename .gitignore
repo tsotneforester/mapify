@@ -1,0 +1,16 @@
+*.ini
+*.map
+*.psd
+*.ai
+*.ts
+*.zip
+*.fig
+*.code-workspace
+/.prettierignore
+**/dist
+**/node_modules
+*.htmlhintrc
+*.vscode
+*.code-workspace
+*.eslintrc
+*.sketch
