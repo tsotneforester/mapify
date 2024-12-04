@@ -91,7 +91,7 @@ S.Main = styled.main`
 const StyledIcon = styled(({ component: Component, ...props }) => <Component {...props} />)`
   width: 32px;
 `;
-const HexIcon = styled(StyledIcon).attrs({ component: HexSvg })``;
+
 const HomeIcon = styled(StyledIcon).attrs({ component: HomeSvg })``;
 const UserHomeIcon = styled(StyledIcon).attrs({ component: UserHomeSvg })``;
 const AddMarkerIcon = styled(StyledIcon).attrs({ component: AddMarkerSvg })``;

@@ -14,7 +14,7 @@ const Icons = () => {
   const [file, setFile] = useState(null);
 
   const [active, setActive] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const toast = useToast();
 
   // const handleDelete = async e => {

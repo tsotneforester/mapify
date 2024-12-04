@@ -102,10 +102,12 @@ export default function Marker() {
 
 const S = {};
 S.Container = styled.div`
+  width: 400px;
+  height: 400px;
   display: grid;
 
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
 `;
 
 S.Form = styled.div`

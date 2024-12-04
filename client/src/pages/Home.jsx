@@ -1,16 +1,13 @@
 import styled from 'styled-components';
 import axios from 'axios';
-import { useEffect, useState, useContext } from 'react';
-import { AppContext } from '../Context';
+import { useEffect, useState } from 'react';
+//import { AppContext } from '../Context';
 import DefaultMap from '../components/DefaultMap';
 const API_URL = import.meta.env.VITE_API_URL;
-import Icons from './Icons';
-
-import Modal from '../components/Modal';
 
 const Home = () => {
   const [markers, setMarkers] = useState([]);
-  const context = useContext(AppContext);
+  // const context = useContext(AppContext);
 
   async function fetchMarkers() {
     try {

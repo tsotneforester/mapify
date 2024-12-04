@@ -1,17 +1,13 @@
 import styled from 'styled-components';
 import { AppContext } from '../Context';
-import { useState, useContext, useEffect, useCallback, useMemo } from 'react';
+import { useContext } from 'react';
 
 export default function Modal({ children, status }) {
-  const { isModalOpened, setIsModalOpened } = useContext(AppContext);
+  const { setIsModalOpened } = useContext(AppContext);
 
   return (
     status && (
-      <S.ModalOverlay
-        onClick={e => {
-          setIsModalOpened(pre => !pre);
-        }}
-      >
+      <S.ModalOverlay onClick={() => setIsModalOpened(pre => !pre)}>
         <S.Modal
           onClick={e => {
             e.stopPropagation();
@@ -45,9 +41,9 @@ S.Modal = styled.div`
   padding: 30px;
   width: 100%;
   max-width: 600px;
-
   background-color: #009d4479;
   position: relative;
+  border-radius: 10px;
 
   &::before {
     content: '';
