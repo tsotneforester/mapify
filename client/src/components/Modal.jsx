@@ -30,7 +30,8 @@ S.ModalOverlay = styled.div`
   width: 100vw;
   height: 100vh;
   height: 100svh;
-  background-color: transparent;
+  background-color: #ffd00051;
+
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;

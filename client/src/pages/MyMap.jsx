@@ -5,11 +5,12 @@ import { AppContext } from '../Context';
 import DefaultMap from '../components/DefaultMap';
 const API_URL = import.meta.env.VITE_API_URL;
 import { useMapEvents } from 'react-leaflet';
-import { useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { toast } from 'react-toastify';
 import AddMarkerSvg from '../assets/addmarker.svg?react';
+import HexSvg from '../assets/hex.svg?react';
 import Modal from '../components/Modal';
+import Icons from './Icons';
 
 export default function MyMap() {
   const [markers, setMarkers] = useState([]);
@@ -18,12 +19,13 @@ export default function MyMap() {
     lng: '',
   });
   const { isModalOpened, setIsModalOpened } = useContext(AppContext);
+  const [activeModalContent, setActiveModalContent] = useState();
   const [name, setName] = useState('');
   const [icons, setIcons] = useState([]);
 
   const [markerIconName, setMarkerIconName] = useState('');
 
-  const navigate = useNavigate(); // Step 2
+  //const navigate = useNavigate(); // Step 2
 
   async function fetchMyMarkers() {
     try {
@@ -117,34 +119,45 @@ export default function MyMap() {
         </DefaultMap>
       </S.Container>
 
-      {isObjectValuesNotEmpty(coords) && (
+      <S.MapTools>
         <AddMarkerIcon
+          enabled={isObjectValuesNotEmpty(coords)}
           onClick={() => {
             setIsModalOpened(e => !e);
+            setActiveModalContent('markers');
             fetchSelectIcons();
           }}
         />
-      )}
+        <HexIcon
+          enabled={true}
+          onClick={() => {
+            setIsModalOpened(e => !e);
+            setActiveModalContent('icons');
+            fetchSelectIcons();
+          }}
+        />
+      </S.MapTools>
 
       <Modal status={isModalOpened}>
-        {/* <Icons /> */}
-        <S.Form>
-          <form onSubmit={handleSubmit}>
-            <input type="text" name="name" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" required />
+        {activeModalContent == 'icons' && <Icons />}
+        {activeModalContent == 'markers' && (
+          <>
+            <S.Form onSubmit={handleSubmit}>
+              <input type="text" name="name" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" required />
 
-            <input type="number" name="lat" value={coords.lat} onChange={handleChange} placeholder="lat" required />
+              <input type="number" name="lat" value={coords.lat} onChange={handleChange} placeholder="lat" required />
 
-            <input type="number" name="lng" value={coords.lng} onChange={handleChange} placeholder="lng" required />
+              <input type="number" name="lng" value={coords.lng} onChange={handleChange} placeholder="lng" required />
 
-            <S.Icons>
+              <button type="submit">create MArker</button>
+            </S.Form>
+            <S.IconContainer>
               {icons.map(icon => (
                 <Icon canBeDeleted={false} onClickHandler={() => setMarkerIconName(icon.name)} selected={icon.name == markerIconName} key={icon.id} {...icon} />
               ))}
-            </S.Icons>
-
-            <button type="submit">create MArker</button>
-          </form>
-        </S.Form>
+            </S.IconContainer>
+          </>
+        )}
       </Modal>
     </>
   );
@@ -164,24 +177,57 @@ S.Container = styled.div`
 const AddMarkerIcon = styled(AddMarkerSvg)`
   width: 32px;
   height: 32px;
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  z-index: 30;
+  //pointer-events: ${prop => (prop.enabled ? 'auto' : 'not-allowed')};
+  cursor: ${prop => (prop.enabled ? 'pointer' : 'not-allowed')};
+  //cursor: pointer;
+  color: ${prop => (prop.enabled ? 'green' : '	#D3D3D3')};
 `;
 
-S.Form = styled.div`
-  padding: 50px;
+const HexIcon = styled(HexSvg)`
+  width: 32px;
+  height: 32px;
+  //pointer-events: ${prop => (prop.enabled ? 'auto' : 'not-allowed')};
+  cursor: ${prop => (prop.enabled ? 'pointer' : 'not-allowed')};
+  //cursor: pointer;
+  color: ${prop => (prop.enabled ? 'green' : '	#D3D3D3')};
+`;
+
+S.Form = styled.form`
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
+  gap: 10px;
 `;
 
 S.Icons = styled.div`
-  padding: 50px;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
   align-items: flex-start;
+`;
+
+S.MapTools = styled.div`
+  position: absolute;
+  right: 2px;
+  bottom: 20px;
+  z-index: 30;
+  padding: 4px;
+  border-radius: 4px;
+  background-color: #fff;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 14px;
+`;
+S.IconContainer = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 10px;
+  gap: 8px;
+  margin-top: 40px;
 `;

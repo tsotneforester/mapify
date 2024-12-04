@@ -24,14 +24,13 @@ export default function Icon({ name, contentType, data, handler, selected, onCli
 
 const S = {};
 S.Form = styled.form`
-  margin: 10px;
   padding: 6px;
   position: relative;
 
   width: auto;
   height: auto;
   border-radius: 0;
-  background-color: transparent;
+  background-color: #00000080;
 
   border-width: 3px;
   border-style: solid;

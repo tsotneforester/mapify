@@ -3,7 +3,6 @@ import axios from 'axios';
 import Icon from '../components/Icon';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -14,32 +13,17 @@ const Icons = () => {
   const [file, setFile] = useState(null);
 
   const [active, setActive] = useState(false);
-  // const navigate = useNavigate();
-  // const toast = useToast();
 
-  // const handleDelete = async e => {
-  //   e.preventDefault();
-
-  //   await axios.post(`http://localhost:5000/api/icons/delete/${id}`);
-
-  //   toast.warning('deleted');
-  // };
   const fetchIcons = async () => {
     try {
-      const response = await axios(`${API_URL}/api/icons`); // Adjust the URL as needed
-
+      const response = await axios(`${API_URL}/api/icons`);
       let { data } = response.data;
-      //setIcons(response.data.data); // Assuming data is an array of marker objects with { lat, lng, id } structur
-      //console.log(data);
-
       setIcons(data);
     } catch (error) {
       toast.error('Error fetching markers:', error);
     }
   };
   useEffect(() => {
-    // Fetch marker data from your server
-
     fetchIcons();
   }, []);
 
@@ -49,7 +33,6 @@ const Icons = () => {
       let response = await axios.delete(`${API_URL}/api/icons/${id}`);
       toast.success(response.data);
       fetchIcons(); // force rerender
-      //navigate('/icons');
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -74,8 +57,6 @@ const Icons = () => {
     } catch (error) {
       toast.error(error.response.data);
     }
-
-    // Handle success or error
   };
 
   function removeLastDotAndExtension(filename) {
@@ -100,14 +81,16 @@ const Icons = () => {
 
   return (
     <S.Container>
-      <form onSubmit={handleSubmit}>
+      <S.Form onSubmit={handleSubmit}>
         <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" />
         <input type="file" accept="image/png" onChange={handleFileChange} required />
         <button type="submit">Upload Icon</button>
-      </form>
-      {icons.map(img => (
-        <Icon onClickHandler={() => setActive(img.name)} selected={img.name == active} key={img.id} {...img} handler={e => handleDelete(e, img.id)} />
-      ))}
+      </S.Form>
+      <S.IconContainer>
+        {icons.map(img => (
+          <Icon onClickHandler={() => setActive(img.name)} selected={img.name == active} key={img.id} {...img} handler={e => handleDelete(e, img.id)} />
+        ))}
+      </S.IconContainer>
     </S.Container>
   );
 };
@@ -116,9 +99,26 @@ export default Icons;
 
 const S = {};
 S.Container = styled.div`
-  padding: 50px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  gap: 40px;
+`;
+
+S.Form = styled.form`
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+`;
+
+S.IconContainer = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
   align-items: flex-start;
+  border-radius: 10px;
+  gap: 8px;
 `;

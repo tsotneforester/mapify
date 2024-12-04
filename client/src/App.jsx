@@ -1,24 +1,17 @@
-//import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
 
-import Marker from './pages/Marker';
-import Icons from './pages/Icons';
 import Home from './pages/Home';
 import styled from 'styled-components';
 
-import { useEffect, useState, useContext } from 'react';
-import { AppContext } from './Context';
 import MyMap from './pages/MyMap';
 
-//import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import HomeSvg from './assets/home.svg?react';
 import UserHomeSvg from './assets/userhome.svg?react';
-import AddMarkerSvg from './assets/addmarker.svg?react';
-import HexSvg from './assets/hex.svg?react';
+
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
-  const { setIsModalOpened } = useContext(AppContext);
   return (
     <Router>
       <S.Navbar>
@@ -30,19 +23,13 @@ const App = () => {
             <UserHomeIcon />
           </S.NavLink>
         </div>
-        <div>
-          <S.NavLink to="/marker">
-            <AddMarkerIcon />
-          </S.NavLink>
-        </div>
+        <div></div>
       </S.Navbar>
-      {/* <ToastContainer position="top-right" autoClose={5000} style={{ zIndex: 1000 }} /> */}
+      <ToastContainer position="top-right" autoClose={5000} style={{ zIndex: 1000 }} />
 
       <Routes>
         <Route path="/" element={<Home />} />\
         <Route path="/mymap" element={<MyMap />} />
-        <Route path="/marker" element={<Marker />} />
-        {/* <Route path="/icons" element={<Icons />} /> */}
       </Routes>
     </Router>
   );
@@ -94,6 +81,5 @@ const StyledIcon = styled(({ component: Component, ...props }) => <Component {..
 
 const HomeIcon = styled(StyledIcon).attrs({ component: HomeSvg })``;
 const UserHomeIcon = styled(StyledIcon).attrs({ component: UserHomeSvg })``;
-const AddMarkerIcon = styled(StyledIcon).attrs({ component: AddMarkerSvg })``;
 
 export default App;
