@@ -1,11 +1,16 @@
 import styled from 'styled-components';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { AppContext } from '../Context';
 import DefaultMap from '../components/DefaultMap';
 const API_URL = import.meta.env.VITE_API_URL;
+import Icons from './Icons';
+
+import Modal from '../components/Modal';
 
 const Home = () => {
   const [markers, setMarkers] = useState([]);
+  const context = useContext(AppContext);
 
   async function fetchMarkers() {
     try {
@@ -23,19 +28,17 @@ const Home = () => {
   }, []);
 
   return (
-    <S.Container>
-      <DefaultMap zoom={8} data={markers} editable={false} />
-    </S.Container>
+    <>
+      <S.Container>
+        <DefaultMap zoom={8} data={markers} editable={false} />
+      </S.Container>
+    </>
   );
 };
 export default Home;
 
 const S = {};
 S.Container = styled.div`
-  /* display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-start;
-  align-items: flex-start; */
   position: absolute;
   top: 0;
   left: 0;

@@ -4,10 +4,10 @@ import './index.css';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './styles/theme';
 import { GlobalStyles } from './styles/GlobalStyles';
+import { Context } from './Context.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <ThemeProvider theme={theme}>
-    <GlobalStyles />
+  <Context>
     <App />
-  </ThemeProvider>
+  </Context>
 );

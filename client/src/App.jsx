@@ -6,6 +6,8 @@ import Icons from './pages/Icons';
 import Home from './pages/Home';
 import styled from 'styled-components';
 
+import { useEffect, useState, useContext } from 'react';
+import { AppContext } from './Context';
 import MyMap from './pages/MyMap';
 
 //import { ToastContainer } from 'react-toastify';
@@ -16,6 +18,7 @@ import HexSvg from './assets/hex.svg?react';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
+  const { setIsModalOpened } = useContext(AppContext);
   return (
     <Router>
       <S.Navbar>
@@ -31,9 +34,6 @@ const App = () => {
           <S.NavLink to="/marker">
             <AddMarkerIcon />
           </S.NavLink>
-          <S.NavLink to="/icons">
-            <HexIcon />
-          </S.NavLink>
         </div>
       </S.Navbar>
       {/* <ToastContainer position="top-right" autoClose={5000} style={{ zIndex: 1000 }} /> */}
@@ -42,7 +42,7 @@ const App = () => {
         <Route path="/" element={<Home />} />\
         <Route path="/mymap" element={<MyMap />} />
         <Route path="/marker" element={<Marker />} />
-        <Route path="/icons" element={<Icons />} />
+        {/* <Route path="/icons" element={<Icons />} /> */}
       </Routes>
     </Router>
   );
@@ -55,7 +55,6 @@ S.Navbar = styled.nav`
   left: 0;
   height: 100vh;
   height: 100svh;
-
   z-index: 2;
 
   display: flex;
@@ -89,19 +88,12 @@ S.Main = styled.main`
   height: 100svh;
 `;
 
-const HomeIcon = styled(HomeSvg)`
+const StyledIcon = styled(({ component: Component, ...props }) => <Component {...props} />)`
   width: 32px;
 `;
-
-const UserHomeIcon = styled(UserHomeSvg)`
-  width: 32px;
-`;
-
-const AddMarkerIcon = styled(AddMarkerSvg)`
-  width: 32px;
-`;
-const HexIcon = styled(HexSvg)`
-  width: 32px;
-`;
+const HexIcon = styled(StyledIcon).attrs({ component: HexSvg })``;
+const HomeIcon = styled(StyledIcon).attrs({ component: HomeSvg })``;
+const UserHomeIcon = styled(StyledIcon).attrs({ component: UserHomeSvg })``;
+const AddMarkerIcon = styled(StyledIcon).attrs({ component: AddMarkerSvg })``;
 
 export default App;

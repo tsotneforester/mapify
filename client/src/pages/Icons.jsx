@@ -70,7 +70,7 @@ const Icons = () => {
 
       toast.success(response.data);
       fetchIcons();
-      navigate('/icons');
+      // navigate('/icons');
     } catch (error) {
       toast.error(error.response.data);
     }
