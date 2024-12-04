@@ -32,8 +32,15 @@ export default Home;
 
 const S = {};
 S.Container = styled.div`
-  display: flex;
+  /* display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: flex-start; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
 `;

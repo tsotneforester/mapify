@@ -11,9 +11,9 @@ body {
 #root {
   min-height: 100vh;
   min-height: 100svh;
-  display: grid;
-  grid-template-columns: max-content auto 1fr;
-  grid-template-rows:auto;
+  /* display: grid;
+  grid-template-columns:  auto 1fr;
+  grid-template-rows:auto;  */
 }
 
 
