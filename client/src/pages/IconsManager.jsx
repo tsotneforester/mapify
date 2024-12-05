@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState /* useContext */ } from 'react';
+//import { AppContext } from '../Context';
 import axios from 'axios';
 import Icon from '../components/Icon';
 import { toast } from 'react-toastify';
@@ -12,6 +13,7 @@ const IconsManager = () => {
   const [name, setName] = useState('');
   const [file, setFile] = useState(null);
   let [loading, setLoading] = useState(true);
+  // const { setIsModalOpened } = useContext(AppContext);
 
   const [active, setActive] = useState(false);
 
@@ -28,7 +30,6 @@ const IconsManager = () => {
   }
 
   useEffect(() => {
-    console.log('hi');
     fetchIcons();
   }, []);
 
@@ -58,6 +59,7 @@ const IconsManager = () => {
 
       toast.success(response.data);
       fetchIcons();
+      // setIsModalOpened(e => !e);
       // navigate('/icons');
     } catch (error) {
       toast.error(error.response.data);
