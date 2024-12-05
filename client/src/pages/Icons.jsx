@@ -4,26 +4,31 @@ import Icon from '../components/Icon';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
-
+import IconsContainer from '../components/IconsContainer';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Icons = () => {
   const [icons, setIcons] = useState([]);
   const [name, setName] = useState('');
   const [file, setFile] = useState(null);
+  let [loading, setLoading] = useState(true);
 
   const [active, setActive] = useState(false);
 
-  const fetchIcons = async () => {
+  async function fetchIcons() {
     try {
       const response = await axios(`${API_URL}/api/icons`);
       let { data } = response.data;
       setIcons(data);
     } catch (error) {
       toast.error('Error fetching markers:', error);
+    } finally {
+      setLoading(e => !e);
     }
-  };
+  }
+
   useEffect(() => {
+    console.log('hi');
     fetchIcons();
   }, []);
 
@@ -86,11 +91,12 @@ const Icons = () => {
         <input type="file" accept="image/png" onChange={handleFileChange} required />
         <button type="submit">Upload Icon</button>
       </S.Form>
-      <S.IconContainer>
+
+      <IconsContainer loading={loading}>
         {icons.map(img => (
           <Icon onClickHandler={() => setActive(img.name)} selected={img.name == active} key={img.id} {...img} handler={e => handleDelete(e, img.id)} />
         ))}
-      </S.IconContainer>
+      </IconsContainer>
     </S.Container>
   );
 };
@@ -112,13 +118,4 @@ S.Form = styled.form`
   align-items: flex-start;
   gap: 10px;
   width: 100%;
-`;
-
-S.IconContainer = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-  border-radius: 10px;
-  gap: 8px;
 `;

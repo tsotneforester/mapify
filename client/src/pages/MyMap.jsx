@@ -11,6 +11,7 @@ import AddMarkerSvg from '../assets/addmarker.svg?react';
 import HexSvg from '../assets/hex.svg?react';
 import Modal from '../components/Modal';
 import Icons from './Icons';
+import IconsContainer from '../components/IconsContainer';
 
 export default function MyMap() {
   const [markers, setMarkers] = useState([]);
@@ -22,6 +23,7 @@ export default function MyMap() {
   const [activeModalContent, setActiveModalContent] = useState();
   const [name, setName] = useState('');
   const [icons, setIcons] = useState([]);
+  let [loading, setLoading] = useState(false);
 
   const [markerIconName, setMarkerIconName] = useState('');
 
@@ -49,15 +51,17 @@ export default function MyMap() {
   }
 
   async function fetchSelectIcons() {
+    setLoading(e => !e);
     try {
       const response = await axios(`${API_URL}/api/icons`); // Adjust the URL as needed
 
       let { data } = response.data;
-      //setIcons(response.data.data); // Assuming data is an array of marker objects with { lat, lng, id } structur
 
       setIcons(data);
     } catch (error) {
       console.error('Error fetching markers:', error);
+    } finally {
+      setLoading(e => !e);
     }
   }
 
@@ -151,11 +155,11 @@ export default function MyMap() {
 
               <button type="submit">create MArker</button>
             </S.Form>
-            <S.IconContainer>
+            <IconsContainer loading={loading}>
               {icons.map(icon => (
                 <Icon canBeDeleted={false} onClickHandler={() => setMarkerIconName(icon.name)} selected={icon.name == markerIconName} key={icon.id} {...icon} />
               ))}
-            </S.IconContainer>
+            </IconsContainer>
           </>
         )}
       </Modal>
@@ -221,13 +225,4 @@ S.MapTools = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 14px;
-`;
-S.IconContainer = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-  border-radius: 10px;
-  gap: 8px;
-  margin-top: 40px;
 `;
