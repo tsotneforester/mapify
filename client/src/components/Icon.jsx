@@ -1,14 +1,12 @@
 import styled from 'styled-components';
-
 import CloseIcon from '../assets/close.svg?react';
-
 import { useState } from 'react';
 
 export default function Icon({ name, contentType, data, handler, selected, onClickHandler }) {
   const [visible, setVisible] = useState(false);
 
   return (
-    <S.Form border={selected} onClick={onClickHandler} onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)} /* action={`http://localhost:5000/api/icons/delete/${id}`} */ /* method="post" */>
+    <S.Form active={selected} border={selected} onClick={onClickHandler} onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)} /* action={`http://localhost:5000/api/icons/delete/${id}`} */ /* method="post" */>
       <img src={`data:${contentType};base64,${data}`} alt={name} />
 
       {handler && (
@@ -24,19 +22,20 @@ export default function Icon({ name, contentType, data, handler, selected, onCli
 
 const S = {};
 S.Form = styled.form`
-  padding: 6px;
+  padding: 8px;
   position: relative;
 
   width: auto;
   height: auto;
   border-radius: 0;
-  background-color: #00000080;
+  /* background-color: #ffffffd9; */
+  background-color: ${prop => (prop.active ? '#434343d9' : '#ffffffd9')};
 
   border-width: 3px;
   border-style: solid;
   border-radius: 8px;
   //border-color: ${({ theme }) => theme.colors.gray};
-  border-color: ${prop => (prop.border ? ({ theme }) => theme.colors.blue : ({ theme }) => theme.colors.gray)};
+  border-color: ${prop => (prop.border ? ({ theme }) => theme.colors.blue : '#a4bed2')};
 
   display: flex;
   flex-flow: column nowrap;
@@ -49,10 +48,7 @@ S.Form = styled.form`
   }
 
   img {
-    width: ${({ theme }) => theme.iconSize};
-    height: ${({ theme }) => theme.iconSize};
-    border-radius: 0;
-    background-color: transparent;
+    width: 26px;
   }
 `;
 S.Tooltip = styled.div`
@@ -79,14 +75,17 @@ S.Tooltip = styled.div`
   }
 `;
 
-S.Button = styled.button`
+S.Button = styled.div`
+  margin: 0;
+  padding: 0;
   background-color: transparent;
   position: absolute;
-  height: ${prop => (prop.active ? '12px' : 0)};
+  height: ${prop => (prop.active ? '26px' : 0)};
   opacity: ${prop => (prop.active ? 1 : 0)};
   overflow: hidden;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   transition: opacity ${({ theme }) => theme.transition} ease;
   cursor: pointer;
+  line-height: 4px;
 `;

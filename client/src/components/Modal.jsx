@@ -42,7 +42,7 @@ S.Modal = styled.div`
   padding: 30px;
   width: 100%;
   max-width: 600px;
-  background-color: #009d4479;
+  background-color: #ebffcfb0;
   position: relative;
   border-radius: 10px;
 

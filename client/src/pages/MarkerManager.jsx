@@ -7,6 +7,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
 import IconsContainer from '../components/IconsContainer';
 const API_URL = import.meta.env.VITE_API_URL;
+import Loader from '../components/Loader';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
   let { coords, setCoords } = coordinates;
@@ -60,22 +64,30 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
   }, []);
 
   return (
-    <>
+    <S.Container>
       <S.Form onSubmit={handleSubmit}>
-        <input type="text" name="name" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" required />
+        <Form.Control type="text" name="name" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" required />
+        {/* <input type="text" name="name" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" required /> */}
 
-        <input type="number" name="lat" value={coords.lat} placeholder="lat" required disabled />
+        {/* <input type="number" name="lat" value={coords.lat} placeholder="lat" required disabled /> */}
 
-        <input type="number" name="lng" value={coords.lng} placeholder="lng" required disabled />
+        <Form.Control type="number" name="lat" value={coords.lat} placeholder="lat" required disabled />
 
-        <button type="submit">create MArker</button>
+        <Form.Control type="number" name="lng" value={coords.lng} placeholder="lng" required disabled />
+
+        {/* <input type="number" name="lng" value={coords.lng} placeholder="lng" required disabled /> */}
+
+        <Button style={{ width: '100%' }} type="submit" variant="primary">
+          Create Marker
+        </Button>
       </S.Form>
-      <IconsContainer loading={loading}>
+      <IconsContainer>
+        <Loader loading={loading} />
         {icons.map(icon => (
           <Icon canBeDeleted={false} onClickHandler={() => setMarkerIconName(icon.name)} selected={icon.name == markerIconName} key={icon.id} {...icon} />
         ))}
       </IconsContainer>
-    </>
+    </S.Container>
   );
 };
 
@@ -83,10 +95,10 @@ export default MarkerManager;
 
 const S = {};
 S.Container = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  gap: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 10px;
 `;
 
 S.Form = styled.form`
@@ -95,5 +107,4 @@ S.Form = styled.form`
   justify-content: flex-start;
   align-items: flex-start;
   gap: 10px;
-  width: 100%;
 `;

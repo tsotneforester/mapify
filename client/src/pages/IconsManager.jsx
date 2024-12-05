@@ -1,5 +1,6 @@
 import { useEffect, useState /* useContext */ } from 'react';
 //import { AppContext } from '../Context';
+import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import Icon from '../components/Icon';
 import { toast } from 'react-toastify';
@@ -7,6 +8,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
 import IconsContainer from '../components/IconsContainer';
 const API_URL = import.meta.env.VITE_API_URL;
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Loader from '../components/Loader';
+import Form from 'react-bootstrap/Form';
 
 const IconsManager = () => {
   const [icons, setIcons] = useState([]);
@@ -89,12 +93,18 @@ const IconsManager = () => {
   return (
     <S.Container>
       <S.Form onSubmit={handleSubmit}>
-        <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" />
-        <input type="file" accept="image/png" onChange={handleFileChange} required />
-        <button type="submit">Upload Icon</button>
+        <Form.Control type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" />
+
+        <Form.Control type="file" accept="image/png" onChange={handleFileChange} required />
+
+        <Button style={{ width: '100%' }} type="submit" variant="primary">
+          Upload Iconasd
+        </Button>
       </S.Form>
 
-      <IconsContainer loading={loading}>
+      <IconsContainer>
+        <Loader loading={loading} style={{ margin: '0 auto' }} />
+
         {icons.map(img => (
           <Icon onClickHandler={() => setActive(img.name)} selected={img.name == active} key={img.id} {...img} handler={e => handleDelete(e, img.id)} />
         ))}
@@ -107,10 +117,10 @@ export default IconsManager;
 
 const S = {};
 S.Container = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
   gap: 40px;
+  display: grid;
+  grid-template-columns: 3fr 3fr;
+  grid-template-rows: auto;
 `;
 
 S.Form = styled.form`
