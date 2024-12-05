@@ -46,7 +46,7 @@ export default function DefaultMap({ center = [41.967, 43.855], data = [], edita
     }
   };
 
-  const attribution = '&copy; 2024 &middot; <a href="https://maps.omniscale.com/">Omniscale</a> ' + '&middot; Tsotneforester at GEOJS.ONE';
+  const attribution = '&copy; 2024 &middot; <a href="https://geojs.one">GEOJS.ONE</a>';
 
   return (
     <MapContainer zoomControl={false} scrollWheelZoom={true} center={center} zoom={zoom} style={{ height: '100%', width: '100%' }}>
