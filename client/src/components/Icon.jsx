@@ -1,12 +1,9 @@
 import styled from 'styled-components';
 import CloseIcon from '../assets/close.svg?react';
-import { useState } from 'react';
 
 export default function Icon({ name, contentType, data, handler, selected, onClickHandler }) {
-  const [visible, setVisible] = useState(false);
-
   return (
-    <S.Form active={selected} border={selected} onClick={onClickHandler} onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)} /* action={`http://localhost:5000/api/icons/delete/${id}`} */ /* method="post" */>
+    <S.Form active={selected} border={selected} onClick={onClickHandler} /* action={`http://localhost:5000/api/icons/delete/${id}`} */ /* method="post" */>
       <img src={`data:${contentType};base64,${data}`} alt={name} />
 
       {handler && (
@@ -15,7 +12,7 @@ export default function Icon({ name, contentType, data, handler, selected, onCli
         </S.Button>
       )}
 
-      {visible && <S.Tooltip>{name}</S.Tooltip>}
+      {/* {visible && <S.Tooltip>{name}</S.Tooltip>} */}
     </S.Form>
   );
 }
@@ -48,7 +45,7 @@ S.Form = styled.form`
   }
 
   img {
-    width: 26px;
+    width: 36px;
   }
 `;
 S.Tooltip = styled.div`
@@ -61,7 +58,7 @@ S.Tooltip = styled.div`
   padding: 5px;
   border-radius: 4px;
   white-space: nowrap;
-  z-index: 1000; /* Ensure it appears above other elements */
+  z-index: 9999; /* Ensure it appears above other elements */
 
   &::after {
     content: '';

@@ -6,7 +6,7 @@
 
 .tooltip {
   position: absolute;
-  bottom: 110%; /* Position above the text */
+  bottom: -10%; /* Position above the text */
   left: 50%;
   transform: translateX(-50%);
   background-color: black;

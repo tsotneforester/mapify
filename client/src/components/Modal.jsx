@@ -24,6 +24,7 @@ const S = {};
 
 S.ModalOverlay = styled.div`
   position: absolute;
+  padding: 10px;
   top: 0;
   left: 0;
   z-index: 3;
@@ -34,8 +35,12 @@ S.ModalOverlay = styled.div`
 
   display: flex;
   flex-flow: column nowrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    justify-content: center;
+  }
 `;
 
 S.Modal = styled.div`

@@ -8,8 +8,8 @@ import { useMapEvents } from 'react-leaflet';
 import AddMarkerSvg from '../assets/addmarker.svg?react';
 import HexSvg from '../assets/hex.svg?react';
 import Modal from '../components/Modal';
-import IconsManager from './IconsManager';
-import MarkerManager from './MarkerManager';
+import IconsManager from '../components/IconsManager';
+import MarkerManager from '../components/MarkerManager';
 
 export default function MyMap() {
   const [markers, setMarkers] = useState([]);

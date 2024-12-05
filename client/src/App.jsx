@@ -22,7 +22,7 @@ const App = () => {
       <ToastContainer position="top-right" autoClose={5000} style={{ zIndex: 1000 }} />
 
       <Routes>
-        <Route path="/" element={<Home />} />\
+        <Route path="/" element={<Home />} />
         <Route path="/mymap" element={<MyMap />} />
       </Routes>
     </Router>
@@ -34,16 +34,28 @@ S.Navbar = styled.nav`
   position: absolute;
   top: 0;
   left: 0;
-  height: 100vh;
-  height: 100svh;
+
   z-index: 2;
+  width: 100%;
 
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
   justify-content: flex-start;
-  align-items: flex-start;
+
   background-color: #030a12a7;
-  padding: 20px;
+  padding: 14px;
+
+  padding: 14px;
+
+  height: auto;
+  line-height: normal;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    height: 100vh;
+    height: 100svh;
+    width: auto;
+    flex-flow: column nowrap;
+  }
 `;
 
 S.NavLink = styled(NavLink)`

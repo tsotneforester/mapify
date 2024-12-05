@@ -13,8 +13,12 @@ const S = {};
 S.Container = styled.div`
   display: flex;
   flex-flow: row wrap;
+  align-content: flex-start;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   border-radius: 10px;
   gap: 8px;
+  height: 198px;
+  overflow: hidden;
+  width: 100%;
 `;

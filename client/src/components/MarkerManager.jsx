@@ -1,13 +1,13 @@
 import { useEffect, useState, useContext } from 'react';
 import { AppContext } from '../Context';
 import axios from 'axios';
-import Icon from '../components/Icon';
+import Icon from './Icon';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
-import IconsContainer from '../components/IconsContainer';
+import IconsContainer from './IconsContainer';
 const API_URL = import.meta.env.VITE_API_URL;
-import Loader from '../components/Loader';
+import Loader from './Loader';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';

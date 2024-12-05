@@ -2,21 +2,25 @@ import { useEffect, useState /* useContext */ } from 'react';
 //import { AppContext } from '../Context';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import Icon from '../components/Icon';
+import Icon from './Icon';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
-import IconsContainer from '../components/IconsContainer';
+import IconsContainer from './IconsContainer';
 const API_URL = import.meta.env.VITE_API_URL;
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Loader from '../components/Loader';
+import Loader from './Loader';
 import Form from 'react-bootstrap/Form';
+
+import HexSvg from '../assets/hex.svg?react';
 
 const IconsManager = () => {
   const [icons, setIcons] = useState([]);
   const [name, setName] = useState('');
   const [file, setFile] = useState(null);
   let [loading, setLoading] = useState(true);
+  let [info, setInfo] = useState(false);
+
   // const { setIsModalOpened } = useContext(AppContext);
 
   const [active, setActive] = useState(false);
@@ -29,7 +33,7 @@ const IconsManager = () => {
     } catch (error) {
       toast.error('Error fetching markers:', error);
     } finally {
-      setLoading(e => !e);
+      setLoading(false);
     }
   }
 
@@ -42,9 +46,12 @@ const IconsManager = () => {
       e.preventDefault();
       let response = await axios.delete(`${API_URL}/api/icons/${id}`);
       toast.success(response.data);
-      fetchIcons(); // force rerender
+      setLoading(e => !e);
+      // force rerender
     } catch (error) {
       toast.error(error.response.data.message);
+    } finally {
+      fetchIcons();
     }
   }
 
@@ -62,11 +69,14 @@ const IconsManager = () => {
       let response = await axios.post(`${API_URL}/api/icons`, formData);
 
       toast.success(response.data);
-      fetchIcons();
+      // fetchIcons();
       // setIsModalOpened(e => !e);
       // navigate('/icons');
     } catch (error) {
       toast.error(error.response.data);
+    } finally {
+      setInfo(e => !e);
+      fetchIcons();
     }
   };
 
@@ -92,23 +102,47 @@ const IconsManager = () => {
 
   return (
     <S.Container>
-      <S.Form onSubmit={handleSubmit}>
+      {/* <InfoIcon /> */}
+
+      <HexIcon
+        onClick={() => {
+          setInfo(e => !e);
+        }}
+      />
+
+      {/* <S.Form onSubmit={handleSubmit}>
         <Form.Control type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" />
 
         <Form.Control type="file" accept="image/png" onChange={handleFileChange} required />
 
         <Button style={{ width: '100%' }} type="submit" variant="primary">
-          Upload Iconasd
+          Upload Icon
         </Button>
-      </S.Form>
+      </S.Form> */}
 
-      <IconsContainer>
-        <Loader loading={loading} style={{ margin: '0 auto' }} />
+      {info && (
+        <S.AddIcon>
+          <S.Form onSubmit={handleSubmit}>
+            <Form.Control type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" />
 
-        {icons.map(img => (
-          <Icon onClickHandler={() => setActive(img.name)} selected={img.name == active} key={img.id} {...img} handler={e => handleDelete(e, img.id)} />
-        ))}
-      </IconsContainer>
+            <Form.Control type="file" accept="image/png" onChange={handleFileChange} required />
+
+            <Button style={{ width: '100%' }} type="submit" variant="primary">
+              Upload Icon
+            </Button>
+          </S.Form>
+          <p>ჩამოტვირთე ხატულას სტანდარტული ფორმა, შეცვალე მისი ფერი და ლოგო მის შიგნით შენი სურვილისამებრ. არასტანდარტული ხატულები წაიშლება სერვერიდან</p>
+        </S.AddIcon>
+      )}
+      {info || (
+        <IconsContainer>
+          <Loader loading={loading} style={{ margin: '0 auto' }} />
+
+          {icons.map(img => (
+            <Icon onClickHandler={() => setActive(img.name)} selected={img.name == active} key={img.id} {...img} handler={e => handleDelete(e, img.id)} />
+          ))}
+        </IconsContainer>
+      )}
     </S.Container>
   );
 };
@@ -118,9 +152,38 @@ export default IconsManager;
 const S = {};
 S.Container = styled.div`
   gap: 40px;
-  display: grid;
-  grid-template-columns: 3fr 3fr;
-  grid-template-rows: auto;
+  /* display: grid;
+    grid-template-columns: 2fr 3fr;
+    grid-template-rows: auto; */
+  position: relative;
+  min-height: 194px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+`;
+
+S.AddIcon = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 20px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #042914;
+    font-weight: 400;
+    text-align: center;
+    font-style: italic;
+  }
 `;
 
 S.Form = styled.form`
@@ -130,4 +193,21 @@ S.Form = styled.form`
   align-items: flex-start;
   gap: 10px;
   width: 100%;
+`;
+
+S.LoaderContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+`;
+
+const HexIcon = styled(HexSvg)`
+  width: 25px;
+  position: absolute;
+  right: -25px;
+  top: -24px;
+  color: white;
 `;
