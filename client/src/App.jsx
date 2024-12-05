@@ -1,10 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
-
 import Home from './pages/Home';
 import styled from 'styled-components';
-
 import MyMap from './pages/MyMap';
-
 import { ToastContainer } from 'react-toastify';
 import HomeSvg from './assets/home.svg?react';
 import UserHomeSvg from './assets/userhome.svg?react';
@@ -15,15 +12,12 @@ const App = () => {
   return (
     <Router>
       <S.Navbar>
-        <div>
-          <S.NavLink to="/">
-            <HomeIcon />
-          </S.NavLink>
-          <S.NavLink to="/mymap">
-            <UserHomeIcon />
-          </S.NavLink>
-        </div>
-        <div></div>
+        <S.NavLink to="/">
+          <HomeIcon />
+        </S.NavLink>
+        <S.NavLink to="/mymap">
+          <UserHomeIcon />
+        </S.NavLink>
       </S.Navbar>
       <ToastContainer position="top-right" autoClose={5000} style={{ zIndex: 1000 }} />
 
@@ -46,17 +40,10 @@ S.Navbar = styled.nav`
 
   display: flex;
   flex-flow: column nowrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
   background-color: #030a12a7;
   padding: 20px;
-
-  & > div {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
 `;
 
 S.NavLink = styled(NavLink)`

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import IconsContainer from '../components/IconsContainer';
 const API_URL = import.meta.env.VITE_API_URL;
 
-const Icons = () => {
+const IconsManager = () => {
   const [icons, setIcons] = useState([]);
   const [name, setName] = useState('');
   const [file, setFile] = useState(null);
@@ -101,7 +101,7 @@ const Icons = () => {
   );
 };
 
-export default Icons;
+export default IconsManager;
 
 const S = {};
 S.Container = styled.div`
