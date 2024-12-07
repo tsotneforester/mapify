@@ -1,16 +1,17 @@
 import { useEffect, useState, useContext } from 'react';
 import { AppContext } from '../Context';
 import axios from 'axios';
-import Icon from './Icon';
+
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
-import IconsContainer from './IconsContainer';
+
 const API_URL = import.meta.env.VITE_API_URL;
-import Loader from './Loader';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Dropdown from './Dropdown';
 
 const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
   let { coords, setCoords } = coordinates;
@@ -67,26 +68,22 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
     <S.Container>
       <S.Form onSubmit={handleSubmit}>
         <Form.Control type="text" name="name" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" required />
-        {/* <input type="text" name="name" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" required /> */}
-
-        {/* <input type="number" name="lat" value={coords.lat} placeholder="lat" required disabled /> */}
 
         <Form.Control type="number" name="lat" value={coords.lat} placeholder="lat" required disabled />
 
         <Form.Control type="number" name="lng" value={coords.lng} placeholder="lng" required disabled />
 
-        {/* <input type="number" name="lng" value={coords.lng} placeholder="lng" required disabled /> */}
-
         <Button style={{ width: '100%' }} type="submit" variant="primary">
           Create Marker
         </Button>
+        <Dropdown data={icons} />
       </S.Form>
-      <IconsContainer iconName={markerIconName}>
+      {/* <IconsContainer iconName={markerIconName}>
         <Loader loading={loading} />
         {icons.map(icon => (
           <Icon canBeDeleted={false} onClickHandler={() => setMarkerIconName(icon.name)} selected={icon.name == markerIconName} key={icon.id} {...icon} />
         ))}
-      </IconsContainer>
+      </IconsContainer> */}
     </S.Container>
   );
 };
@@ -96,10 +93,12 @@ export default MarkerManager;
 const S = {};
 S.Container = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-template-rows: auto;
   gap: 10px;
   position: relative;
+  max-width: 400px;
+  margin: 0 auto;
 `;
 
 S.Form = styled.form`
