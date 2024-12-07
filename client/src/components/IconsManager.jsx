@@ -69,35 +69,21 @@ const IconsManager = () => {
       let response = await axios.post(`${API_URL}/api/icons`, formData);
 
       toast.success(response.data);
+      setName('');
+      setFile(null);
+      setInfo(e => !e);
+      fetchIcons();
       // fetchIcons();
       // setIsModalOpened(e => !e);
       // navigate('/icons');
     } catch (error) {
       toast.error(error.response.data);
-    } finally {
-      setInfo(e => !e);
-      fetchIcons();
     }
   };
 
-  function removeLastDotAndExtension(filename) {
-    //FIX export out of component
-    const lastDotIndex = filename.lastIndexOf('.');
-    if (lastDotIndex !== -1) {
-      return filename.substring(0, lastDotIndex);
-    } else {
-      return filename; // No dot found, return the original filename
-    }
-  }
-
   const handleFileChange = event => {
     const file = event.target.files[0]; // Get the first file
-    if (file) {
-      setName(removeLastDotAndExtension(file.name)); // Set the file name in state
-      setFile(file);
-    } else {
-      setName(''); // Clear the file name if no file is selected
-    }
+    setFile(file);
   };
 
   return (
@@ -135,7 +121,7 @@ const IconsManager = () => {
         </S.AddIcon>
       )}
       {info || (
-        <IconsContainer>
+        <IconsContainer iconName={active}>
           <Loader loading={loading} style={{ margin: '0 auto' }} />
 
           {icons.map(img => (

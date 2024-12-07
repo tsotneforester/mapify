@@ -81,7 +81,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
           Create Marker
         </Button>
       </S.Form>
-      <IconsContainer>
+      <IconsContainer iconName={markerIconName}>
         <Loader loading={loading} />
         {icons.map(icon => (
           <Icon canBeDeleted={false} onClickHandler={() => setMarkerIconName(icon.name)} selected={icon.name == markerIconName} key={icon.id} {...icon} />
@@ -99,6 +99,7 @@ S.Container = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
   gap: 10px;
+  position: relative;
 `;
 
 S.Form = styled.form`
