@@ -21,7 +21,7 @@ async function addIcon(req, res, next) {
     await newIcon.save();
 
     // Send a response back to the client
-    res.status(200).send('Icon Addedffff');
+    res.status(200).send(`'${newIcon.name}' uploaded`);
   } catch (err) {
     res.status(401).send(err.message);
   }
@@ -90,8 +90,11 @@ async function getIcons(req, res, next) {
     const imageList = docs.map(img => ({
       id: img._id,
       name: img.name,
-      data: img.binData.toString('base64'),
+      imgData: img.binData.toString('base64'),
+      mimetype: img.mimetype,
     }));
+
+    console.log(imageList);
 
     res.status(200).json({
       status: 'success',

@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config();
 const app = require('./app');
 const mongoose = require('mongoose');
 
@@ -6,7 +6,7 @@ mongoose
   .connect(`mongodb+srv://${process.env.MONDGO_USER}:${process.env.MONDGO_PASS}@cluster0.5iuh8.mongodb.net/${process.env.DATABASE}`)
   .then(() => console.log('DB connection successful! database - ' + process.env.DATABASE))
   .catch(err => {
-    console.log(err.message);
+    console.log('❌', err.message);
   });
 
 // 🔰 SERVER START

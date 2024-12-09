@@ -14,8 +14,8 @@ export default function DefaultMap({ center = [41.967, 43.855], data = [], edita
   function customIcon(img) {
     return new Icon({
       iconUrl: img,
-      iconSize: [32, 32],
-      iconAnchor: [16, 16],
+      iconSize: [44, 44],
+      iconAnchor: [22, 22],
       popupAnchor: [-0, -18],
     });
   }

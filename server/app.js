@@ -39,13 +39,13 @@ app.delete('/api/icons/:id', deleteIcon);
 // });
 
 //🔰 For Production App
-//app.use(express.static(path.join(__dirname, '../client/dist')));
-app.use(express.static(path.join(__dirname, '../client/dist')));
+// //app.use(express.static(path.join(__dirname, '../client/dist')));
+// app.use(express.static(path.join(__dirname, '../client/dist')));
 
-app.get('*', (req, res) => {
-  //res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-  res.sendFile(path.join(__dirname, './public/build/index.html'));
-});
+// app.get('*', (req, res) => {
+//   //res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+//   res.sendFile(path.join(__dirname, './public/build/index.html'));
+// });
 //🔰 -------------------------
 
 module.exports = app;
