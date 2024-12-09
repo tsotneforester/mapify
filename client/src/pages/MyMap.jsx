@@ -85,8 +85,8 @@ export default function MyMap() {
       </S.MapTools>
 
       <Modal status={isModalOpened}>
-        {activeModalContent == 'icons' && <IconsManager />}
         {activeModalContent == 'markers' && <MarkerManager fetchMyMarkers={() => fetchMyMarkers()} coordinates={{ coords, setCoords }} />}
+        {activeModalContent == 'icons' && <IconsManager />}
       </Modal>
     </>
   );

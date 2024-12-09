@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import CloseIcon from '../assets/close.svg?react';
 
-export default function Icon({ name, contentType, data, handler, selected, onClickHandler }) {
+export default function Icon({ name, mimetype, imgData, handler, selected, onClickHandler }) {
   return (
     <S.Form active={selected} border={selected} onClick={onClickHandler} /* action={`http://localhost:5000/api/icons/delete/${id}`} */ /* method="post" */>
-      <img src={`data:${contentType};base64,${data}`} alt={name} />
+      <img src={`data:${mimetype};base64,${imgData}`} alt={name} />
 
       {handler && (
         <S.Button active={selected} onClick={handler}>
@@ -77,7 +77,7 @@ S.Button = styled.div`
   padding: 0;
   background-color: transparent;
   position: absolute;
-  height: ${prop => (prop.active ? '26px' : 0)};
+  height: ${prop => (prop.active ? '14px' : 0)};
   opacity: ${prop => (prop.active ? 1 : 0)};
   overflow: hidden;
   top: 0;

@@ -7,7 +7,6 @@ import HomeSvg from './assets/home.svg?react';
 import UserHomeSvg from './assets/userhome.svg?react';
 
 import 'react-toastify/dist/ReactToastify.css';
-import Dropdown from './components/Dropdown';
 
 const App = () => {
   return (
@@ -19,16 +18,16 @@ const App = () => {
         <S.NavLink to="/mymap">
           <UserHomeIcon />
         </S.NavLink>
-        <S.NavLink to="/dropdown">
+        {/* <S.NavLink to="/dropdown">
           <UserHomeIcon />
-        </S.NavLink>
+        </S.NavLink> */}
       </S.Navbar>
       <ToastContainer position="top-right" autoClose={5000} style={{ zIndex: 1000 }} />
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/mymap" element={<MyMap />} />
-        <Route path="/dropdown" element={<Dropdown />} />
+        {/* <Route path="/dropdown" element={<Dropdown />} /> */}
       </Routes>
     </Router>
   );

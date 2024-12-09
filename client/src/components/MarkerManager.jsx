@@ -15,10 +15,10 @@ import Dropdown from './Dropdown';
 
 const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
   let { coords, setCoords } = coordinates;
+  const [nameInput, setNameInput] = useState('');
 
-  let [loading, setLoading] = useState(true);
+  let [setLoading] = useState(true);
   const { setIsModalOpened } = useContext(AppContext);
-  const [name, setName] = useState('');
   const [icons, setIcons] = useState([]);
   const [markerIconName, setMarkerIconName] = useState('');
 
@@ -38,7 +38,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
     try {
       e.preventDefault();
       const formData = new FormData();
-      formData.append('name', name);
+      formData.append('name', nameInput);
       formData.append('coords', Object.values(coords));
       formData.append('icon', markerIconName);
 
@@ -67,7 +67,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
   return (
     <S.Container>
       <S.Form onSubmit={handleSubmit}>
-        <Form.Control type="text" name="name" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" required />
+        <Form.Control type="text" name="name" value={nameInput} onChange={e => setNameInput(e.target.value)} placeholder="Marker label" required />
 
         <Form.Control type="number" name="lat" value={coords.lat} placeholder="lat" required disabled />
 
@@ -76,7 +76,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
         <Button style={{ width: '100%' }} type="submit" variant="primary">
           Create Marker
         </Button>
-        <Dropdown data={icons} />
+        <Dropdown data={icons} selectHandler={setMarkerIconName} />
       </S.Form>
       {/* <IconsContainer iconName={markerIconName}>
         <Loader loading={loading} />

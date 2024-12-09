@@ -4,12 +4,15 @@ import ArrowSvg from '../assets/arrow.svg?react';
 
 import styled from 'styled-components';
 
-export default function Dropdown({ data }) {
+export default function Dropdown({ data, selectHandler }) {
   const [isOptionBoxVisible, setIsOptionBoxVisible] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('select icon');
+
+  const [activeId, setActiveId] = useState(null);
   const [searchString, setSearchString] = useState('');
 
   const filteredData = data.filter(iconName => iconName.name.toLowerCase().includes(searchString));
+
+  const activeIcon = data.find(icon => icon.id === activeId);
 
   const handleChange = event => {
     setSearchString(event.target.value);
@@ -19,7 +22,16 @@ export default function Dropdown({ data }) {
     <S.Container>
       <S.DropDown>
         <S.Select onClick={() => setIsOptionBoxVisible(e => !e)}>
-          <p>{selectedOption}</p>
+          <div>
+            {activeIcon ? (
+              <>
+                <img src={`data:${activeIcon.mimetype};base64,${activeIcon.imgData}`} alt={activeIcon.name} />
+                <p style={{ color: activeId ? 'black' : '#999' }}>{activeIcon.name}</p>
+              </>
+            ) : (
+              <p style={{ color: activeId ? 'black' : '#999' }}>Select Icon</p>
+            )}
+          </div>
           <ArrowSvg />
         </S.Select>
 
@@ -29,16 +41,18 @@ export default function Dropdown({ data }) {
               <input type="text" value={searchString} placeholder="search" onChange={handleChange} />
             </S.SearchBox>
             <S.Options>
-              {filteredData.map((option, i) => {
-                const { mimetype, name, imgData } = option;
+              {filteredData.map(option => {
+                const { mimetype, name, imgData, id } = option;
                 return (
                   <S.Option
-                    active={name == selectedOption}
+                    active={name == activeId}
                     onClick={() => {
                       setIsOptionBoxVisible(e => !e);
-                      setSelectedOption(name);
+                      setActiveId(id);
+                      selectHandler(name);
+                      setSearchString('');
                     }}
-                    key={i}
+                    key={id}
                   >
                     <img src={`data:${mimetype};base64,${imgData}`} alt={name} />
                     <p>{name}</p>
@@ -71,6 +85,18 @@ S.Select = styled.div`
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
+
+  & > div {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    gap: 12px;
+    align-items: center;
+  }
+
+  img {
+    width: 28px;
+  }
 `;
 S.OptionsBox = styled.div`
   margin-top: 10px;
@@ -84,7 +110,8 @@ S.OptionsBox = styled.div`
   gap: 10px;
 `;
 S.SearchBox = styled.div`
-  border: 1px solid;
+  border: 1px solid gray;
+  border-radius: 4px;
   padding: 4px;
   input {
     border: none;
@@ -107,7 +134,11 @@ S.Option = styled.div`
   align-items: center;
   gap: 10px;
   background-color: ${prop => (prop.active ? 'red' : 'transparent')};
+  cursor: pointer;
 
+  &:hover {
+    background-color: #7bab78;
+  }
   img {
     width: 22px;
   }
