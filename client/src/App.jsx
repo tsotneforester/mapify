@@ -5,33 +5,82 @@ import MyMap from './pages/MyMap';
 import { ToastContainer } from 'react-toastify';
 import HomeSvg from './assets/home.svg?react';
 import UserHomeSvg from './assets/userhome.svg?react';
+import ProtectedRoute from './components/ProtectedRoute';
+import { useState, useContext, useEffect, useCallback, useMemo } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import Signout from './pages/Signout';
+
+import SharedLayout from './components/SharedLayout';
 
 import 'react-toastify/dist/ReactToastify.css';
+import Login from './pages/Login';
 
 const App = () => {
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   if (!token || isTokenExpired(token)) {
+  //     // Token is invalid or expired
+  //     localStorage.removeItem('token'); // Clear invalid token
+  //     navigate('/login'); // Redirect to login
+  //   }
+  // }, [navigate]);
+
   return (
     <Router>
-      <S.Navbar>
+      {/* <S.Navbar>
         <S.NavLink to="/">
           <HomeIcon />
         </S.NavLink>
         <S.NavLink to="/mymap">
           <UserHomeIcon />
         </S.NavLink>
-        {/* <S.NavLink to="/dropdown">
-          <UserHomeIcon />
-        </S.NavLink> */}
-      </S.Navbar>
+
+      </S.Navbar> */}
       <ToastContainer position="top-right" autoClose={5000} style={{ zIndex: 1000 }} />
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/mymap" element={<MyMap />} />
+        <Route path="/login" element={<Login />} />
+
+        <Route element={<SharedLayout />}>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mymap"
+            element={
+              <ProtectedRoute>
+                <MyMap />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+
+        <Route path="/signout" element={<Signout />} />
+
+        {/* <Route path="/" element={<Home />} /> */}
+        {/* <Route path="/mymap" element={<MyMap />} /> */}
         {/* <Route path="/dropdown" element={<Dropdown />} /> */}
       </Routes>
     </Router>
   );
 };
+
+function isTokenExpired(token) {
+  try {
+    const decoded = jwtDecode(token);
+    const currentTime = Date.now() / 1000; // Current time in seconds
+    return decoded.exp < currentTime; // Returns true if the token is expired
+  } catch (error) {
+    return true; // Invalid token
+  }
+}
 
 const S = {};
 S.Navbar = styled.nav`
@@ -77,12 +126,5 @@ S.Main = styled.main`
   height: 100vh;
   height: 100svh;
 `;
-
-const StyledIcon = styled(({ component: Component, ...props }) => <Component {...props} />)`
-  width: 32px;
-`;
-
-const HomeIcon = styled(StyledIcon).attrs({ component: HomeSvg })``;
-const UserHomeIcon = styled(StyledIcon).attrs({ component: UserHomeSvg })``;
 
 export default App;

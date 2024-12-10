@@ -56,6 +56,7 @@ const IconsManager = () => {
   }
 
   const handleSubmit = async e => {
+    const token = localStorage.getItem('token');
     try {
       e.preventDefault();
       const formData = new FormData();
@@ -66,7 +67,11 @@ const IconsManager = () => {
       //   console.log(`${key}:`, value);
       // }
 
-      let response = await axios.post(`${API_URL}/api/icons`, formData);
+      let response = await axios.post(`${API_URL}/api/icons`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the header
+        },
+      });
 
       toast.success(response.data);
       setName('');
@@ -117,7 +122,13 @@ const IconsManager = () => {
               Upload Icon
             </Button>
           </S.Form>
-          <p>ჩამოტვირთე ხატულას სტანდარტული ფორმა, შეცვალე მისი ფერი და ლოგო მის შიგნით შენი სურვილისამებრ. არასტანდარტული ხატულები წაიშლება სერვერიდან</p>
+          <p>
+            ჩამოტვირთე სტანდარტული
+            <a href="/default.zip" download>
+              &nbsp; ხატულა
+            </a>
+            , შეცვალე მისი ფერი და ლოგო მის შიგნით შენი სურვილისამებრ. არასტანდარტული ხატულები წაიშლება სერვერიდან
+          </p>
         </S.AddIcon>
       )}
       {info || (
