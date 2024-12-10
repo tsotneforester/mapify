@@ -14,6 +14,8 @@ import Form from 'react-bootstrap/Form';
 import Dropdown from './Dropdown';
 
 const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
+  const token = sessionStorage.getItem('token');
+
   let { coords, setCoords } = coordinates;
   const [nameInput, setNameInput] = useState('');
 
@@ -46,7 +48,11 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
       //   console.log(`${key}:`, value);
       // }
 
-      let response = await axios.post(`${API_URL}/api/marker`, formData);
+      let response = await axios.post(`${API_URL}/api/marker`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the header
+        },
+      });
       toast.success(`${response.data.data.name} added`);
     } catch (error) {
       toast.warning(`${error.response.data.message}`);

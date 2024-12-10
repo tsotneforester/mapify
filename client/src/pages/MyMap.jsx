@@ -21,8 +21,13 @@ export default function MyMap() {
   const [activeModalContent, setActiveModalContent] = useState();
 
   async function fetchMyMarkers() {
+    const token = sessionStorage.getItem('token');
     try {
-      const response = await axios(`${API_URL}/api/mymap`);
+      const response = await axios(`${API_URL}/api/mymap`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the header
+        },
+      });
       setMarkers(response.data.data);
     } catch (error) {
       console.error('Error fetching markers:', error);

@@ -56,7 +56,7 @@ const IconsManager = () => {
   }
 
   const handleSubmit = async e => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     try {
       e.preventDefault();
       const formData = new FormData();

@@ -4,20 +4,23 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('user@gmail.com');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async e => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/login', {
-        username,
+      const response = await axios.post(`${API_URL}/login`, {
+        email,
         password,
       });
-      localStorage.setItem('token', response.data.token); // Save token to localStorage
+      sessionStorage.setItem('token', response.data.token);
+      sessionStorage.setItem('user', response.data.user);
+      sessionStorage.setItem('avatar', response.data.avatar);
       navigate('/'); // Redirect to protected route
     } catch (error) {
       console.error('Login failed', error);
@@ -28,7 +31,7 @@ const Login = () => {
   return (
     <S.Container>
       <S.Form onSubmit={handleLogin}>
-        <Form.Control type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
+        <Form.Control type="text" placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
         <Form.Control type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
         {/* <button type="submit">Login</button> */}
 
