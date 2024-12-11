@@ -19,7 +19,7 @@ const SharedLayout = () => {
   const [showModalNav, setshowModalNav] = useState(false);
 
   // Define routes where the Navbar should not appear
-  const excludedRoutes = ['/login'];
+  const excludedRoutes = ['/login', '/signup'];
 
   return (
     <>
@@ -33,7 +33,7 @@ const SharedLayout = () => {
             <MenuIcon onClick={() => setshowModalNav(e => !e)} />
           </S.MiniNavbar>
 
-          <S.Navbar extended={extended} open={showModalNav}>
+          <S.Navbar $extended={extended} $open={showModalNav}>
             <main>
               <NavbarIcon onClick={() => setExtended(e => !e)} />
 
@@ -107,7 +107,7 @@ S.Navbar = styled.nav`
   left: 12px;
   z-index: 2;
   width: calc(100% - 2 * 12px);
-  display: ${prop => (prop.open ? 'flex' : 'none')};
+  display: ${prop => (prop.$open ? 'flex' : 'none')};
   flex-flow: column nowrap;
   justify-content: space-between;
   background-color: #003738de;
@@ -123,7 +123,7 @@ S.Navbar = styled.nav`
     top: 0;
     height: calc(100vh - 2 * 12px);
     height: calc(100vh - 2 * 12px);
-    width: ${prop => (prop.extended ? '170px' : '54px')};
+    width: ${prop => (prop.$extended ? '170px' : '54px')};
     flex-flow: column nowrap;
     transition: all 0.5s linear;
     overflow: hidden;

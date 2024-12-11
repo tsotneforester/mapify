@@ -12,7 +12,7 @@ const Home = () => {
   async function fetchMarkers() {
     try {
       const response = await axios(`${API_URL}/api/map`);
-      console.log(response.data.data[0]['_id']);
+
       setMarkers(response.data.data); // Assuming data is an array of marker objects with { lat, lng, id } structure
       //toast.success(response.data.status);
     } catch (error) {

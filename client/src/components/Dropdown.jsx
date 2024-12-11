@@ -45,7 +45,7 @@ export default function Dropdown({ data, selectHandler }) {
                 const { mimetype, name, imgData, id } = option;
                 return (
                   <S.Option
-                    active={name == activeId}
+                    $active={name == activeId}
                     onClick={() => {
                       setIsOptionBoxVisible(e => !e);
                       setActiveId(id);
@@ -133,7 +133,7 @@ S.Option = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
-  background-color: ${prop => (prop.active ? 'red' : 'transparent')};
+  background-color: ${prop => (prop.$active ? 'red' : 'transparent')};
   cursor: pointer;
 
   &:hover {

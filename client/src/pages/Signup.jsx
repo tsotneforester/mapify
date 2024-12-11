@@ -3,19 +3,20 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
-import { BrowserRouter, Routes, Route, NavLink, Link, Navigate, useSearchParams } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 const API_URL = import.meta.env.VITE_API_URL;
 
-const Login = () => {
-  const [email, setEmail] = useState('user@gmail.com');
+const Signup = () => {
+  const [email, setEmail] = useState('@gmail.com');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async e => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API_URL}/login`, {
+      const response = await axios.post(`${API_URL}/signup`, {
+        name,
         email,
         password,
       });
@@ -25,29 +26,27 @@ const Login = () => {
       navigate('/'); // Redirect to protected route
     } catch (error) {
       console.error('Login failed', error);
-      alert('Invalid credentials');
+      alert('could not sign up');
     }
   };
 
   return (
     <S.Container>
       <S.Form onSubmit={handleLogin}>
+        <Form.Control type="text" placeholder="name" value={name} onChange={e => setName(e.target.value)} />
         <Form.Control type="text" placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
         <Form.Control type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
         {/* <button type="submit">Login</button> */}
 
         <Button style={{ width: '100%' }} type="submit" variant="primary">
-          Login
+          Sign Up
         </Button>
-        <p>
-          No acoount? <Link to="/signup">sign up</Link>
-        </p>
       </S.Form>
     </S.Container>
   );
 };
 
-export default Login;
+export default Signup;
 
 const S = {};
 S.Container = styled.div`

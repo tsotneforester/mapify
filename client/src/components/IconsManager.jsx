@@ -15,6 +15,7 @@ import Form from 'react-bootstrap/Form';
 import HexSvg from '../assets/hex.svg?react';
 
 const IconsManager = () => {
+  const token = sessionStorage.getItem('token');
   const [icons, setIcons] = useState([]);
   const [name, setName] = useState('');
   const [file, setFile] = useState(null);
@@ -27,7 +28,11 @@ const IconsManager = () => {
 
   async function fetchIcons() {
     try {
-      const response = await axios(`${API_URL}/api/icons`);
+      const response = await axios(`${API_URL}/api/myicons`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the header
+        },
+      });
       let { data } = response.data;
       setIcons(data);
     } catch (error) {

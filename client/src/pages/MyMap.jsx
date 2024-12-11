@@ -73,7 +73,7 @@ export default function MyMap() {
 
       <S.MapTools>
         <AddMarkerIcon
-          enabled={isObjectValuesNotEmpty(coords)}
+          $enabled={isObjectValuesNotEmpty(coords)}
           onClick={() => {
             setIsModalOpened(e => !e);
             setActiveModalContent('markers');
@@ -81,7 +81,7 @@ export default function MyMap() {
         />
 
         <HexIcon
-          enabled={true}
+          $enabled={true}
           onClick={() => {
             setIsModalOpened(e => !e);
             setActiveModalContent('icons');
@@ -111,15 +111,15 @@ S.Map = styled.div`
 const AddMarkerIcon = styled(AddMarkerSvg)`
   width: 32px;
   height: 32px;
-  cursor: ${prop => (prop.enabled ? 'pointer' : 'not-allowed')};
-  color: ${prop => (prop.enabled ? '#434343' : '	#D3D3D3')};
+  cursor: ${prop => (prop.$enabled ? 'pointer' : 'not-allowed')};
+  color: ${prop => (prop.$enabled ? '#434343' : '	#D3D3D3')};
 `;
 
 const HexIcon = styled(HexSvg)`
   width: 32px;
   height: 32px;
-  cursor: ${prop => (prop.enabled ? 'pointer' : 'not-allowed')};
-  color: ${prop => (prop.enabled ? '#434343' : '	#D3D3D3')};
+  cursor: ${prop => (prop.$enabled ? 'pointer' : 'not-allowed')};
+  color: ${prop => (prop.$enabled ? '#434343' : '	#D3D3D3')};
 `;
 
 S.MapTools = styled.div`

@@ -19,14 +19,19 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
   let { coords, setCoords } = coordinates;
   const [nameInput, setNameInput] = useState('');
 
-  let [setLoading] = useState(true);
+  let [Loading, setLoading] = useState(true);
   const { setIsModalOpened } = useContext(AppContext);
   const [icons, setIcons] = useState([]);
   const [markerIconName, setMarkerIconName] = useState('');
 
-  async function fetchMyIcons() {
+  async function fetchIcons() {
+    const token = sessionStorage.getItem('token');
     try {
-      const response = await axios(`${API_URL}/api/icons`);
+      const response = await axios(`${API_URL}/api/icons`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the header
+        },
+      });
       let { data } = response.data;
       setIcons(data);
     } catch (error) {
@@ -55,7 +60,8 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
       });
       toast.success(`${response.data.data.name} added`);
     } catch (error) {
-      toast.warning(`${error.response.data.message}`);
+      console.log(error);
+      toast.error(`${error.response.data.error}`);
     } finally {
       setIsModalOpened(e => !e);
       fetchMyMarkers();
@@ -67,7 +73,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
   }
 
   useEffect(() => {
-    fetchMyIcons();
+    fetchIcons();
   }, []);
 
   return (

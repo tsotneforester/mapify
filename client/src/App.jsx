@@ -14,6 +14,7 @@ import SharedLayout from './components/SharedLayout';
 
 import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 
 const App = () => {
   // const navigate = useNavigate();
@@ -42,6 +43,7 @@ const App = () => {
 
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
 
         <Route element={<SharedLayout />}>
           <Route
