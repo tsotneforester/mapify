@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Login = () => {
-  const [email, setEmail] = useState('user@gmail.com');
+  const [email, setEmail] = useState('@gmail.com');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
