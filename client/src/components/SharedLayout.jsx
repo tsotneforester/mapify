@@ -27,21 +27,25 @@ const SharedLayout = () => {
         <>
           <S.MiniNavbar>
             <S.User2>
-              <img src={`${API_URL}/uploads/avatars/${avatar}`} alt={user} title={user} />
+              <img
+                src={`${API_URL}/uploads/avatars/${avatar}`}
+                alt={user}
+                title={user}
+              />
               <p>{user}</p>
             </S.User2>
-            <MenuIcon onClick={() => setshowModalNav(e => !e)} />
+            <MenuIcon onClick={() => setshowModalNav((e) => !e)} />
           </S.MiniNavbar>
 
           <S.Navbar $extended={extended} $open={showModalNav}>
             <main>
-              <NavbarIcon onClick={() => setExtended(e => !e)} />
+              <NavbarIcon onClick={() => setExtended((e) => !e)} />
 
-              <S.NavLink to="/">
+              <S.NavLink to="/" onClick={() => setshowModalNav((e) => !e)}>
                 <HomeIcon title="home" />
                 <p>Home</p>
               </S.NavLink>
-              <S.NavLink to="/mymap">
+              <S.NavLink to="/mymap" onClick={() => setshowModalNav((e) => !e)}>
                 <UserHomeIcon title="mymap" />
 
                 <p>Mymap</p>
@@ -49,7 +53,11 @@ const SharedLayout = () => {
             </main>
             <footer>
               <S.User1>
-                <img src={`${API_URL}/uploads/avatars/${avatar}`} alt="tso" title={user} />
+                <img
+                  src={`${API_URL}/uploads/avatars/${avatar}`}
+                  alt="tso"
+                  title={user}
+                />
                 <p>{user}</p>
               </S.User1>
 
@@ -108,7 +116,7 @@ S.Navbar = styled.nav`
   left: 12px;
   z-index: 2;
   width: calc(100% - 2 * 12px);
-  display: ${prop => (prop.$open ? 'flex' : 'none')};
+  display: ${(prop) => (prop.$open ? 'flex' : 'none')};
   flex-flow: column nowrap;
   justify-content: space-between;
   background-color: #003738de;
@@ -124,7 +132,7 @@ S.Navbar = styled.nav`
     top: 0;
     height: calc(100vh - 2 * 12px);
     height: calc(100vh - 2 * 12px);
-    width: ${prop => (prop.$extended ? '170px' : '54px')};
+    width: ${(prop) => (prop.$extended ? '170px' : '54px')};
     flex-flow: column nowrap;
     transition: all 0.5s linear;
     overflow: hidden;
@@ -155,8 +163,8 @@ S.Navbar = styled.nav`
     }
     img {
       border-radius: 50%;
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       flex-shrink: 0;
       display: none;
       @media (min-width: ${({ theme }) => theme.breakpoints.mobile}) {
@@ -188,7 +196,9 @@ S.NavLink = styled(NavLink)`
   }
 `;
 
-const StyledIcon = styled(({ component: Component, ...props }) => <Component {...props} />)`
+const StyledIcon = styled(({ component: Component, ...props }) => (
+  <Component {...props} />
+))`
   width: 32px;
   flex-shrink: 0;
 `;

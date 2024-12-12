@@ -73,6 +73,10 @@ const IconsManager = () => {
       formData.append('icon', file);
       formData.append('name', name);
 
+      // for (let [key, value] of formData.entries()) {
+      //   console.log(`${key}:`, value);
+      // }
+
       let response = await axios.post(`${API_URL}/api/icons`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -128,6 +132,7 @@ const IconsManager = () => {
 
             <Form.Control
               type="file"
+              name="icon"
               accept="image/png"
               onChange={handleFileChange}
               required

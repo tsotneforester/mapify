@@ -49,12 +49,14 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
       formData.append('coords', Object.values(coords));
       formData.append('icon', markerIconName);
 
-      // for (let [key, value] of formData.entries()) {
-      //   console.log(`${key}:`, value);
-      // }
+      console.log("i'm sending formdata");
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
 
       let response = await axios.post(`${API_URL}/api/marker`, formData, {
         headers: {
+          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
         },
       });

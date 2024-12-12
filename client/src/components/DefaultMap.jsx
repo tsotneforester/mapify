@@ -10,10 +10,18 @@ const MAP_PROVIDER = import.meta.env.VITE_MAP_PROVIDER;
 
 //INFO geogjson - lon, lat / leaflet - lat, lon
 
-export default function DefaultMap({ center = [41.967, 43.855], data = [], editable, zoom = 7, children, forceRender, point }) {
+export default function DefaultMap({
+  center = [41.967, 43.855],
+  data = [],
+  editable,
+  zoom = 7,
+  children,
+  forceRender,
+  point,
+}) {
   function customIcon(img) {
     return new Icon({
-      iconUrl: img,
+      iconUrl: `${API_URL}/uploads/icons/${img}`,
       iconSize: [44, 44],
       iconAnchor: [22, 22],
       popupAnchor: [-0, -18],
@@ -33,12 +41,15 @@ export default function DefaultMap({ center = [41.967, 43.855], data = [], edita
     shadowAnchor: [12, 41],
   });
 
-  const handleDelete = async markerId => {
+  const handleDelete = async (markerId) => {
     try {
       const formData = new FormData();
       formData.append('id', markerId);
 
-      let response = await axios.delete(`${API_URL}/api/marker/${markerId}`, formData);
+      let response = await axios.delete(
+        `${API_URL}/api/marker/${markerId}`,
+        formData
+      );
       forceRender();
       toast.success(response.data);
     } catch (error) {
@@ -46,10 +57,17 @@ export default function DefaultMap({ center = [41.967, 43.855], data = [], edita
     }
   };
 
-  const attribution = '&copy; 2024 &middot; <a href="https://geojs.one">GEOJS.ONE</a>';
+  const attribution =
+    '&copy; 2024 &middot; <a href="https://geojs.one">GEOJS.ONE</a>';
 
   return (
-    <MapContainer zoomControl={false} scrollWheelZoom={true} center={center} zoom={zoom} style={{ height: '100%', width: '100%' }}>
+    <MapContainer
+      zoomControl={false}
+      scrollWheelZoom={true}
+      center={center}
+      zoom={zoom}
+      style={{ height: '100%', width: '100%' }}
+    >
       <TileLayer attribution={attribution} url={MAP_PROVIDER} />
 
       {point && (
@@ -58,10 +76,10 @@ export default function DefaultMap({ center = [41.967, 43.855], data = [], edita
         </Marker>
       )}
 
-      {data.map(marker => {
-        let { mimetype, _id, buffer, coords, name } = marker;
+      {data.map((marker) => {
+        let { _id, imageName, coords, name } = marker;
         return (
-          <Marker key={_id} icon={customIcon(`data:${mimetype};base64,${buffer.toString('base64')}`)} position={coords}>
+          <Marker key={_id} icon={customIcon(imageName)} position={coords}>
             <Popup>
               {name}
               {editable && (

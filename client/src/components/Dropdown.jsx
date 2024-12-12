@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+const API_URL = import.meta.env.VITE_API_URL;
 import ArrowSvg from '../assets/arrow.svg?react';
 
 import styled from 'styled-components';
@@ -10,23 +10,30 @@ export default function Dropdown({ data, selectHandler }) {
   const [activeId, setActiveId] = useState(null);
   const [searchString, setSearchString] = useState('');
 
-  const filteredData = data.filter(iconName => iconName.name.toLowerCase().includes(searchString));
+  const filteredData = data.filter((iconName) =>
+    iconName.name.toLowerCase().includes(searchString)
+  );
 
-  const activeIcon = data.find(icon => icon.id === activeId);
+  const activeIcon = data.find((icon) => icon.id === activeId);
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setSearchString(event.target.value);
   };
 
   return (
     <S.Container>
       <S.DropDown>
-        <S.Select onClick={() => setIsOptionBoxVisible(e => !e)}>
+        <S.Select onClick={() => setIsOptionBoxVisible((e) => !e)}>
           <div>
             {activeIcon ? (
               <>
-                <img src={`data:${activeIcon.mimetype};base64,${activeIcon.imgData}`} alt={activeIcon.name} />
-                <p style={{ color: activeId ? 'black' : '#999' }}>{activeIcon.name}</p>
+                <img
+                  src={`${API_URL}/uploads/icons/${activeIcon.imageName}`}
+                  alt={activeIcon.name}
+                />
+                <p style={{ color: activeId ? 'black' : '#999' }}>
+                  {activeIcon.name}
+                </p>
               </>
             ) : (
               <p style={{ color: activeId ? 'black' : '#999' }}>Select Icon</p>
@@ -38,23 +45,31 @@ export default function Dropdown({ data, selectHandler }) {
         {isOptionBoxVisible && (
           <S.OptionsBox>
             <S.SearchBox>
-              <input type="text" value={searchString} placeholder="search" onChange={handleChange} />
+              <input
+                type="text"
+                value={searchString}
+                placeholder="search"
+                onChange={handleChange}
+              />
             </S.SearchBox>
             <S.Options>
-              {filteredData.map(option => {
-                const { mimetype, name, imgData, id } = option;
+              {filteredData.map((option) => {
+                const { name, imageName, id } = option;
                 return (
                   <S.Option
                     $active={name == activeId}
                     onClick={() => {
-                      setIsOptionBoxVisible(e => !e);
+                      setIsOptionBoxVisible((e) => !e);
                       setActiveId(id);
                       selectHandler(name);
                       setSearchString('');
                     }}
                     key={id}
                   >
-                    <img src={`data:${mimetype};base64,${imgData}`} alt={name} />
+                    <img
+                      src={`${API_URL}/uploads/icons/${imageName}`}
+                      alt={name}
+                    />
                     <p>{name}</p>
                   </S.Option>
                 );
@@ -133,7 +148,7 @@ S.Option = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
-  background-color: ${prop => (prop.$active ? 'red' : 'transparent')};
+  background-color: ${(prop) => (prop.$active ? 'red' : 'transparent')};
   cursor: pointer;
 
   &:hover {
