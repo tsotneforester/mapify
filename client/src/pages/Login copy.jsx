@@ -1,37 +1,51 @@
-import axios from 'axios';
-import styled from 'styled-components';
-import Button from 'react-bootstrap/Button';
-import { Link, useNavigate } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
+import { useState } from "react";
+import axios from "axios";
+import styled from "styled-components";
+import Button from "react-bootstrap/Button";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  NavLink,
+  Link,
+  useNavigate,
+  Navigate,
+  useSearchParams,
+} from "react-router-dom";
+import Form from "react-bootstrap/Form";
+import { useForm } from "react-hook-form";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
 
-  async function handleLogin(data) {
-    let { email, password } = data;
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
       const response = await axios.post(`${API_URL}/login`, {
         email,
         password,
       });
-      sessionStorage.setItem('token', response.data.token);
-      sessionStorage.setItem('user', response.data.user);
-      sessionStorage.setItem('avatar', response.data.avatar);
-      navigate('/'); // Redirect to protected route
+      sessionStorage.setItem("token", response.data.token);
+      sessionStorage.setItem("user", response.data.user);
+      sessionStorage.setItem("avatar", response.data.avatar);
+      navigate("/"); // Redirect to protected route
     } catch (error) {
-      toast.error(`${error.response.data.error}`);
+      console.error("Login failed", error);
+      alert("Invalid credentials");
     }
-  }
+  };
 
   return (
     <S.Container>
@@ -40,12 +54,14 @@ const Login = () => {
           isInvalid={errors.email}
           type="text"
           placeholder="Email"
+          defaultValue={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
-          {...register('email', {
-            required: 'Email Address is required',
+          {...register("email", {
+            required: "Email Address is required",
             pattern: {
               value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: 'Valid email required',
+              message: "Valid email required",
             },
           })}
         />
@@ -57,8 +73,14 @@ const Login = () => {
           isInvalid={errors.password}
           type="password"
           placeholder="Password"
-          {...register('password', {
-            required: 'Password is required',
+          defaultValue={password}
+          onChange={(e) => setPassword(e.target.value)}
+          {...register("password", {
+            required: "Password is required",
+            pattern: {
+              value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g,
+              message: "Valid Password required",
+            },
           })}
         />
         <Form.Control.Feedback type="invalid">
@@ -70,7 +92,7 @@ const Login = () => {
           special characters
         </Form.Text> */}
 
-        <Button style={{ width: '100%' }} type="submit" variant="primary">
+        <Button style={{ width: "100%" }} type="submit" variant="primary">
           Login
         </Button>
         <p>
@@ -85,7 +107,7 @@ export default Login;
 
 const S = {};
 S.Container = styled.div`
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   min-height: 100svh;
   padding: 0 12px;
   display: flex;
@@ -94,7 +116,7 @@ S.Container = styled.div`
   align-items: center;
   background-color: ${(prop) => prop.theme.body};
 
-  background-image: url('/bg1.png'), url('/bg2.svg');
+  background-image: url("/bg1.png"), url("/bg2.svg");
   background-repeat: repeat, no-repeat;
   background-position: 0% 0%, 0% 100%;
   background-size: auto, 100%;

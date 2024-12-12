@@ -21,12 +21,11 @@ const IconsManager = () => {
   const [file, setFile] = useState(null);
   let [loading, setLoading] = useState(true);
   let [info, setInfo] = useState(false);
-
+  const [active, setActive] = useState(false);
   // const { setIsModalOpened } = useContext(AppContext);
 
-  const [active, setActive] = useState(false);
-
   async function fetchIcons() {
+    setLoading(true);
     try {
       const response = await axios(`${API_URL}/api/myicons`, {
         headers: {
@@ -38,6 +37,7 @@ const IconsManager = () => {
     } catch (error) {
       toast.error('Error fetching markers:', error);
     } finally {
+      // setIcons([]);
       setLoading(false);
     }
   }
@@ -47,20 +47,25 @@ const IconsManager = () => {
   }, []);
 
   async function handleDelete(e, id) {
+    const token = sessionStorage.getItem('token');
     try {
       e.preventDefault();
-      let response = await axios.delete(`${API_URL}/api/icons/${id}`);
+      let response = await axios.delete(`${API_URL}/api/icons/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       toast.success(response.data);
-      setLoading(e => !e);
-      // force rerender
+
+      setActive('');
+      fetchIcons();
+      setIcons([]);
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      fetchIcons();
     }
   }
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     const token = sessionStorage.getItem('token');
     try {
       e.preventDefault();
@@ -68,30 +73,25 @@ const IconsManager = () => {
       formData.append('icon', file);
       formData.append('name', name);
 
-      // for (let [key, value] of formData.entries()) {
-      //   console.log(`${key}:`, value);
-      // }
-
       let response = await axios.post(`${API_URL}/api/icons`, formData, {
         headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the header
+          Authorization: `Bearer ${token}`,
         },
       });
 
       toast.success(response.data);
       setName('');
       setFile(null);
-      setInfo(e => !e);
+      setInfo((e) => !e);
+
+      setIcons([]);
       fetchIcons();
-      // fetchIcons();
-      // setIsModalOpened(e => !e);
-      // navigate('/icons');
     } catch (error) {
       toast.error(error.response.data);
     }
   };
 
-  const handleFileChange = event => {
+  const handleFileChange = (event) => {
     const file = event.target.files[0]; // Get the first file
     setFile(file);
   };
@@ -102,7 +102,7 @@ const IconsManager = () => {
 
       <HexIcon
         onClick={() => {
-          setInfo(e => !e);
+          setInfo((e) => !e);
         }}
       />
 
@@ -119,9 +119,19 @@ const IconsManager = () => {
       {info && (
         <S.AddIcon>
           <S.Form onSubmit={handleSubmit}>
-            <Form.Control type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" />
+            <Form.Control
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Icon Name"
+            />
 
-            <Form.Control type="file" accept="image/png" onChange={handleFileChange} required />
+            <Form.Control
+              type="file"
+              accept="image/png"
+              onChange={handleFileChange}
+              required
+            />
 
             <Button style={{ width: '100%' }} type="submit" variant="primary">
               Upload Icon
@@ -132,7 +142,8 @@ const IconsManager = () => {
             <a href="/default.zip" download>
               &nbsp; ხატულა
             </a>
-            , შეცვალე მისი ფერი და ლოგო მის შიგნით შენი სურვილისამებრ. არასტანდარტული ხატულები წაიშლება სერვერიდან
+            , შეცვალე მისი ფერი და ლოგო მის შიგნით შენი სურვილისამებრ.
+            არასტანდარტული ხატულები წაიშლება სერვერიდან
           </p>
         </S.AddIcon>
       )}
@@ -140,8 +151,14 @@ const IconsManager = () => {
         <IconsContainer iconName={active}>
           <Loader loading={loading} style={{ margin: '0 auto' }} />
 
-          {icons.map(img => (
-            <Icon onClickHandler={() => setActive(img.name)} selected={img.name == active} key={img.id} {...img} handler={e => handleDelete(e, img.id)} />
+          {icons.map((img) => (
+            <Icon
+              onClickHandler={() => setActive(img.name)}
+              selected={img.name == active}
+              key={img.id}
+              {...img}
+              handler={(e) => handleDelete(e, img.id)}
+            />
           ))}
         </IconsContainer>
       )}

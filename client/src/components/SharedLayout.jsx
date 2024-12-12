@@ -38,11 +38,12 @@ const SharedLayout = () => {
               <NavbarIcon onClick={() => setExtended(e => !e)} />
 
               <S.NavLink to="/">
-                <HomeIcon />
+                <HomeIcon title="home" />
                 <p>Home</p>
               </S.NavLink>
               <S.NavLink to="/mymap">
-                <UserHomeIcon />
+                <UserHomeIcon title="mymap" />
+
                 <p>Mymap</p>
               </S.NavLink>
             </main>
@@ -53,7 +54,7 @@ const SharedLayout = () => {
               </S.User1>
 
               <S.NavLink to="/signout">
-                <SignoutIcon />
+                <SignoutIcon title="logout" />
                 <p>Logout</p>
               </S.NavLink>
             </footer>

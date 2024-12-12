@@ -37,7 +37,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
     } catch (error) {
       console.error('Error fetching markers:', error);
     } finally {
-      setLoading(e => !e);
+      setLoading((e) => !e);
     }
   }
 
@@ -55,7 +55,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
 
       let response = await axios.post(`${API_URL}/api/marker`, formData, {
         headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the header
+          Authorization: `Bearer ${token}`,
         },
       });
       toast.success(`${response.data.data.name} added`);
@@ -63,7 +63,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
       console.log(error);
       toast.error(`${error.response.data.error}`);
     } finally {
-      setIsModalOpened(e => !e);
+      setIsModalOpened((e) => !e);
       fetchMyMarkers();
       setCoords({
         lat: '',
@@ -79,11 +79,32 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
   return (
     <S.Container>
       <S.Form onSubmit={handleSubmit}>
-        <Form.Control type="text" name="name" value={nameInput} onChange={e => setNameInput(e.target.value)} placeholder="Marker label" required />
+        <Form.Control
+          type="text"
+          name="name"
+          value={nameInput}
+          onChange={(e) => setNameInput(e.target.value)}
+          placeholder="Marker label"
+          required
+        />
 
-        <Form.Control type="number" name="lat" value={coords.lat} placeholder="lat" required disabled />
+        <Form.Control
+          type="number"
+          name="lat"
+          value={coords.lat}
+          placeholder="lat"
+          required
+          disabled
+        />
 
-        <Form.Control type="number" name="lng" value={coords.lng} placeholder="lng" required disabled />
+        <Form.Control
+          type="number"
+          name="lng"
+          value={coords.lng}
+          placeholder="lng"
+          required
+          disabled
+        />
 
         <Button style={{ width: '100%' }} type="submit" variant="primary">
           Create Marker
