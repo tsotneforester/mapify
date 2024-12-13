@@ -22,7 +22,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
   let [Loading, setLoading] = useState(true);
   const { setIsModalOpened } = useContext(AppContext);
   const [icons, setIcons] = useState([]);
-  const [markerIconName, setMarkerIconName] = useState('');
+  const [selectedIconID, setSelectedIconID] = useState('');
 
   async function fetchIcons() {
     const token = sessionStorage.getItem('token');
@@ -45,9 +45,9 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
     try {
       e.preventDefault();
       const formData = new FormData();
-      formData.append('name', nameInput);
+      formData.append('markerName', nameInput);
       formData.append('coords', Object.values(coords));
-      formData.append('icon', markerIconName);
+      formData.append('iconID', selectedIconID);
 
       console.log("i'm sending formdata");
       for (let [key, value] of formData.entries()) {
@@ -111,12 +111,12 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
         <Button style={{ width: '100%' }} type="submit" variant="primary">
           Create Marker
         </Button>
-        <Dropdown data={icons} selectHandler={setMarkerIconName} />
+        <Dropdown data={icons} selectHandler={setSelectedIconID} />
       </S.Form>
-      {/* <IconsContainer iconName={markerIconName}>
+      {/* <IconsContainer iconName={selectedIconID}>
         <Loader loading={loading} />
         {icons.map(icon => (
-          <Icon canBeDeleted={false} onClickHandler={() => setMarkerIconName(icon.name)} selected={icon.name == markerIconName} key={icon.id} {...icon} />
+          <Icon canBeDeleted={false} onClickHandler={() => setSelectedIconID(icon.name)} selected={icon.name == selectedIconID} key={icon.id} {...icon} />
         ))}
       </IconsContainer> */}
     </S.Container>

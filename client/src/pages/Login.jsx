@@ -27,7 +27,7 @@ const Login = () => {
       sessionStorage.setItem('token', response.data.token);
       sessionStorage.setItem('user', response.data.user);
       sessionStorage.setItem('avatar', response.data.avatar);
-      navigate('/'); // Redirect to protected route
+      navigate('/mymap'); // Redirect to protected route
     } catch (error) {
       toast.error(`${error.response.data.error}`);
     }

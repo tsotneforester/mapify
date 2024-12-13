@@ -61,7 +61,7 @@ export default function Dropdown({ data, selectHandler }) {
                     onClick={() => {
                       setIsOptionBoxVisible((e) => !e);
                       setActiveId(id);
-                      selectHandler(name);
+                      selectHandler(id);
                       setSearchString('');
                     }}
                     key={id}

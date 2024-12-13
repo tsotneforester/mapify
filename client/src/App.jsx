@@ -1,12 +1,17 @@
-import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  NavLink,
+} from 'react-router-dom';
 import Home from './pages/Home';
 import styled from 'styled-components';
 import MyMap from './pages/MyMap';
 import { ToastContainer } from 'react-toastify';
-import HomeSvg from './assets/home.svg?react';
-import UserHomeSvg from './assets/userhome.svg?react';
+// import HomeSvg from './assets/home.svg?react';
+// import UserHomeSvg from './assets/userhome.svg?react';
 import ProtectedRoute from './components/ProtectedRoute';
-import { useState, useContext, useEffect, useCallback, useMemo } from 'react';
+
 import { jwtDecode } from 'jwt-decode';
 import Signout from './pages/Signout';
 
@@ -15,6 +20,7 @@ import SharedLayout from './components/SharedLayout';
 import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import EditMarker from './pages/EditMarker';
 
 const App = () => {
   // const navigate = useNavigate();
@@ -39,11 +45,23 @@ const App = () => {
         </S.NavLink>
 
       </S.Navbar> */}
-      <ToastContainer position="top-right" autoClose={5000} style={{ zIndex: 1000 }} />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        style={{ zIndex: 1000 }}
+      />
 
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route
+          path="/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditMarker />
+            </ProtectedRoute>
+          }
+        />
 
         <Route element={<SharedLayout />}>
           <Route
@@ -62,9 +80,25 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/signout"
+            element={
+              <ProtectedRoute>
+                <Signout />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route
+            path="/edit/:id"
+            element={
+              <ProtectedRoute>
+                <EditMarker />
+              </ProtectedRoute>
+            }
+          /> */}
         </Route>
 
-        <Route path="/signout" element={<Signout />} />
+        {/* <Route path="/signout" element={<Signout />} /> */}
 
         {/* <Route path="/" element={<Home />} /> */}
         {/* <Route path="/mymap" element={<MyMap />} /> */}

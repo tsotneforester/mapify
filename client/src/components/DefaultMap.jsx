@@ -7,6 +7,9 @@ import styled from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
 const API_URL = import.meta.env.VITE_API_URL;
 const MAP_PROVIDER = import.meta.env.VITE_MAP_PROVIDER;
+import { Link, useNavigate } from 'react-router-dom';
+import CloseSVG from '../assets/bin.svg?react';
+import EditSVG from '../assets/edit.svg?react';
 
 //INFO geogjson - lon, lat / leaflet - lat, lon
 
@@ -40,6 +43,16 @@ export default function DefaultMap({
     shadowSize: [41, 41], // Default size of the shadow [width, height]
     shadowAnchor: [12, 41],
   });
+
+  const navigate = useNavigate();
+
+  const handleEdit = async (markerId) => {
+    try {
+      navigate(`/edit/${markerId}`);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   const handleDelete = async (markerId) => {
     try {
@@ -81,14 +94,25 @@ export default function DefaultMap({
         return (
           <Marker key={_id} icon={customIcon(imageName)} position={coords}>
             <Popup>
-              {name}
-              {editable && (
-                <S.DeleteAnchor>
-                  <a href="#" onClick={() => handleDelete(_id)}>
-                    Delete Marker
-                  </a>
-                </S.DeleteAnchor>
-              )}
+              <div style={popupContent}>
+                <p style={{ fontSize: '22px' }}> {name}</p>
+
+                {editable && (
+                  <>
+                    <S.DeleteAnchor>
+                      <a href="#" onClick={() => handleDelete(_id)}>
+                        <CloseIcon />
+                      </a>
+
+                      <EditIcon />
+
+                      {/* <a href="#" onClick={() => handleEdit(_id)}>
+                        <EditIcon />
+                      </a> */}
+                    </S.DeleteAnchor>
+                  </>
+                )}
+              </div>
             </Popup>
           </Marker>
         );
@@ -101,6 +125,26 @@ export default function DefaultMap({
 
 const S = {};
 S.DeleteAnchor = styled.div`
-  border-top: 2px gray dotted;
   padding: 2px;
+  width: 100%;
+  border-top: dotted gray 1px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
 `;
+const CloseIcon = styled(CloseSVG)`
+  //width: 25px;
+  color: #ff0000;
+`;
+const EditIcon = styled(EditSVG)`
+  //width: 25px;
+  color: #f2bb1889;
+  /* cursor: not-allowed;
+  pointer-events: none; */
+`;
+
+const popupContent = {
+  textAlign: 'center',
+  minWidth: '150px',
+};

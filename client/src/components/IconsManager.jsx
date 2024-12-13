@@ -9,10 +9,11 @@ import styled from 'styled-components';
 import IconsContainer from './IconsContainer';
 const API_URL = import.meta.env.VITE_API_URL;
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Loader from './Loader';
 import Form from 'react-bootstrap/Form';
 
-import HexSvg from '../assets/hex.svg?react';
+import HexSvg from '../assets/hexadd.svg?react';
+import ReturnSvg from '../assets/return.svg?react';
+import NoContent from './NoContent';
 
 const IconsManager = () => {
   const token = sessionStorage.getItem('token');
@@ -102,13 +103,19 @@ const IconsManager = () => {
 
   return (
     <S.Container>
-      {/* <InfoIcon /> */}
-
-      <HexIcon
-        onClick={() => {
-          setInfo((e) => !e);
-        }}
-      />
+      {info ? (
+        <ReturnIcon
+          onClick={() => {
+            setInfo((e) => !e);
+          }}
+        />
+      ) : (
+        <HexIcon
+          onClick={() => {
+            setInfo((e) => !e);
+          }}
+        />
+      )}
 
       {/* <S.Form onSubmit={handleSubmit}>
         <Form.Control type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" />
@@ -153,18 +160,20 @@ const IconsManager = () => {
         </S.AddIcon>
       )}
       {info || (
-        <IconsContainer iconName={active}>
-          <Loader loading={loading} style={{ margin: '0 auto' }} />
-
-          {icons.map((img) => (
-            <Icon
-              onClickHandler={() => setActive(img.name)}
-              selected={img.name == active}
-              key={img.id}
-              {...img}
-              handler={(e) => handleDelete(e, img.id)}
-            />
-          ))}
+        <IconsContainer iconName={active} loading={loading}>
+          {icons.length === 0 ? (
+            <NoContent />
+          ) : (
+            icons.map((img) => (
+              <Icon
+                onClickHandler={() => setActive(img.name)}
+                selected={img.name == active}
+                key={img.id}
+                {...img}
+                handler={(e) => handleDelete(e, img.id)}
+              />
+            ))
+          )}
         </IconsContainer>
       )}
     </S.Container>
@@ -180,7 +189,7 @@ S.Container = styled.div`
     grid-template-columns: 2fr 3fr;
     grid-template-rows: auto; */
   position: relative;
-  min-height: 194px;
+  //min-height: 240px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
@@ -190,14 +199,15 @@ S.Container = styled.div`
 S.AddIcon = styled.div`
   display: flex;
   flex-flow: column nowrap;
-  justify-content: flex-start;
+  justify-content: center;
+
   align-items: center;
   gap: 12px;
 
   @media (min-width: ${({ theme }) => theme.breakpoints.mobile}) {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
+    grid-template-rows: 100%;
     gap: 20px;
   }
 
@@ -233,5 +243,13 @@ const HexIcon = styled(HexSvg)`
   position: absolute;
   right: -25px;
   top: -24px;
+  color: white;
+`;
+
+const ReturnIcon = styled(ReturnSvg)`
+  width: 30px;
+  position: absolute;
+  right: -24px;
+  top: -35px;
   color: white;
 `;

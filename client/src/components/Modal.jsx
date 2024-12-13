@@ -7,9 +7,9 @@ export default function Modal({ children, status }) {
 
   return (
     status && (
-      <S.ModalOverlay onClick={() => setIsModalOpened(pre => !pre)}>
+      <S.ModalOverlay onClick={() => setIsModalOpened((pre) => !pre)}>
         <S.Modal
-          onClick={e => {
+          onClick={(e) => {
             e.stopPropagation();
           }}
         >
@@ -31,7 +31,7 @@ S.ModalOverlay = styled.div`
   width: 100vw;
   height: 100vh;
   height: 100svh;
-  background-color: #ffd00051;
+  background-color: #48460669;
 
   display: flex;
   flex-flow: column nowrap;
