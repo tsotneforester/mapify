@@ -21,6 +21,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import EditMarker from './pages/EditMarker';
+import NotFound from './components/NotFound';
 
 const App = () => {
   // const navigate = useNavigate();
@@ -54,6 +55,7 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="*" element={<NotFound />} />
         <Route
           path="/edit/:id"
           element={

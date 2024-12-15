@@ -36,7 +36,11 @@ const Login = () => {
 
   return (
     <S.Container>
-      <S.Form noValidate onSubmit={handleSubmit(handleLogin)}>
+      <S.Form
+        autocomplete="off"
+        noValidate
+        onSubmit={handleSubmit(handleLogin)}
+      >
         <Form.Control
           isInvalid={errors.name}
           type="text"

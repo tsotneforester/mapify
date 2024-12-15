@@ -45,6 +45,7 @@ export default function DefaultMap({
   });
 
   const navigate = useNavigate();
+  const token = sessionStorage.getItem('token');
 
   const handleEdit = async (markerId) => {
     try {
@@ -56,15 +57,13 @@ export default function DefaultMap({
 
   const handleDelete = async (markerId) => {
     try {
-      const formData = new FormData();
-      formData.append('id', markerId);
-
-      let response = await axios.delete(
-        `${API_URL}/api/marker/${markerId}`,
-        formData
-      );
+      let response = await axios.delete(`${API_URL}/api/marker/${markerId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       forceRender();
-      toast.success(response.data);
+      toast.success('Marker Deleted');
     } catch (error) {
       toast.error(error.message);
     }

@@ -49,7 +49,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
       formData.append('coords', Object.values(coords));
       formData.append('iconID', selectedIconID);
 
-      console.log("i'm sending formdata");
+ 
       for (let [key, value] of formData.entries()) {
         console.log(`${key}:`, value);
       }

@@ -56,7 +56,7 @@ const IconsManager = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      toast.success(response.data);
+      toast.success('Icon deleted');
 
       setActive('');
       fetchIcons();
