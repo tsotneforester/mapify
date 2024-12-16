@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import SharedAuth from '../components/SharedAuth';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -18,11 +19,11 @@ const Login = () => {
   } = useForm();
 
   async function handleLogin(data) {
-    let { email, password, name } = data;
+    let { signup_email, signup_password, name } = data;
     try {
       const response = await axios.post(`${API_URL}/signup`, {
-        email,
-        password,
+        email: signup_email,
+        password: signup_password,
         name,
       });
       sessionStorage.setItem('token', response.data.token);
@@ -35,7 +36,7 @@ const Login = () => {
   }
 
   return (
-    <S.Container>
+    <SharedAuth>
       <S.Form
         autocomplete="off"
         noValidate
@@ -62,7 +63,7 @@ const Login = () => {
           isInvalid={errors.email}
           type="text"
           placeholder="Email"
-          {...register('email', {
+          {...register('signup_email', {
             required: 'Email Address is required',
             pattern: {
               value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -78,7 +79,7 @@ const Login = () => {
           isInvalid={errors.password}
           type="password"
           placeholder="Password"
-          {...register('password', {
+          {...register('signup_password', {
             required: 'Password is required',
             pattern: {
               value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g,
@@ -98,34 +99,14 @@ const Login = () => {
           have account? <Link to="/login">log in</Link>
         </p>
       </S.Form>
-    </S.Container>
+    </SharedAuth>
   );
 };
 
 export default Login;
 
 const S = {};
-S.Container = styled.div`
-  font-family: 'Montserrat', sans-serif;
-  min-height: 100svh;
-  padding: 0 12px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background-color: ${(prop) => prop.theme.body};
 
-  background-image: url('/bg1.png'), url('/bg2.svg');
-  background-repeat: repeat, no-repeat;
-  background-position: 0% 0%, 0% 100%;
-  background-size: auto, 100%;
-
-  /* background-image: url('image1.jpg'), url('image2.jpg');
-  background-repeat: repeat; //repeat-y/repeat-x/no-repeat/space/round
-  background-position: 0% 0%; // center/bottom/left/right/(%, px)
-  background-attachment: scroll; //fixed / local
-  background-size: auto; //length/cover/contain */
-`;
 S.Form = styled(Form)`
   display: flex;
   flex-flow: column nowrap;

@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import SharedAuth from '../components/SharedAuth';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -18,11 +19,11 @@ const Login = () => {
   } = useForm();
 
   async function handleLogin(data) {
-    let { email, password } = data;
+    let { login_email, login_password } = data;
     try {
       const response = await axios.post(`${API_URL}/login`, {
-        email,
-        password,
+        email: login_email,
+        password: login_password,
       });
       sessionStorage.setItem('token', response.data.token);
       sessionStorage.setItem('user', response.data.user);
@@ -34,15 +35,14 @@ const Login = () => {
   }
 
   return (
-    <S.Container>
-      <S.Heading>Mapify</S.Heading>
+    <SharedAuth>
       <S.Form noValidate onSubmit={handleSubmit(handleLogin)}>
         <Form.Control
           isInvalid={errors.email}
           type="text"
           placeholder="Email"
           required
-          {...register('email', {
+          {...register('login_email', {
             required: 'Email Address is required',
             pattern: {
               value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -58,7 +58,7 @@ const Login = () => {
           isInvalid={errors.password}
           type="password"
           placeholder="Password"
-          {...register('password', {
+          {...register('login_password', {
             required: 'Password is required',
           })}
         />
@@ -78,54 +78,14 @@ const Login = () => {
           No acoount? <Link to="/signup">sign up</Link>
         </p>
       </S.Form>
-    </S.Container>
+    </SharedAuth>
   );
 };
 
 export default Login;
 
 const S = {};
-S.Container = styled.div`
-  font-family: 'Montserrat', sans-serif;
-  min-height: 100svh;
-  padding: 0 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: ${(prop) => prop.theme.body};
 
-  background-image: url('/bg1.png'), url('/bg2.svg');
-  background-repeat: repeat, no-repeat;
-  background-position: 0% 0%, 0% 100%;
-  background-size: auto, 100%;
-`;
-
-S.Heading = styled.div`
-  position: absolute;
-  top: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 4rem;
-  margin-bottom: 100px;
-  font-family: 'Doto', sans-serif;
-  font-weight: 900;
-  color: #fff;
-  text-shadow: 0 0 5px #ff005e, 0 0 10px #ff005e, 0 0 20px #ff005e,
-    0 0 40px #ff005e, 0 0 80px #ff005e;
-  animation: glow 1.5s infinite alternate;
-
-  @keyframes glow {
-    0% {
-      text-shadow: 0 0 5px #ff005e, 0 0 10px #ff005e, 0 0 20px #ff005e,
-        0 0 40px #ff005e, 0 0 80px #ff005e;
-    }
-    100% {
-      text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff, 0 0 40px #00d4ff,
-        0 0 80px #00d4ff, 0 0 160px #00d4ff;
-    }
-  }
-`;
 S.Form = styled(Form)`
   display: flex;
   flex-flow: column nowrap;
