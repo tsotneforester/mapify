@@ -27,10 +27,7 @@ export default function Dropdown({ data, selectHandler }) {
           <div>
             {activeIcon ? (
               <>
-                <img
-                  src={`${API_URL}/uploads/icons/${activeIcon.imageName}`}
-                  alt={activeIcon.name}
-                />
+                <img src={activeIcon.url} alt={activeIcon.name} />
                 <p style={{ color: activeId ? 'black' : '#999' }}>
                   {activeIcon.name}
                 </p>
@@ -54,7 +51,7 @@ export default function Dropdown({ data, selectHandler }) {
             </S.SearchBox>
             <S.Options>
               {filteredData.map((option) => {
-                const { name, imageName, id } = option;
+                const { name, url, id } = option;
                 return (
                   <S.Option
                     $active={name == activeId}
@@ -66,10 +63,7 @@ export default function Dropdown({ data, selectHandler }) {
                     }}
                     key={id}
                   >
-                    <img
-                      src={`${API_URL}/uploads/icons/${imageName}`}
-                      alt={name}
-                    />
+                    <img src={url} alt={name} />
                     <p>{name}</p>
                   </S.Option>
                 );

@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
 const API_URL = import.meta.env.VITE_API_URL;
+
 const MAP_PROVIDER = import.meta.env.VITE_MAP_PROVIDER;
 import { Link, useNavigate } from 'react-router-dom';
 import CloseSVG from '../assets/bin.svg?react';
@@ -24,7 +25,7 @@ export default function DefaultMap({
 }) {
   function customIcon(img) {
     return new Icon({
-      iconUrl: `${API_URL}/uploads/icons/${img}`,
+      iconUrl: `${img}`,
       iconSize: [44, 44],
       iconAnchor: [22, 22],
       popupAnchor: [-0, -18],

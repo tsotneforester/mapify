@@ -1,13 +1,8 @@
 import styled from 'styled-components';
 import CloseIcon from '../assets/close.svg?react';
-const API_URL = import.meta.env.VITE_API_URL;
-export default function Icon({
-  name,
-  imageName,
-  handler,
-  selected,
-  onClickHandler,
-}) {
+// const API_URL = import.meta.env.VITE_API_URL;
+// const IMG_URL = import.meta.env.VITE_CLOUDINARY_ICONS_FOLDER;
+export default function Icon({ name, url, handler, selected, onClickHandler }) {
   return (
     <S.Form
       $active={selected}
@@ -16,7 +11,7 @@ export default function Icon({
         onClickHandler
       } /* action={`http://localhost:5000/api/icons/delete/${id}`} */ /* method="post" */
     >
-      <img src={`${API_URL}/uploads/icons/${imageName}`} alt={name} />
+      <img src={`${url}`} alt={name} />
 
       {handler && (
         <S.Button $active={selected} onClick={handler}>
