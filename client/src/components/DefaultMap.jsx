@@ -90,9 +90,9 @@ export default function DefaultMap({
       )}
 
       {data.map((marker) => {
-        let { _id, imageName, coords, name } = marker;
+        let { _id, url, coords, name } = marker;
         return (
-          <Marker key={_id} icon={customIcon(imageName)} position={coords}>
+          <Marker key={_id} icon={customIcon(url)} position={coords}>
             <Popup>
               <div style={popupContent}>
                 <p style={{ fontSize: '22px' }}> {name}</p>
