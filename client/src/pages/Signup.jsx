@@ -19,35 +19,46 @@ const Login = () => {
   } = useForm();
 
   async function handleLogin(data) {
-    let { signup_email, signup_password, name } = data;
+    let { signup_email, signup_password, signup_name } = data;
     try {
       const response = await axios.post(`${API_URL}/signup`, {
         email: signup_email,
         password: signup_password,
-        name,
+        name: signup_name,
       });
       sessionStorage.setItem('token', response.data.token);
       sessionStorage.setItem('user', response.data.user);
       sessionStorage.setItem('avatar', response.data.avatar);
       navigate('/mymap'); // Redirect to protected route
     } catch (error) {
-      toast.error(`${error.response.data.error}`);
+      toast.error(`${error.response.data.message}`);
     }
   }
 
   return (
     <SharedAuth>
       <S.Form
-        autocomplete="off"
+        autoComplete="off"
         noValidate
         onSubmit={handleSubmit(handleLogin)}
       >
-        <Form.Control
-          isInvalid={errors.name}
+        <input
           type="text"
-          placeholder="username"
-          {...register('name', {
-            required: 'Username is required',
+          {...register('username')}
+          style={{ position: 'absolute', top: '-9999px' }}
+        />
+        <input
+          type="password"
+          {...register('password')}
+          style={{ position: 'absolute', top: '-9999px' }}
+        />
+        <Form.Control
+          isInvalid={errors.signup_name}
+          type="text"
+          placeholder="Name"
+          autoComplete="off"
+          {...register(`signup_name`, {
+            required: 'Name is required',
             pattern: {
               value: /^[a-zA-Z0-9ა-ჰ_-]{1,15}$/,
               message:
@@ -56,13 +67,13 @@ const Login = () => {
           })}
         />
         <Form.Control.Feedback type="invalid">
-          {errors.name?.message}
+          {errors.signup_name?.message}
         </Form.Control.Feedback>
-
         <Form.Control
-          isInvalid={errors.email}
+          isInvalid={errors.signup_email}
           type="text"
           placeholder="Email"
+          autoComplete="signup_email"
           {...register('signup_email', {
             required: 'Email Address is required',
             pattern: {
@@ -72,26 +83,25 @@ const Login = () => {
           })}
         />
         <Form.Control.Feedback type="invalid">
-          {errors.email?.message}
+          {errors.signup_email?.message}
         </Form.Control.Feedback>
-
         <Form.Control
-          isInvalid={errors.password}
+          isInvalid={errors.signup_password}
           type="password"
           placeholder="Password"
+          autoComplete="signup_password"
           {...register('signup_password', {
             required: 'Password is required',
             pattern: {
-              value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/g,
+              value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
               message:
                 'Valid Password required: at least 8 characters long with minimum 1 uppercase letter, 1 lowercase letter, and 1 number. Can contain special characters',
             },
           })}
         />
         <Form.Control.Feedback type="invalid">
-          {errors.password?.message}
+          {errors.signup_password?.message}
         </Form.Control.Feedback>
-
         <Button style={{ width: '100%' }} type="submit" variant="primary">
           Sign Up
         </Button>

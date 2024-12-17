@@ -1,11 +1,11 @@
 {
   "name": "aplify",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.23.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm version minor && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

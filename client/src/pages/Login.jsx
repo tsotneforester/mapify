@@ -30,16 +30,17 @@ const Login = () => {
       sessionStorage.setItem('avatar', response.data.avatar);
       navigate('/mymap'); // Redirect to protected route
     } catch (error) {
-      toast.error(`${error.response.data.error}`);
+      toast.error(`${error.response.data.message}`);
     }
   }
 
   return (
     <SharedAuth>
-      <S.Form noValidate onSubmit={handleSubmit(handleLogin)}>
+      <S.Form id="login-form" noValidate onSubmit={handleSubmit(handleLogin)}>
         <Form.Control
-          isInvalid={errors.email}
+          isInvalid={errors.login_email}
           type="text"
+          id="login_email"
           placeholder="Email"
           required
           {...register('login_email', {
@@ -51,25 +52,21 @@ const Login = () => {
           })}
         />
         <Form.Control.Feedback type="invalid">
-          {errors.email?.message}
+          {errors.login_email?.message}
         </Form.Control.Feedback>
 
         <Form.Control
-          isInvalid={errors.password}
+          isInvalid={errors.login_password}
           type="password"
+          id="login_password"
           placeholder="Password"
           {...register('login_password', {
             required: 'Password is required',
           })}
         />
         <Form.Control.Feedback type="invalid">
-          {errors.password?.message}
+          {errors.login_password?.message}
         </Form.Control.Feedback>
-        {/* <Form.Text id="passwordHelpBlock" muted>
-          Your password must be at least 8 characters long with minimum 1
-          uppercase letter, 1 lowercase letter, and 1 number. Can contain
-          special characters
-        </Form.Text> */}
 
         <Button style={{ width: '100%' }} type="submit" variant="primary">
           Login
