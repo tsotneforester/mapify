@@ -1,6 +1,13 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
+import {
+  useState,
+  useContext,
+  useEffect,
+  /* useContext */ useCallback,
+  useMemo,
+} from 'react';
 import { Icon } from 'leaflet';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
@@ -48,9 +55,9 @@ export default function DefaultMap({
   const navigate = useNavigate();
   const token = sessionStorage.getItem('token');
 
-  const handleEdit = async (markerId) => {
+  const handleEdit = async (markerId, coords) => {
     try {
-      navigate(`/edit/${markerId}`);
+      navigate(`/edit/${markerId}?coords=${coords[0]},${coords[1]}`);
     } catch (error) {
       toast.error(error.message);
     }
@@ -90,12 +97,15 @@ export default function DefaultMap({
       )}
 
       {data.map((marker) => {
-        let { _id, url, coords, name } = marker;
+        let { _id, url, coords, name, desc, link } = marker;
         return (
           <Marker key={_id} icon={customIcon(url)} position={coords}>
             <Popup>
-              <div style={popupContent}>
-                <p style={{ fontSize: '22px' }}> {name}</p>
+              <S.PopupContent>
+                <h1> {name}</h1>
+                <p>
+                  {desc} {/* <a href={link}>link</a> */}
+                </p>
 
                 {editable && (
                   <>
@@ -104,21 +114,22 @@ export default function DefaultMap({
                         <CloseIcon />
                       </a>
 
-                      <EditIcon />
+                      <EditIcon title="Coming Soon" />
 
-                      {/* <a href="#" onClick={() => handleEdit(_id)}>
+                      {/* <a href="#" onClick={() => handleEdit(_id, coords)}>
                         <EditIcon />
                       </a> */}
                     </S.DeleteAnchor>
                   </>
                 )}
-              </div>
+              </S.PopupContent>
             </Popup>
           </Marker>
         );
       })}
 
       {children}
+      <MyLocationMarker />
     </MapContainer>
   );
 }
@@ -143,8 +154,48 @@ const EditIcon = styled(EditSVG)`
   /* cursor: not-allowed;
   pointer-events: none; */
 `;
+S.PopupContent = styled.div`
+  min-width: 250px;
+  width: 100%;
+  max-width: 300px;
+  h1 {
+    font-size: 20px;
+    color: black;
+    font-weight: 900;
+    text-align: center;
+  }
+  p {
+    font-size: 16px;
+    color: black;
+    font-weight: 400;
+    text-align: left;
+  }
+`;
 
-const popupContent = {
-  textAlign: 'center',
-  minWidth: '150px',
-};
+function MyLocationMarker() {
+  const [position, setPosition] = useState(null);
+  const map = useMap();
+
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        setPosition([latitude, longitude]);
+        map.setView([latitude, longitude], 13); // Center map at user's location
+      },
+      () => {
+        alert('Unable to retrieve your location');
+      }
+    );
+  }, [map]);
+  return position === null ? null : (
+    <Marker position={position}>
+      <Popup>You are here!</Popup>
+    </Marker>
+  );
+}

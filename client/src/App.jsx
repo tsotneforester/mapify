@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import styled from 'styled-components';
 import MyMap from './pages/MyMap';
 import { ToastContainer } from 'react-toastify';
+
 // import HomeSvg from './assets/home.svg?react';
 // import UserHomeSvg from './assets/userhome.svg?react';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -22,6 +23,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import EditMarker from './pages/EditMarker';
 import NotFound from './components/NotFound';
+import Holy from './pages/Holy';
 
 const App = () => {
   // const navigate = useNavigate();
@@ -79,6 +81,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <MyMap />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/holy"
+            element={
+              <ProtectedRoute>
+                <Holy />
               </ProtectedRoute>
             }
           />

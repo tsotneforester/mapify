@@ -4,10 +4,10 @@ import ArrowSvg from '../assets/arrow.svg?react';
 
 import styled from 'styled-components';
 
-export default function Dropdown({ data, selectHandler }) {
+export default function Dropdown({ data, selectHandler, selected = null }) {
   const [isOptionBoxVisible, setIsOptionBoxVisible] = useState(false);
 
-  const [activeId, setActiveId] = useState(null);
+  const [activeId, setActiveId] = useState(selected);
   const [searchString, setSearchString] = useState('');
 
   const filteredData = data.filter((iconName) =>
@@ -81,7 +81,7 @@ S.Container = styled.div`
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
-
+  grid-area: search;
   width: 100%;
 `;
 S.DropDown = styled.div``;

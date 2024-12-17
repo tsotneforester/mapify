@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { AppContext } from '../Context';
 import axios from 'axios';
-
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
@@ -12,10 +12,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Dropdown from './Dropdown';
+import { useNavigate } from 'react-router-dom';
 
-const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
+const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
   const token = sessionStorage.getItem('token');
-
+  const navigate = useNavigate();
   let { coords, setCoords } = coordinates;
   const [nameInput, setNameInput] = useState('');
 
@@ -23,6 +24,11 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
   const { setIsModalOpened } = useContext(AppContext);
   const [icons, setIcons] = useState([]);
   const [selectedIconID, setSelectedIconID] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   async function fetchIcons() {
     const token = sessionStorage.getItem('token');
@@ -41,15 +47,20 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
     }
   }
 
-  async function handleSubmit(e) {
+  async function handleMarkerSubmit(data) {
+    let { name, desc } = data;
     try {
-      e.preventDefault();
       const formData = new FormData();
-      formData.append('markerName', nameInput);
+      formData.append('markerName', name);
+      formData.append('desc', desc);
       formData.append('coords', Object.values(coords));
       formData.append('iconID', selectedIconID);
 
- 
+      if (!selectedIconID) {
+        alert('Please fill in the required input.');
+        return; // Stop the submission if the input is empty
+      }
+
       for (let [key, value] of formData.entries()) {
         console.log(`${key}:`, value);
       }
@@ -61,16 +72,19 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
         },
       });
       toast.success(`${response.data.data.name} added`);
-    } catch (error) {
-      console.log(error);
-      toast.error(`${error.response.data.error}`);
-    } finally {
       setIsModalOpened((e) => !e);
       fetchMyMarkers();
       setCoords({
         lat: '',
         lng: '',
       });
+    } catch (error) {
+      console.log(error);
+      toast.error(`${error.response.data.error}`);
+    } finally {
+      if (redirect) {
+        navigate(redirect);
+      }
     }
   }
 
@@ -80,38 +94,67 @@ const MarkerManager = ({ fetchMyMarkers, coordinates }) => {
 
   return (
     <S.Container>
-      <S.Form onSubmit={handleSubmit}>
-        <Form.Control
-          type="text"
-          name="name"
-          value={nameInput}
-          onChange={(e) => setNameInput(e.target.value)}
-          placeholder="Marker label"
-          required
-        />
+      <S.Form noValidate onSubmit={handleSubmit(handleMarkerSubmit)}>
+        <fieldset style={{ gridArea: 'lable' }}>
+          <Form.Control
+            type="text"
+            isInvalid={errors.name}
+            // value={nameInput}
+            // onChange={(e) => setNameInput(e.target.value)}
+            placeholder="Marker label"
+            {...register('name', {
+              required: 'Marker name is required',
+            })}
+          />
+          <Form.Control.Feedback type="invalid">
+            {errors.name?.message}
+          </Form.Control.Feedback>
+        </fieldset>
 
-        <Form.Control
-          type="number"
-          name="lat"
-          value={coords.lat}
-          placeholder="lat"
-          required
-          disabled
-        />
+        <fieldset style={{ gridArea: 'desc' }}>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            placeholder="description"
+            {...register('desc')}
+          />
+        </fieldset>
 
-        <Form.Control
-          type="number"
-          name="lng"
-          value={coords.lng}
-          placeholder="lng"
-          required
-          disabled
-        />
+        <fieldset style={{ gridArea: 'lat' }}>
+          <Form.Label>Latitude</Form.Label>
+          <Form.Control
+            type="number"
+            name="lat"
+            value={coords.lat}
+            placeholder="lat"
+            required
+            disabled
+          />
+        </fieldset>
 
-        <Button style={{ width: '100%' }} type="submit" variant="primary">
+        <fieldset style={{ gridArea: 'lng' }}>
+          <Form.Label>Longitude</Form.Label>
+          <Form.Control
+            type="number"
+            name="lng"
+            value={coords.lng}
+            placeholder="lng"
+            required
+            disabled
+          />
+        </fieldset>
+
+        <Button
+          style={{ width: '100%', gridArea: 'submit' }}
+          type="submit"
+          variant="primary"
+        >
           Create Marker
         </Button>
         <Dropdown data={icons} selectHandler={setSelectedIconID} />
+        <Form.Control.Feedback type="invalid">
+          {errors.name?.message}
+        </Form.Control.Feedback>
       </S.Form>
       {/* <IconsContainer iconName={selectedIconID}>
         <Loader loading={loading} />
@@ -137,9 +180,19 @@ S.Container = styled.div`
 `;
 
 S.Form = styled.form`
-  display: flex;
+  /* display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: flex-start;*/
   gap: 10px;
+
+  display: grid;
+  grid-template-areas:
+    'lable lable'
+    'desc desc'
+    'lat lng'
+    'submit submit'
+    'search search';
+  grid-template-columns: auto;
+  grid-template-rows: auto;
 `;

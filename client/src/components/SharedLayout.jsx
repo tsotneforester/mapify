@@ -40,7 +40,6 @@ const SharedLayout = () => {
           <S.Navbar $extended={extended} $open={showModalNav}>
             <main>
               <NavbarIcon onClick={() => setExtended((e) => !e)} />
-
               <S.NavLink to="/" onClick={() => setshowModalNav((e) => !e)}>
                 <HomeIcon title="home" />
                 <p>Home</p>
@@ -50,6 +49,11 @@ const SharedLayout = () => {
 
                 <p>Mymap</p>
               </S.NavLink>
+              {/* <S.NavLink to="/holy" onClick={() => setshowModalNav((e) => !e)}>
+                <UserHomeIcon title="holy" />
+
+                <p>Holy</p>
+              </S.NavLink> */}
             </main>
             <footer>
               <S.User1>
