@@ -5,12 +5,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { useState, useContext, useEffect, useCallback, useMemo } from 'react';
 import SharedAuth from '../components/SharedAuth';
+import { AppContext } from '../Context';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Login = () => {
   const navigate = useNavigate();
+  const [message, setMessage] = useState('');
+  const { setJustSignedUp } = useContext(AppContext);
 
   const {
     register,
@@ -26,10 +30,9 @@ const Login = () => {
         password: signup_password,
         name: signup_name,
       });
-      sessionStorage.setItem('token', response.data.token);
-      sessionStorage.setItem('user', response.data.user);
-      sessionStorage.setItem('avatar', response.data.avatar);
-      navigate('/mymap'); // Redirect to protected route
+      sessionStorage.setItem('email', signup_email);
+      setJustSignedUp(true);
+      navigate('/check-email'); // Redirect to protected route
     } catch (error) {
       toast.error(`${error.response.data.message}`);
     }

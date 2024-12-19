@@ -24,6 +24,8 @@ import Signup from './pages/Signup';
 import EditMarker from './pages/EditMarker';
 import NotFound from './components/NotFound';
 import Holy from './pages/Holy';
+import CheckEmail from './pages/CheckEmail';
+import VerifyUser from './pages/VerifyUser';
 
 const App = () => {
   // const navigate = useNavigate();
@@ -57,6 +59,8 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/check-email" element={<CheckEmail />} />
+        <Route path="/verify/:jwt" element={<VerifyUser />} />
         <Route path="*" element={<NotFound />} />
         <Route
           path="/edit/:id"

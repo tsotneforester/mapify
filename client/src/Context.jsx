@@ -6,9 +6,12 @@ import { ThemeProvider } from 'styled-components';
 
 function Context({ children }) {
   const [isModalOpened, setIsModalOpened] = useState(false);
+  const [justSignedUp, setJustSignedUp] = useState(false);
 
   return (
-    <AppContext.Provider value={{ isModalOpened, setIsModalOpened }}>
+    <AppContext.Provider
+      value={{ isModalOpened, setIsModalOpened, justSignedUp, setJustSignedUp }}
+    >
       <ThemeProvider theme={theme}>
         <GlobalStyles />
         {children}
