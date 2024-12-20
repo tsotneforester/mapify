@@ -6,12 +6,21 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import SharedAuth from '../components/SharedAuth';
+import {
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Login = () => {
   const navigate = useNavigate();
-
+  const recaptchaRef = useRef();
   const {
     register,
     handleSubmit,
@@ -19,11 +28,15 @@ const Login = () => {
   } = useForm();
 
   async function handleLogin(data) {
+    const recaptchaToken = recaptchaRef.current.getValue();
+    //recaptchaRef.current.reset();
+
     let { login_email, login_password } = data;
     try {
       const response = await axios.post(`${API_URL}/login`, {
         email: login_email,
         password: login_password,
+        recaptchaToken,
       });
       sessionStorage.setItem('token', response.data.token);
       sessionStorage.setItem('user', response.data.user);
@@ -66,6 +79,10 @@ const Login = () => {
         <Form.Control.Feedback type="invalid">
           {errors.login_password?.message}
         </Form.Control.Feedback>
+        <ReCAPTCHA
+          ref={recaptchaRef}
+          sitekey="6LcccKEqAAAAAApe09zfARz-zs2Nf87tmGJ5Vo72"
+        />
         <Button style={{ width: '100%' }} type="submit" variant="primary">
           Login
         </Button>
