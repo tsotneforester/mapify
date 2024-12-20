@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  NavLink,
-} from 'react-router-dom';
+import { HashRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
 import Home from './pages/Home';
 import styled from 'styled-components';
 import MyMap from './pages/MyMap';
@@ -26,6 +21,8 @@ import NotFound from './components/NotFound';
 import Holy from './pages/Holy';
 import CheckEmail from './pages/CheckEmail';
 import VerifyUser from './pages/VerifyUser';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 const App = () => {
   // const navigate = useNavigate();
@@ -60,7 +57,9 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/check-email" element={<CheckEmail />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/verify/:jwt" element={<VerifyUser />} />
+        <Route path="/reset/:token" element={<ResetPassword />} />
         <Route path="*" element={<NotFound />} />
         <Route
           path="/edit/:id"

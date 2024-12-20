@@ -9,7 +9,7 @@ import SharedAuth from '../components/SharedAuth';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const Login = () => {
+const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const {
@@ -19,21 +19,19 @@ const Login = () => {
   } = useForm();
 
   async function handleLogin(data) {
-    let { login_email, login_password } = data;
+    let { login_email } = data;
     try {
-      const response = await axios.post(`${API_URL}/login`, {
+      const response = await axios.post(`${API_URL}/forgot-password`, {
         email: login_email,
-        password: login_password,
       });
-      sessionStorage.setItem('token', response.data.token);
-      sessionStorage.setItem('user', response.data.user);
-      sessionStorage.setItem('avatar', response.data.avatar);
-      navigate('/mymap'); // Redirect to protected route
+      // sessionStorage.setItem('token', response.data.token);
+      // sessionStorage.setItem('user', response.data.user);
+      // sessionStorage.setItem('avatar', response.data.avatar);
+      navigate('/login'); // Redirect to protected route
     } catch (error) {
       toast.error(`${error.response.data.message}`);
     }
   }
-
   return (
     <SharedAuth>
       <S.Form id="login-form" noValidate onSubmit={handleSubmit(handleLogin)}>
@@ -54,31 +52,21 @@ const Login = () => {
         <Form.Control.Feedback type="invalid">
           {errors.login_email?.message}
         </Form.Control.Feedback>
-        <Form.Control
-          isInvalid={errors.login_password}
-          type="password"
-          id="login_password"
-          placeholder="Password"
-          {...register('login_password', {
-            required: 'Password is required',
-          })}
-        />
-        <Form.Control.Feedback type="invalid">
-          {errors.login_password?.message}
-        </Form.Control.Feedback>
-        <Button style={{ width: '100%' }} type="submit" variant="primary">
-          Login
+
+        <Button
+          style={{ width: '100%', textTransform: 'uppercase' }}
+          type="submit"
+          variant="primary"
+        >
+          reset password
         </Button>
-        <S.Help>
-          <Link to="/forgot-password">Forgot Pass?</Link>
-          <Link to="/signup">sign up</Link>
-        </S.Help>
+        <Link to="/login">back to Login</Link>
       </S.Form>
     </SharedAuth>
   );
 };
 
-export default Login;
+export default ForgotPassword;
 
 const S = {};
 
@@ -89,12 +77,4 @@ S.Form = styled(Form)`
   align-items: center;
   gap: 10px;
   max-width: 300px;
-`;
-S.Help = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-  width: 100%;
 `;

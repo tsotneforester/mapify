@@ -5,7 +5,7 @@ const SharedAuth = ({ children }) => {
   return (
     <S.Container>
       <S.Heading>
-        <h1>Mapify</h1>
+        <h1>Mta-Bari</h1>
         <h2>V {version.slice(0, version.lastIndexOf('.'))}</h2>
       </S.Heading>
       {children}
@@ -27,9 +27,10 @@ S.Container = styled.div`
   background-color: ${(prop) => prop.theme.body};
 
   background-image: url('/bg1.png'), url('/bg2.svg');
-  background-repeat: repeat, no-repeat;
-  background-position: 0% 0%, 0% 100%;
-  background-size: auto, 100%;
+  background-image: url('/bg1.png'), url('/grass.png');
+  background-repeat: repeat, repeat-x;
+  background-position: 0% 0%, center bottom;
+  background-size: auto, auto;
 `;
 
 S.Heading = styled.div`
