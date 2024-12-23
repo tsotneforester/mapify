@@ -85,8 +85,8 @@ const Login = () => {
           Login
         </Button>
         <S.Help>
-          <Link to="/forgot-password">Forgot Pass?</Link>
-          <Link to="/signup">sign up</Link>
+          <Link to="/forgot-password">Forgot Password?</Link>
+          <Link to="/signup">Sign up</Link>
         </S.Help>
       </S.Form>
     </SharedAuth>

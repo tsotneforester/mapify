@@ -1,21 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+
 import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL;
 import SharedAuth from '../components/SharedAuth';
 import { toast } from 'react-toastify';
+import PuffLoader from 'react-spinners/PuffLoader';
 
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  NavLink,
-  Link,
-  useNavigate,
-  Navigate,
-  useSearchParams,
-  useLocation, //TODO to snippets
-} from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const ProcessPayment = () => {
   const useQuery = () => {
@@ -36,7 +27,7 @@ const ProcessPayment = () => {
 
       navigate('/'); // Redirect to protected route
 
-      toast.success(`user verified`);
+      toast.success(`ბალანსი შეივსო`);
 
       // Redirect to protected route
     } catch (error) {
@@ -52,7 +43,8 @@ const ProcessPayment = () => {
 
   return (
     <SharedAuth>
-      <h1>Redirecting To user map</h1>
+      <h1>Processing payment, redirecting....</h1>
+      <PuffLoader color="#0d98f1" />
     </SharedAuth>
   );
 };
