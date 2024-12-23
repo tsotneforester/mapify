@@ -6,14 +6,7 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import SharedAuth from '../components/SharedAuth';
-import {
-  useState,
-  useContext,
-  useEffect,
-  useCallback,
-  useMemo,
-  useRef,
-} from 'react';
+import { useRef } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -25,7 +18,12 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      login_password: 'Sirw%+50',
+      login_email: 'tsotne.meladze.usa@gmail.com',
+    },
+  });
 
   async function handleLogin(data) {
     const recaptchaToken = recaptchaRef.current.getValue();

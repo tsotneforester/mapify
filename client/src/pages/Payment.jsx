@@ -7,13 +7,11 @@ const API_URL = import.meta.env.VITE_API_URL;
 import { useMapEvents } from 'react-leaflet';
 import AddMarkerSvg from '../assets/addmarker.svg?react';
 import HexSvg from '../assets/hex.svg?react';
-import CartSvg from '../assets/cart.svg?react';
 import Modal from '../components/Modal';
 import IconsManager from '../components/IconsManager';
 import MarkerManager from '../components/MarkerManager';
-import PaymentManager from '../components/PaymentManager';
 
-export default function MyMap() {
+export default function Payment() {
   const [markers, setMarkers] = useState([]);
   const [coords, setCoords] = useState({
     lat: '',
@@ -93,18 +91,12 @@ export default function MyMap() {
             setActiveModalContent('markers');
           }}
         />
+
         <HexIcon
           $enabled={true}
           onClick={() => {
             setIsModalOpened((e) => !e);
             setActiveModalContent('icons');
-          }}
-        />
-        <CartIcon
-          $enabled={true}
-          onClick={() => {
-            setIsModalOpened((e) => !e);
-            setActiveModalContent('payment');
           }}
         />
       </S.MapTools>
@@ -117,7 +109,6 @@ export default function MyMap() {
           />
         )}
         {activeModalContent == 'icons' && <IconsManager />}
-        {activeModalContent == 'payment' && <PaymentManager />}
       </Modal>
     </>
   );
@@ -142,13 +133,6 @@ const AddMarkerIcon = styled(AddMarkerSvg)`
 `;
 
 const HexIcon = styled(HexSvg)`
-  width: 32px;
-  height: 32px;
-  cursor: ${(prop) => (prop.$enabled ? 'pointer' : 'not-allowed')};
-  color: ${(prop) => (prop.$enabled ? '#434343' : '	#D3D3D3')};
-`;
-
-const CartIcon = styled(CartSvg)`
   width: 32px;
   height: 32px;
   cursor: ${(prop) => (prop.$enabled ? 'pointer' : 'not-allowed')};

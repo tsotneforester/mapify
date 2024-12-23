@@ -5,7 +5,7 @@ const SharedAuth = ({ children }) => {
   return (
     <S.Container>
       <S.Heading>
-        <h1>Mta-Bari</h1>
+        <h1>Mapify</h1>
         <h2>V {version.slice(0, version.lastIndexOf('.'))}</h2>
       </S.Heading>
       {children}

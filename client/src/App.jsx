@@ -23,6 +23,9 @@ import CheckEmail from './pages/CheckEmail';
 import VerifyUser from './pages/VerifyUser';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import ProcessPayment from './pages/ProcessPayment';
+
+// import Payment from './pages/Payment';
 
 const App = () => {
   // const navigate = useNavigate();
@@ -60,6 +63,9 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/verify/:jwt" element={<VerifyUser />} />
         <Route path="/reset/:token" element={<ResetPassword />} />
+        <Route path="/processing" element={<ProcessPayment />} />
+        {/* <Route path="/payment" element={<Payment />} /> */}
+        {/* <Route path="/reset/:token" element={<ResetPassword />} /> */}
         <Route path="*" element={<NotFound />} />
         <Route
           path="/edit/:id"
@@ -103,6 +109,14 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          {/* <Route
+            path="/payment"
+            element={
+              <ProtectedRoute>
+                <Payment />
+              </ProtectedRoute>
+            }
+          /> */}
           {/* <Route
             path="/edit/:id"
             element={
