@@ -25,7 +25,6 @@ const ProcessPayment = () => {
   const token = query.get('token');
 
   const navigate = useNavigate();
-  console.log(useParams());
 
   async function verifyToken() {
     try {
@@ -35,7 +34,7 @@ const ProcessPayment = () => {
         },
       });
 
-      navigate('/mymap'); // Redirect to protected route
+      navigate('/'); // Redirect to protected route
 
       toast.success(`user verified`);
 

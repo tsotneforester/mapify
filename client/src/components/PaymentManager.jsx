@@ -62,13 +62,14 @@ const PaymentManager = () => {
           type="number"
           value={qnt}
           onChange={(e) => setQnt(e.target.value)}
-          placeholder="markers qnt"
+          placeholder="10"
         />
 
         <Button style={{ width: '100%' }} type="submit" variant="primary">
           Checkout
         </Button>
       </S.Form>
+      <p>გაზარდე მონიშვნების რაოდენობის ლიმიტი უსასრულოდ ❤ </p>
     </S.Container>
   );
 };

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
+import PulseLoader from 'react-spinners/PulseLoader';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -18,11 +19,10 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
   const token = sessionStorage.getItem('token');
   const navigate = useNavigate();
   let { coords, setCoords } = coordinates;
-  const [nameInput, setNameInput] = useState('');
 
-  let [Loading, setLoading] = useState(true);
+  let [loading, setLoading] = useState(true);
   const { setIsModalOpened } = useContext(AppContext);
-  const [icons, setIcons] = useState([]);
+  const [balance, setBalance] = useState('');
   const [selectedIconID, setSelectedIconID] = useState('');
   const {
     register,
@@ -30,16 +30,16 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
     formState: { errors },
   } = useForm();
 
-  async function fetchIcons() {
+  async function fetchBalance() {
     const token = sessionStorage.getItem('token');
     try {
-      const response = await axios(`${API_URL}/api/icons`, {
+      const response = await axios(`${API_URL}/api/balance`, {
         headers: {
           Authorization: `Bearer ${token}`, // Include the token in the header
         },
       });
       let { data } = response.data;
-      setIcons(data);
+      setBalance(data);
     } catch (error) {
       console.error('Error fetching markers:', error);
     } finally {
@@ -79,8 +79,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
         lng: '',
       });
     } catch (error) {
-      console.log(error);
-      toast.error(`${error.response.data.error}`);
+      toast.error(`${error.response.data.message}`);
     } finally {
       if (redirect) {
         navigate(redirect);
@@ -89,7 +88,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
   }
 
   useEffect(() => {
-    fetchIcons();
+    fetchBalance();
   }, []);
 
   return (
@@ -151,17 +150,20 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
         >
           Create Marker
         </Button>
-        <Dropdown data={icons} selectHandler={setSelectedIconID} />
+        <Dropdown selectHandler={setSelectedIconID} />
         <Form.Control.Feedback type="invalid">
           {errors.name?.message}
         </Form.Control.Feedback>
+        <S.Balance>
+          <p>მონიშვნების ბალანსი შეადგენს</p>
+
+          {loading ? (
+            <PulseLoader margin={2} size={5} loading={loading} />
+          ) : (
+            <p>{balance}</p>
+          )}
+        </S.Balance>
       </S.Form>
-      {/* <IconsContainer iconName={selectedIconID}>
-        <Loader loading={loading} />
-        {icons.map(icon => (
-          <Icon canBeDeleted={false} onClickHandler={() => setSelectedIconID(icon.name)} selected={icon.name == selectedIconID} key={icon.id} {...icon} />
-        ))}
-      </IconsContainer> */}
     </S.Container>
   );
 };
@@ -192,7 +194,31 @@ S.Form = styled.form`
     'desc desc'
     'lat lng'
     'submit submit'
-    'search search';
+    'search search'
+    'balance balance';
   grid-template-columns: auto;
   grid-template-rows: auto;
+`;
+S.Balance = styled.div`
+  grid-area: balance;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  p:first-child {
+    font-family: 'Noto Sans Georgian', serif;
+    font-weight: 100;
+    font-size: 14px;
+    color: #0e43b5;
+    font-weight: 400;
+    text-align: center;
+    font-style: italic;
+  }
+
+  p:last-child {
+    font-family: 'Noto Sans Georgian', serif;
+    font-weight: 700;
+  }
 `;
