@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import HomeSvg from '../assets/home.svg?react';
+
 import UserHomeSvg from '../assets/userhome.svg?react';
 import SignoutSvg from '../assets/signout.svg?react';
 import NavbarSvg from '../assets/navbar.svg?react';
@@ -204,7 +204,6 @@ const StyledIcon = styled(({ component: Component, ...props }) => (
   flex-shrink: 0;
 `;
 
-const HomeIcon = styled(StyledIcon).attrs({ component: HomeSvg })``;
 const UserHomeIcon = styled(StyledIcon).attrs({ component: UserHomeSvg })``;
 const SignoutIcon = styled(StyledIcon).attrs({ component: SignoutSvg })``;
 const MenuIcon = styled(StyledIcon).attrs({ component: MenuSvg })`

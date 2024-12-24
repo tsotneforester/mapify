@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Button from 'react-bootstrap/Button';
 
 const ConfirmationModal = ({ onClose, onConfirm }) => {
   return (
@@ -7,8 +8,22 @@ const ConfirmationModal = ({ onClose, onConfirm }) => {
         <h2>Are you sure?</h2>
         <p>Do you really want to sign out?</p>
         <S.ButtonContainer>
-          <button onClick={onClose}>Cancel</button>
-          <button onClick={onConfirm}>Confirm</button>
+          <Button
+            onClick={onClose}
+            style={{ width: '100%' }}
+            type="submit"
+            variant="primary"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={onConfirm}
+            style={{ width: '100%' }}
+            type="submit"
+            variant="primary"
+          >
+            Confirm
+          </Button>
         </S.ButtonContainer>
       </S.Container>
     </S.Background>
@@ -39,4 +54,6 @@ S.Container = styled.div`
 S.ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 50px;
+  margin-top: 20px;
 `;
