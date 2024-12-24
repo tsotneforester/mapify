@@ -114,7 +114,7 @@ export default function DefaultMap({
                         <CloseIcon />
                       </a>
 
-                      <EditIcon title="Coming Soon" />
+                      {/* <EditIcon title="Coming Soon" /> */}
 
                       {/* <a href="#" onClick={() => handleEdit(_id, coords)}>
                         <EditIcon />
