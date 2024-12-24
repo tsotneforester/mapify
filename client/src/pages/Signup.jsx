@@ -23,11 +23,16 @@ export default function Login() {
   } = useForm();
 
   async function handleLogin(data) {
-    let { signup_email, signup_password, signup_name } = data;
+    let { signup_name, signup_email, signup_password_1, signup_password_2 } =
+      data;
+    if (signup_password_1 !== signup_password_2) {
+      return toast.warning(`Passwords do not match`);
+    }
     try {
-      const response = await axios.post(`${API_URL}/signup`, {
+      await axios.post(`${API_URL}/signup`, {
         email: signup_email,
-        password: signup_password,
+        password: signup_password_1,
+        passwordConfirm: signup_password_2,
         name: signup_name,
       });
       sessionStorage.setItem('email', signup_email);
@@ -89,11 +94,11 @@ export default function Login() {
           {errors.signup_email?.message}
         </Form.Control.Feedback>
         <Form.Control
-          isInvalid={errors.signup_password}
+          isInvalid={errors.signup_password_1}
           type="password"
           placeholder="Password"
-          autoComplete="signup_password"
-          {...register('signup_password', {
+          autoComplete="signup_password_1"
+          {...register('signup_password_1', {
             required: 'Password is required',
             pattern: {
               value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
@@ -103,7 +108,24 @@ export default function Login() {
           })}
         />
         <Form.Control.Feedback type="invalid">
-          {errors.signup_password?.message}
+          {errors.signup_password_1?.message}
+        </Form.Control.Feedback>
+        <Form.Control
+          isInvalid={errors.signup_password_2}
+          type="password"
+          placeholder="Password"
+          autoComplete="signup_password_2"
+          {...register('signup_password_2', {
+            required: 'Password is required',
+            pattern: {
+              value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+              message:
+                'Valid Password required: at least 8 characters long with minimum 1 uppercase letter, 1 lowercase letter, and 1 number. Can contain special characters',
+            },
+          })}
+        />
+        <Form.Control.Feedback type="invalid">
+          {errors.signup_password_2?.message}
         </Form.Control.Feedback>
         <Button style={{ width: '100%' }} type="submit" variant="primary">
           Sign Up
