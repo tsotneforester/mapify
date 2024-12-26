@@ -9,12 +9,13 @@ import { AppContext } from '../Context';
 import SharedAuth from '../components/SharedAuth';
 import { useState, useContext, useEffect, useCallback, useMemo } from 'react';
 
+import Spinner from 'react-bootstrap/Spinner';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ResetPassword = () => {
   const navigate = useNavigate();
   const { token } = useParams();
-
+  let [loadingButton, setLoadingButton] = useState(false);
   const {
     register,
     handleSubmit,
@@ -39,18 +40,20 @@ const ResetPassword = () => {
 
   async function handleLogin(data) {
     let { login_password } = data;
+    setLoadingButton(true);
     try {
-      const response = await axios.post(`${API_URL}/reset/${token}`, {
+      await axios.post(`${API_URL}/reset/${token}`, {
         password: login_password,
       });
       // sessionStorage.setItem('token', response.data.token);
       // sessionStorage.setItem('user', response.data.user);
       // sessionStorage.setItem('avatar', response.data.avatar);
       navigate('/login'); // Redirect to protected route
-      toast.success(`password reseted`);
-      setJustReseted(true);
+      toast.success(`password updated`);
     } catch (error) {
       toast.error(`${error.response.data.message}`);
+    } finally {
+      setLoadingButton(false);
     }
   }
   useEffect(() => {
@@ -73,11 +76,16 @@ const ResetPassword = () => {
         </Form.Control.Feedback>
 
         <Button
-          style={{ width: '100%', textTransform: 'uppercase' }}
-          type="submit"
           variant="primary"
+          style={{ width: '100%', gridArea: 'submit' }}
+          type="submit"
+          disabled={loadingButton}
         >
-          Submit password
+          {loadingButton ? (
+            <Spinner as="span" animation="border" size="sm" role="status" />
+          ) : (
+            'Submit Password'
+          )}
         </Button>
       </S.Form>
     </SharedAuth>

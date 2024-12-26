@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,11 +9,12 @@ import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import SharedAuth from '../components/SharedAuth';
 import { AppContext } from '../Context';
-
+import Spinner from 'react-bootstrap/Spinner';
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Login() {
   const navigate = useNavigate();
+  let [loadingButton, setLoadingButton] = useState(false);
   // const [message, setMessage] = useState('');
   const { setJustSignedUp } = useContext(AppContext);
 
@@ -22,7 +24,8 @@ export default function Login() {
     formState: { errors },
   } = useForm();
 
-  async function handleLogin(data) {
+  async function handleSignup(data) {
+    setLoadingButton(true);
     let { signup_name, signup_email, signup_password_1, signup_password_2 } =
       data;
     if (signup_password_1 !== signup_password_2) {
@@ -40,6 +43,8 @@ export default function Login() {
       navigate('/check-email'); // Redirect to protected route
     } catch (error) {
       toast.error(`${error.response.data.message}`);
+    } finally {
+      setLoadingButton(true);
     }
   }
 
@@ -48,7 +53,7 @@ export default function Login() {
       <S.Form
         autoComplete="off"
         noValidate
-        onSubmit={handleSubmit(handleLogin)}
+        onSubmit={handleSubmit(handleSignup)}
       >
         <input
           type="text"
@@ -127,11 +132,21 @@ export default function Login() {
         <Form.Control.Feedback type="invalid">
           {errors.signup_password_2?.message}
         </Form.Control.Feedback>
-        <Button style={{ width: '100%' }} type="submit" variant="primary">
-          Sign Up
+
+        <Button
+          variant="primary"
+          style={{ width: '100%', gridArea: 'submit' }}
+          type="submit"
+          disabled={loadingButton}
+        >
+          {loadingButton ? (
+            <Spinner as="span" animation="border" size="sm" role="status" />
+          ) : (
+            'Sign Up'
+          )}
         </Button>
         <p>
-          have account? <Link to="/login">log in</Link>
+          have account? <Link to="/login">Log in</Link>
         </p>
       </S.Form>
     </SharedAuth>

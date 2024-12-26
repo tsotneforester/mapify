@@ -6,11 +6,13 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import SharedAuth from '../components/SharedAuth';
-
+import { useState } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  let [loadingButton, setLoadingButton] = useState(false);
 
   const {
     register,
@@ -20,6 +22,7 @@ const ForgotPassword = () => {
 
   async function handleLogin(data) {
     let { login_email } = data;
+    setLoadingButton(true);
     try {
       const response = await axios.post(`${API_URL}/forgot-password`, {
         email: login_email,
@@ -28,8 +31,11 @@ const ForgotPassword = () => {
       // sessionStorage.setItem('user', response.data.user);
       // sessionStorage.setItem('avatar', response.data.avatar);
       navigate('/login'); // Redirect to protected route
+      toast.success(`Check Email`);
     } catch (error) {
       toast.error(`${error.response.data.message}`);
+    } finally {
+      setLoadingButton(false);
     }
   }
   return (
@@ -54,11 +60,16 @@ const ForgotPassword = () => {
         </Form.Control.Feedback>
 
         <Button
-          style={{ width: '100%', textTransform: 'uppercase' }}
-          type="submit"
           variant="primary"
+          style={{ width: '100%', gridArea: 'submit' }}
+          type="submit"
+          disabled={loadingButton}
         >
-          reset password
+          {loadingButton ? (
+            <Spinner as="span" animation="border" size="sm" role="status" />
+          ) : (
+            'Reset Password'
+          )}
         </Button>
         <Link to="/login">back to Login</Link>
       </S.Form>

@@ -17,7 +17,7 @@ const Signout = () => {
   const handleConfirm = () => {
     sessionStorage.clear();
     navigate('/login');
-    console.log('Action confirmed!');
+
     handleCloseModal();
   };
 

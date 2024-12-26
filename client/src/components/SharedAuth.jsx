@@ -29,18 +29,18 @@ S.Container = styled.div`
   background-image: url('/bg1.png'), url('/bg2.svg');
   background-image: url('/bg1.png'), url('/grass.png');
   background-repeat: repeat, repeat-x;
-  background-position: 0% 0%, center bottom;
+  background-position: 0% 0%, center 110%;
   background-size: auto, auto;
 `;
 
 S.Heading = styled.div`
-  position: absolute;
+  //position: absolute;
   top: 100px;
   left: 50%;
-  transform: translateX(-50%);
+  //transform: translateX(-50%);
   font-family: 'Doto', sans-serif;
   font-weight: 900;
-  margin-bottom: 100px;
+  margin-bottom: 40px;
 
   h1 {
     font-size: 4rem;

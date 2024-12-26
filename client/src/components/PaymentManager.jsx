@@ -6,19 +6,21 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
-
+import Spinner from 'react-bootstrap/Spinner';
 const API_URL = import.meta.env.VITE_API_URL;
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
 
 const PaymentManager = () => {
   const token = sessionStorage.getItem('token');
+  let [loadingButton, setLoadingButton] = useState(false);
 
   const [qnt, setQnt] = useState('');
 
   useEffect(() => {}, []);
 
   const handleSubmit = async (e) => {
+    setLoadingButton(true);
     try {
       e.preventDefault();
 
@@ -37,6 +39,8 @@ const PaymentManager = () => {
       setQnt('');
     } catch (error) {
       toast.error(error.response.data);
+    } finally {
+      setLoadingButton(true);
     }
   };
 
@@ -50,8 +54,17 @@ const PaymentManager = () => {
           placeholder="10"
         />
 
-        <Button style={{ width: '100%' }} type="submit" variant="primary">
-          Checkout
+        <Button
+          variant="primary"
+          style={{ width: '100%' }}
+          type="submit"
+          disabled={loadingButton}
+        >
+          {loadingButton ? (
+            <Spinner as="span" animation="border" size="sm" role="status" />
+          ) : (
+            'Checkout'
+          )}
         </Button>
       </S.Form>
       <div>

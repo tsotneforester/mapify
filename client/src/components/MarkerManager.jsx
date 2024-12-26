@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
 import PulseLoader from 'react-spinners/PulseLoader';
-
+import Spinner from 'react-bootstrap/Spinner';
 const API_URL = import.meta.env.VITE_API_URL;
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -19,7 +19,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
   const token = sessionStorage.getItem('token');
   const navigate = useNavigate();
   let { coords, setCoords } = coordinates;
-
+  let [loadingButton, setLoadingButton] = useState(false);
   let [loading, setLoading] = useState(true);
   const { setIsModalOpened } = useContext(AppContext);
   const [balance, setBalance] = useState('');
@@ -49,6 +49,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
 
   async function handleMarkerSubmit(data) {
     let { name, desc } = data;
+    setLoadingButton(true);
     try {
       const formData = new FormData();
       formData.append('markerName', name);
@@ -81,6 +82,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
     } catch (error) {
       toast.error(`${error.response.data.message}`);
     } finally {
+      setLoadingButton(false);
       if (redirect) {
         navigate(redirect);
       }
@@ -144,12 +146,18 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
         </fieldset>
 
         <Button
+          variant="primary"
           style={{ width: '100%', gridArea: 'submit' }}
           type="submit"
-          variant="primary"
+          disabled={loadingButton}
         >
-          Create Marker
+          {loadingButton ? (
+            <Spinner as="span" animation="border" size="sm" role="status" />
+          ) : (
+            'Create Marker'
+          )}
         </Button>
+
         <Dropdown selectHandler={setSelectedIconID} />
         <Form.Control.Feedback type="invalid">
           {errors.name?.message}

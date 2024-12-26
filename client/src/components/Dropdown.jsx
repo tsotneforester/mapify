@@ -1,41 +1,24 @@
 import { useState } from 'react';
-const API_URL = import.meta.env.VITE_API_URL;
 import ArrowSvg from '../assets/arrow.svg?react';
-import axios from 'axios';
 import styled from 'styled-components';
 import ScaleLoader from 'react-spinners/ScaleLoader';
+import useFetchIcons from '../hooks/useFetchIcons';
 
 export default function Dropdown({
   /* data, */ selectHandler,
   selected = null,
 }) {
   const [isOptionBoxVisible, setIsOptionBoxVisible] = useState(false);
-  const [icons, setIcons] = useState([]);
   const [activeId, setActiveId] = useState(selected);
   const [searchString, setSearchString] = useState('');
-  const [loading, setLoading] = useState(true);
 
-  const filteredData = icons.filter((iconName) =>
+  const { data, loading } = useFetchIcons('api/icons');
+
+  const filteredData = data.filter((iconName) =>
     iconName.name.toLowerCase().includes(searchString)
   );
 
-  const activeIcon = icons.find((icon) => icon.id === activeId);
-  async function fetchIcons() {
-    const token = sessionStorage.getItem('token');
-    try {
-      const response = await axios(`${API_URL}/api/icons`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the header
-        },
-      });
-      let { data } = response.data;
-      setIcons(data);
-    } catch (error) {
-      console.error('Error fetching markers:', error);
-    } finally {
-      setLoading((e) => !e);
-    }
-  }
+  const activeIcon = data.find((icon) => icon.id === activeId);
 
   const handleChange = (event) => {
     setSearchString(event.target.value);
@@ -47,7 +30,7 @@ export default function Dropdown({
         <S.Select
           onClick={() => {
             setIsOptionBoxVisible((e) => !e);
-            fetchIcons();
+            // fetchAllIcons();
           }}
         >
           <div>
@@ -83,6 +66,8 @@ export default function Dropdown({
                   radius={6}
                   color="#a3a3a3"
                 />
+              ) : filteredData.length == 0 ? (
+                'Icon list is empty'
               ) : (
                 filteredData.map((option) => {
                   const { name, url, id } = option;

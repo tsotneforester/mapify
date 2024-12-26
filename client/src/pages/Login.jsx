@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,10 +9,11 @@ import { toast } from 'react-toastify';
 import SharedAuth from '../components/SharedAuth';
 import { useRef } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
-
+import Spinner from 'react-bootstrap/Spinner';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Login = () => {
+  let [loadingButton, setLoadingButton] = useState(false);
   const navigate = useNavigate();
   const recaptchaRef = useRef();
   const {
@@ -20,12 +22,13 @@ const Login = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      login_password: 'Sirw%+50',
+      login_password: 'Sirw%+45',
       login_email: 'tsotne.meladze.usa@gmail.com',
     },
   });
 
   async function handleLogin(data) {
+    setLoadingButton(true);
     const recaptchaToken = recaptchaRef.current.getValue();
     //recaptchaRef.current.reset();
 
@@ -42,6 +45,8 @@ const Login = () => {
       navigate('/'); // Redirect to protected route
     } catch (error) {
       toast.error(`${error.response.data.message}`);
+    } finally {
+      setLoadingButton(false);
     }
   }
 
@@ -81,9 +86,20 @@ const Login = () => {
           ref={recaptchaRef}
           sitekey="6LcccKEqAAAAAApe09zfARz-zs2Nf87tmGJ5Vo72"
         />
-        <Button style={{ width: '100%' }} type="submit" variant="primary">
-          Login
+
+        <Button
+          variant="primary"
+          style={{ width: '100%', gridArea: 'submit' }}
+          type="submit"
+          disabled={loadingButton}
+        >
+          {loadingButton ? (
+            <Spinner as="span" animation="border" size="sm" role="status" />
+          ) : (
+            'Login'
+          )}
         </Button>
+
         <S.Help>
           <Link to="/forgot-password">Forgot Password?</Link>
           <Link to="/signup">Sign up</Link>

@@ -1,5 +1,4 @@
-import { useEffect, useState /* useContext */ } from 'react';
-//import { AppContext } from '../Context';
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import Icon from './Icon';
@@ -10,42 +9,40 @@ import IconsContainer from './IconsContainer';
 const API_URL = import.meta.env.VITE_API_URL;
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
-
 import HexSvg from '../assets/hexadd.svg?react';
 import ReturnSvg from '../assets/return.svg?react';
 import NoContent from './NoContent';
+import Spinner from 'react-bootstrap/Spinner';
 
 const IconsManager = () => {
   const token = sessionStorage.getItem('token');
-  const [icons, setIcons] = useState([]);
+  const [data, setData] = useState([]);
+
+  let [loading, setLoading] = useState(true);
+  let [loadingButton, setLoadingButton] = useState(false);
+  let [showForm, setShowForm] = useState(false);
+  const [activeIconName, setActiveIconName] = useState(false);
+  //form
   const [name, setName] = useState('');
   const [file, setFile] = useState(null);
-  let [loading, setLoading] = useState(true);
-  let [info, setInfo] = useState(false);
-  const [active, setActive] = useState(false);
-  // const { setIsModalOpened } = useContext(AppContext);
 
-  async function fetchIcons() {
-    setLoading(true);
+  async function fetchMyIcons() {
+    // setLoading(true);
     try {
       const response = await axios(`${API_URL}/api/myicons`, {
         headers: {
           Authorization: `Bearer ${token}`, // Include the token in the header
         },
       });
-      let { data } = response.data;
-      setIcons(data);
+      let { data: result } = response.data;
+      setData(result);
     } catch (error) {
       toast.error('Error fetching markers:', error);
     } finally {
-      // setIcons([]);
       setLoading(false);
     }
   }
-
-  useEffect(() => {
-    fetchIcons();
-  }, []);
+  fetchMyIcons();
 
   async function handleDelete(e, id) {
     const token = sessionStorage.getItem('token');
@@ -58,9 +55,9 @@ const IconsManager = () => {
       });
       toast.success('Icon deleted');
 
-      setActive('');
-      fetchIcons();
-      setIcons([]);
+      setActiveIconName('');
+      setLoading(true);
+      fetchMyIcons();
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -68,15 +65,12 @@ const IconsManager = () => {
 
   const handleSubmit = async (e) => {
     const token = sessionStorage.getItem('token');
+    setLoadingButton(true);
     try {
       e.preventDefault();
       const formData = new FormData();
       formData.append('icon', file);
       formData.append('name', name);
-
-      // for (let [key, value] of formData.entries()) {
-      //   console.log(`${key}:`, value);
-      // }
 
       let response = await axios.post(`${API_URL}/api/icons`, formData, {
         headers: {
@@ -85,49 +79,41 @@ const IconsManager = () => {
       });
 
       toast.success(response.data);
-      setName('');
-      setFile(null);
-      setInfo((e) => !e);
 
-      setIcons([]);
-      fetchIcons();
+      setShowForm((e) => !e);
+      setLoading(true);
+      fetchMyIcons();
     } catch (error) {
       toast.error(error.response.data);
+    } finally {
+      setName('');
+      setFile(null);
+      setLoadingButton(false);
     }
   };
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0]; // Get the first file
+    const file = event.target.files[0];
     setFile(file);
   };
 
   return (
     <S.Container>
-      {info ? (
+      {showForm ? (
         <ReturnIcon
           onClick={() => {
-            setInfo((e) => !e);
+            setShowForm((e) => !e);
           }}
         />
       ) : (
         <HexIcon
           onClick={() => {
-            setInfo((e) => !e);
+            setShowForm((e) => !e);
           }}
         />
       )}
 
-      {/* <S.Form onSubmit={handleSubmit}>
-        <Form.Control type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Icon Name" />
-
-        <Form.Control type="file" accept="image/png" onChange={handleFileChange} required />
-
-        <Button style={{ width: '100%' }} type="submit" variant="primary">
-          Upload Icon
-        </Button>
-      </S.Form> */}
-
-      {info && (
+      {showForm && (
         <S.AddIcon>
           <S.Form onSubmit={handleSubmit}>
             <Form.Control
@@ -145,9 +131,24 @@ const IconsManager = () => {
               required
             />
 
-            <Button style={{ width: '100%' }} type="submit" variant="primary">
-              Upload Icon
+            <Button
+              variant="primary"
+              style={{ width: '100%' }}
+              type="submit"
+              disabled={loadingButton}
+            >
+              {loadingButton ? (
+                <Spinner as="span" animation="border" size="sm" role="status" />
+              ) : (
+                'Upload Icon'
+              )}
             </Button>
+
+            {/* <Button
+              style={{ width: '100%' }}
+              type="submit"
+              variant="primary"
+            ></Button> */}
           </S.Form>
           <p>
             ჩამოტვირთე სტანდარტული
@@ -159,15 +160,15 @@ const IconsManager = () => {
           </p>
         </S.AddIcon>
       )}
-      {info || (
-        <IconsContainer iconName={active} loading={loading}>
-          {icons.length === 0 ? (
+      {showForm || (
+        <IconsContainer iconName={activeIconName} loading={loading}>
+          {data.length === 0 ? (
             <NoContent />
           ) : (
-            icons.map((img) => (
+            data.map((img) => (
               <Icon
-                onClickHandler={() => setActive(img.name)}
-                selected={img.name == active}
+                onClickHandler={() => setActiveIconName(img.name)}
+                selected={img.name == activeIconName}
                 key={img.id}
                 {...img}
                 handler={(e) => handleDelete(e, img.id)}
