@@ -27,11 +27,9 @@ const ForgotPassword = () => {
       const response = await axios.post(`${API_URL}/forgot-password`, {
         email: login_email,
       });
-      // sessionStorage.setItem('token', response.data.token);
-      // sessionStorage.setItem('user', response.data.user);
-      // sessionStorage.setItem('avatar', response.data.avatar);
+
       navigate('/login'); // Redirect to protected route
-      toast.success(`Check Email`);
+      toast.success(`${response.data.message}`);
     } catch (error) {
       toast.error(`${error.response.data.message}`);
     } finally {
@@ -71,7 +69,7 @@ const ForgotPassword = () => {
             'Reset Password'
           )}
         </Button>
-        <Link to="/login">back to Login</Link>
+        <Link to="/login">Back to login</Link>
       </S.Form>
     </SharedAuth>
   );

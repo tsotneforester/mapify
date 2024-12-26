@@ -5,6 +5,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 import SharedAuth from '../components/SharedAuth';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import PuffLoader from 'react-spinners/PuffLoader';
 
 const VerifyUser = () => {
   const { jwt } = useParams(); // Get the JWT from the URL parameters
@@ -36,6 +37,7 @@ const VerifyUser = () => {
   return (
     <SharedAuth>
       <h1>Token Verification Loading</h1>
+      <PuffLoader color="#0d98f1" />
     </SharedAuth>
   );
 };

@@ -44,7 +44,12 @@ const Login = () => {
       sessionStorage.setItem('avatar', response.data.avatar);
       navigate('/'); // Redirect to protected route
     } catch (error) {
-      toast.error(`${error.response.data.message}`);
+      if (error.response.data.message == 'check email for verification') {
+        toast.success(`${error.response.data.message}`);
+        //TODO redirect to verification page
+      } else {
+        toast.error(`${error.response.data.message}`);
+      }
     } finally {
       setLoadingButton(false);
     }
@@ -86,7 +91,6 @@ const Login = () => {
           ref={recaptchaRef}
           sitekey="6LcccKEqAAAAAApe09zfARz-zs2Nf87tmGJ5Vo72"
         />
-
         <Button
           variant="primary"
           style={{ width: '100%', gridArea: 'submit' }}
@@ -99,7 +103,7 @@ const Login = () => {
             'Login'
           )}
         </Button>
-
+        {/*  //TODO export as component */}
         <S.Help>
           <Link to="/forgot-password">Forgot Password?</Link>
           <Link to="/signup">Sign up</Link>

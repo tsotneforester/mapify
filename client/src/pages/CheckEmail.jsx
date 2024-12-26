@@ -3,20 +3,29 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import SharedAuth from '../components/SharedAuth';
 import { AppContext } from '../Context';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 const API_URL = import.meta.env.VITE_API_URL;
-//import { toast } from 'react-toastify';
+
+import { toast } from 'react-toastify';
 
 const CheckEmail = () => {
   const navigate = useNavigate();
   const { justSignedUp, setJustSignedUp } = useContext(AppContext);
+  let [loadingButton, setLoadingButton] = useState(false);
   const email = sessionStorage.getItem('email');
 
   async function resendHandler() {
+    setLoadingButton(true);
     try {
-      await axios.post(`${API_URL}/resend/${email}`);
-    } catch (error) {}
+      let response = await axios.post(`${API_URL}/resend/${email}`);
+      toast.success(`${response.data.message}`);
+    } catch (error) {
+      toast.error(`${error.response.data.message}`);
+    } finally {
+      setLoadingButton(false);
+    }
   }
 
   useEffect(() => {
@@ -36,11 +45,23 @@ const CheckEmail = () => {
           Please check your inbox to verify your account.
         </p>
         <Button
-          style={{ marginTop: '20px' }}
+          variant="info"
           onClick={resendHandler}
-          variant="primary"
+          style={{ marginTop: '20px', color: 'white' }}
+          type="submit"
+          disabled={loadingButton}
         >
-          RESEND
+          {loadingButton ? (
+            <Spinner
+              variant="light"
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+            />
+          ) : (
+            'Resend'
+          )}
         </Button>
       </S.Container>
     </SharedAuth>

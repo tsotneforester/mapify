@@ -9,7 +9,6 @@ import SignoutSvg from '../assets/signout.svg?react';
 import NavbarSvg from '../assets/navbar.svg?react';
 import MenuSvg from '../assets/Menu.svg?react';
 
-
 const API_URL = import.meta.env.VITE_API_URL;
 
 const SharedLayout = () => {
@@ -66,6 +65,7 @@ const SharedLayout = () => {
                 <SignoutIcon title="logout" />
                 <p>Logout</p>
               </S.NavLink>
+              {/* //TODO fix blanck page */}
             </footer>
           </S.Navbar>
         </>

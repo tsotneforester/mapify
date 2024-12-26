@@ -40,7 +40,7 @@ const PaymentManager = () => {
     } catch (error) {
       toast.error(error.response.data);
     } finally {
-      setLoadingButton(true);
+      setLoadingButton(false);
     }
   };
 

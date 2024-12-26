@@ -22,7 +22,14 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      signup_name: 'tso',
+      signup_password_1: 'Sirw%+45',
+      signup_password_2: 'Sirw%+45',
+      signup_email: 'tsotne.meladze.usa@gmail.com',
+    },
+  });
 
   async function handleSignup(data) {
     setLoadingButton(true);
@@ -44,7 +51,7 @@ export default function Login() {
     } catch (error) {
       toast.error(`${error.response.data.message}`);
     } finally {
-      setLoadingButton(true);
+      setLoadingButton(false);
     }
   }
 
