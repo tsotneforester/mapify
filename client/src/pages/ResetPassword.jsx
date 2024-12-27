@@ -1,15 +1,16 @@
 import axios from 'axios';
 import styled from 'styled-components';
-import Button from 'react-bootstrap/Button';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+
+import { useNavigate, useParams } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { AppContext } from '../Context';
-import SharedAuth from '../components/SharedAuth';
-import { useState, useContext, useEffect, useCallback, useMemo } from 'react';
+// import { AppContext } from '../Context';
 
-import Spinner from 'react-bootstrap/Spinner';
+import SharedAuth from '../components/SharedAuth';
+import { useState, useEffect } from 'react';
+
+import SubmitButton from '../components/SubmitButton';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ResetPassword = () => {
@@ -24,9 +25,7 @@ const ResetPassword = () => {
 
   async function checkToken(token) {
     try {
-      const response = await axios.post(
-        `${API_URL}/check-reset-token/${token}`
-      );
+      await axios.post(`${API_URL}/check-reset-token/${token}`);
       // sessionStorage.setItem('token', response.data.token);
       // sessionStorage.setItem('user', response.data.user);
       // sessionStorage.setItem('avatar', response.data.avatar);
@@ -75,18 +74,11 @@ const ResetPassword = () => {
           {errors.login_password?.message}
         </Form.Control.Feedback>
 
-        <Button
-          variant="primary"
+        <SubmitButton
+          label="Submit Password"
+          loading={loadingButton}
           style={{ width: '100%', gridArea: 'submit' }}
-          type="submit"
-          disabled={loadingButton}
-        >
-          {loadingButton ? (
-            <Spinner as="span" animation="border" size="sm" role="status" />
-          ) : (
-            'Submit Password'
-          )}
-        </Button>
+        />
       </S.Form>
     </SharedAuth>
   );

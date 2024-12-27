@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
 import styled from 'styled-components';
-import Button from 'react-bootstrap/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
@@ -9,7 +8,7 @@ import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import SharedAuth from '../components/SharedAuth';
 import { AppContext } from '../Context';
-import Spinner from 'react-bootstrap/Spinner';
+import SubmitButton from '../components/SubmitButton';
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Login() {
@@ -23,12 +22,12 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      signup_name: 'tso',
-      signup_password_1: 'Sirw%+45',
-      signup_password_2: 'Sirw%+45',
-      signup_email: 'tsotne.meladze.usa@gmail.com',
-    },
+    // defaultValues: {
+    //   signup_name: 'tso',
+    //   signup_password_1: 'Sirw%+45',
+    //   signup_password_2: 'Sirw%+45',
+    //   signup_email: 'tsotne.meladze.usa@gmail.com',
+    // },
   });
 
   async function handleSignup(data) {
@@ -140,18 +139,12 @@ export default function Login() {
           {errors.signup_password_2?.message}
         </Form.Control.Feedback>
 
-        <Button
-          variant="primary"
+        <SubmitButton
+          label="Sign Up"
+          loading={loadingButton}
           style={{ width: '100%', gridArea: 'submit' }}
-          type="submit"
-          disabled={loadingButton}
-        >
-          {loadingButton ? (
-            <Spinner as="span" animation="border" size="sm" role="status" />
-          ) : (
-            'Sign Up'
-          )}
-        </Button>
+        />
+
         <p>
           have account? <Link to="/login">Log in</Link>
         </p>

@@ -3,10 +3,8 @@ import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
 import {
   useState,
-  useContext,
   useEffect,
-  /* useContext */ useCallback,
-  useMemo,
+  /* useContext */
 } from 'react';
 import { Icon } from 'leaflet';
 import { toast } from 'react-toastify';
@@ -15,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const MAP_PROVIDER = import.meta.env.VITE_MAP_PROVIDER;
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import CloseSVG from '../assets/bin.svg?react';
 import EditSVG from '../assets/edit.svg?react';
 

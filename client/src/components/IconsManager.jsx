@@ -13,6 +13,7 @@ import HexSvg from '../assets/hexadd.svg?react';
 import ReturnSvg from '../assets/return.svg?react';
 import NoContent from './NoContent';
 import Spinner from 'react-bootstrap/Spinner';
+import SubmitButton from '../components/SubmitButton';
 
 const IconsManager = () => {
   const token = sessionStorage.getItem('token');
@@ -131,24 +132,7 @@ const IconsManager = () => {
               required
             />
 
-            <Button
-              variant="primary"
-              style={{ width: '100%' }}
-              type="submit"
-              disabled={loadingButton}
-            >
-              {loadingButton ? (
-                <Spinner as="span" animation="border" size="sm" role="status" />
-              ) : (
-                'Upload Icon'
-              )}
-            </Button>
-
-            {/* <Button
-              style={{ width: '100%' }}
-              type="submit"
-              variant="primary"
-            ></Button> */}
+            <SubmitButton label="Upload Icon" loading={loadingButton} />
           </S.Form>
           <p>
             ჩამოტვირთე სტანდარტული

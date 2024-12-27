@@ -6,11 +6,11 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
 import PulseLoader from 'react-spinners/PulseLoader';
-import Spinner from 'react-bootstrap/Spinner';
-const API_URL = import.meta.env.VITE_API_URL;
 
+const API_URL = import.meta.env.VITE_API_URL;
+import SubmitButton from '../components/SubmitButton';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
+
 import Form from 'react-bootstrap/Form';
 import Dropdown from './Dropdown';
 import { useNavigate } from 'react-router-dom';
@@ -145,18 +145,11 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
           />
         </fieldset>
 
-        <Button
-          variant="primary"
+        <SubmitButton
+          label="Create Marker"
+          loading={loadingButton}
           style={{ width: '100%', gridArea: 'submit' }}
-          type="submit"
-          disabled={loadingButton}
-        >
-          {loadingButton ? (
-            <Spinner as="span" animation="border" size="sm" role="status" />
-          ) : (
-            'Create Marker'
-          )}
-        </Button>
+        />
 
         <Dropdown selectHandler={setSelectedIconID} />
         <Form.Control.Feedback type="invalid">

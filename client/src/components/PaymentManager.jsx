@@ -1,12 +1,12 @@
 import { useEffect, useState /* useContext */ } from 'react';
 //import { AppContext } from '../Context';
-import Button from 'react-bootstrap/Button';
-import axios from 'axios';
 
+import axios from 'axios';
+import SubmitButton from '../components/SubmitButton';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
-import Spinner from 'react-bootstrap/Spinner';
+
 const API_URL = import.meta.env.VITE_API_URL;
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
@@ -38,7 +38,7 @@ const PaymentManager = () => {
 
       setQnt('');
     } catch (error) {
-      toast.error(error.response.data);
+      toast.error(error.response.data.message);
     } finally {
       setLoadingButton(false);
     }
@@ -49,23 +49,12 @@ const PaymentManager = () => {
       <S.Form onSubmit={handleSubmit}>
         <Form.Control
           type="number"
+          required
           value={qnt}
           onChange={(e) => setQnt(e.target.value)}
           placeholder="10"
         />
-
-        <Button
-          variant="primary"
-          style={{ width: '100%' }}
-          type="submit"
-          disabled={loadingButton}
-        >
-          {loadingButton ? (
-            <Spinner as="span" animation="border" size="sm" role="status" />
-          ) : (
-            'Checkout'
-          )}
-        </Button>
+        <SubmitButton label="Checkout" loading={loadingButton} />
       </S.Form>
       <div>
         <p>გაზარდე მონიშვნების რაოდენობის ლიმიტი უსასრულოდ ❤</p>
@@ -100,12 +89,3 @@ S.Form = styled.form`
   gap: 10px;
   width: 100%;
 `;
-
-// S.LoaderContainer = styled.div`
-//   width: 100%;
-//   height: 100%;
-//   display: flex;
-//   flex-flow: row nowrap;
-//   justify-content: center;
-//   align-items: center;
-// `;

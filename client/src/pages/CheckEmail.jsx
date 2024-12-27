@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import SharedAuth from '../components/SharedAuth';
 import { AppContext } from '../Context';
 import { useContext, useEffect, useState } from 'react';
-import Spinner from 'react-bootstrap/Spinner';
-import Button from 'react-bootstrap/Button';
+import SubmitButton from '../components/SubmitButton';
 const API_URL = import.meta.env.VITE_API_URL;
 
 import { toast } from 'react-toastify';
@@ -44,25 +43,12 @@ const CheckEmail = () => {
           We&apos;ve sent you a confirmation email <span>({email})</span>.
           Please check your inbox to verify your account.
         </p>
-        <Button
-          variant="info"
-          onClick={resendHandler}
+        <SubmitButton
+          label="Resend"
+          color="info"
+          loading={loadingButton}
           style={{ marginTop: '20px', color: 'white' }}
-          type="submit"
-          disabled={loadingButton}
-        >
-          {loadingButton ? (
-            <Spinner
-              variant="light"
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-            />
-          ) : (
-            'Resend'
-          )}
-        </Button>
+        />
       </S.Container>
     </SharedAuth>
   );

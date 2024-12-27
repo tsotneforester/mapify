@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import styled from 'styled-components';
-import Button from 'react-bootstrap/Button';
+
 import { Link, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
@@ -9,8 +9,9 @@ import { toast } from 'react-toastify';
 import SharedAuth from '../components/SharedAuth';
 import { useRef } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
-import Spinner from 'react-bootstrap/Spinner';
+
 const API_URL = import.meta.env.VITE_API_URL;
+import SubmitButton from '../components/SubmitButton';
 
 const Login = () => {
   let [loadingButton, setLoadingButton] = useState(false);
@@ -46,7 +47,6 @@ const Login = () => {
     } catch (error) {
       if (error.response.data.message == 'check email for verification') {
         toast.success(`${error.response.data.message}`);
-        //TODO redirect to verification page
       } else {
         toast.error(`${error.response.data.message}`);
       }
@@ -91,19 +91,12 @@ const Login = () => {
           ref={recaptchaRef}
           sitekey="6LcccKEqAAAAAApe09zfARz-zs2Nf87tmGJ5Vo72"
         />
-        <Button
-          variant="primary"
+        <SubmitButton
+          label="Login"
+          loading={loadingButton}
           style={{ width: '100%', gridArea: 'submit' }}
-          type="submit"
-          disabled={loadingButton}
-        >
-          {loadingButton ? (
-            <Spinner as="span" animation="border" size="sm" role="status" />
-          ) : (
-            'Login'
-          )}
-        </Button>
-        {/*  //TODO export as component */}
+        />
+
         <S.Help>
           <Link to="/forgot-password">Forgot Password?</Link>
           <Link to="/signup">Sign up</Link>

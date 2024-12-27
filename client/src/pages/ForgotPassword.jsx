@@ -1,15 +1,15 @@
 import axios from 'axios';
 import styled from 'styled-components';
-import Button from 'react-bootstrap/Button';
+
 import { Link, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import SharedAuth from '../components/SharedAuth';
 import { useState } from 'react';
-import Spinner from 'react-bootstrap/Spinner';
-const API_URL = import.meta.env.VITE_API_URL;
 
+const API_URL = import.meta.env.VITE_API_URL;
+import SubmitButton from '../components/SubmitButton';
 const ForgotPassword = () => {
   const navigate = useNavigate();
   let [loadingButton, setLoadingButton] = useState(false);
@@ -57,18 +57,8 @@ const ForgotPassword = () => {
           {errors.login_email?.message}
         </Form.Control.Feedback>
 
-        <Button
-          variant="primary"
-          style={{ width: '100%', gridArea: 'submit' }}
-          type="submit"
-          disabled={loadingButton}
-        >
-          {loadingButton ? (
-            <Spinner as="span" animation="border" size="sm" role="status" />
-          ) : (
-            'Reset Password'
-          )}
-        </Button>
+        <SubmitButton label="Reset Password" loading={loadingButton} />
+
         <Link to="/login">Back to login</Link>
       </S.Form>
     </SharedAuth>

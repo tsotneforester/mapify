@@ -9,6 +9,7 @@
 *.code-workspace
 /.prettierignore
 **/dist
+**/ASSETS
 **/node_modules
 *.htmlhintrc
 *.vscode

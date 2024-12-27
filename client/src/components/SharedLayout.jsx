@@ -1,9 +1,9 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
+import ConfirmationModal from '../components/ConfirmationModal';
 import UserHomeSvg from '../assets/userhome.svg?react';
 import SignoutSvg from '../assets/signout.svg?react';
 import NavbarSvg from '../assets/navbar.svg?react';
@@ -15,12 +15,23 @@ const SharedLayout = () => {
   const location = useLocation();
   const user = sessionStorage.getItem('user');
   const avatar = sessionStorage.getItem('avatar');
-
+  const navigate = useNavigate();
   const [extended, setExtended] = useState(false);
   const [showModalNav, setshowModalNav] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   // Define routes where the Navbar should not appear
   const excludedRoutes = ['/login', '/signup'];
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleConfirm = () => {
+    sessionStorage.clear();
+    navigate('/login');
+
+    handleCloseModal();
+  };
 
   return (
     <>
@@ -61,13 +72,23 @@ const SharedLayout = () => {
                 <p>{user}</p>
               </S.User1>
 
-              <S.NavLink to="/signout">
+              <S.NavLink
+                onClick={() => {
+                  setIsModalOpen(true);
+                  console.log('hi');
+                }}
+              >
                 <SignoutIcon title="logout" />
                 <p>Logout</p>
               </S.NavLink>
-              {/* //TODO fix blanck page */}
             </footer>
           </S.Navbar>
+          {isModalOpen && (
+            <ConfirmationModal
+              onClose={handleCloseModal}
+              onConfirm={handleConfirm}
+            />
+          )}
         </>
       )}
       <main>

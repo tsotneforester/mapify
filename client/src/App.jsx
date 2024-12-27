@@ -3,27 +3,24 @@ import Home from './pages/Home';
 import styled from 'styled-components';
 import MyMap from './pages/MyMap';
 import { ToastContainer } from 'react-toastify';
-
 // import HomeSvg from './assets/home.svg?react';
 // import UserHomeSvg from './assets/userhome.svg?react';
 import ProtectedRoute from './components/ProtectedRoute';
 
 import { jwtDecode } from 'jwt-decode';
 import Signout from './pages/Signout';
-
 import SharedLayout from './components/SharedLayout';
-
 import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import EditMarker from './pages/EditMarker';
-import NotFound from './components/NotFound';
-import Holy from './pages/Holy';
+
 import CheckEmail from './pages/CheckEmail';
 import VerifyUser from './pages/VerifyUser';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import ProcessPayment from './pages/ProcessPayment';
+import PageNotFound from './pages/PageNotFound';
 
 // import Payment from './pages/Payment';
 
@@ -66,7 +63,7 @@ const App = () => {
         <Route path="/processing" element={<ProcessPayment />} />
         {/* <Route path="/payment" element={<Payment />} /> */}
         {/* <Route path="/reset/:token" element={<ResetPassword />} /> */}
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<PageNotFound />} />
         <Route
           path="/edit/:id"
           element={
@@ -85,53 +82,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-          {/* <Route
-            path="/mymap"
-            element={
-              <ProtectedRoute>
-                <MyMap />
-              </ProtectedRoute>
-            }
-          /> */}
-          <Route
-            path="/holy"
-            element={
-              <ProtectedRoute>
-                <Holy />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/signout"
-            element={
-              <ProtectedRoute>
-                <Signout />
-              </ProtectedRoute>
-            }
-          />
-          {/* <Route
-            path="/payment"
-            element={
-              <ProtectedRoute>
-                <Payment />
-              </ProtectedRoute>
-            }
-          /> */}
-          {/* <Route
-            path="/edit/:id"
-            element={
-              <ProtectedRoute>
-                <EditMarker />
-              </ProtectedRoute>
-            }
-          /> */}
         </Route>
-
-        {/* <Route path="/signout" element={<Signout />} /> */}
-
-        {/* <Route path="/" element={<Home />} /> */}
-        {/* <Route path="/mymap" element={<MyMap />} /> */}
-        {/* <Route path="/dropdown" element={<Dropdown />} /> */}
       </Routes>
     </Router>
   );
