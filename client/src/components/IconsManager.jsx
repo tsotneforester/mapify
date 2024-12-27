@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import Icon from './Icon';
 import { toast } from 'react-toastify';
@@ -12,7 +11,6 @@ import Form from 'react-bootstrap/Form';
 import HexSvg from '../assets/hexadd.svg?react';
 import ReturnSvg from '../assets/return.svg?react';
 import NoContent from './NoContent';
-import Spinner from 'react-bootstrap/Spinner';
 import SubmitButton from '../components/SubmitButton';
 
 const IconsManager = () => {
@@ -49,7 +47,7 @@ const IconsManager = () => {
     const token = sessionStorage.getItem('token');
     try {
       e.preventDefault();
-      let response = await axios.delete(`${API_URL}/api/icons/${id}`, {
+    await axios.delete(`${API_URL}/api/icons/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

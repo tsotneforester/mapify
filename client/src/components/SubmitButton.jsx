@@ -7,9 +7,16 @@ export default function SubmitButton({
   color = 'primary',
   loading,
   style = { width: '100%' },
+  handler,
 }) {
   return (
-    <Button variant={color} style={style} type="submit" disabled={loading}>
+    <Button
+      onClick={handler}
+      variant={color}
+      style={style}
+      type="submit"
+      disabled={loading}
+    >
       {loading ? (
         <Spinner as="span" animation="border" size="sm" role="status" />
       ) : (

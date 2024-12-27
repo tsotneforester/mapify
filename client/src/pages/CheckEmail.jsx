@@ -44,6 +44,7 @@ const CheckEmail = () => {
           Please check your inbox to verify your account.
         </p>
         <SubmitButton
+          handler={resendHandler}
           label="Resend"
           color="info"
           loading={loadingButton}

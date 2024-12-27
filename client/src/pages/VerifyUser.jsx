@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL;
@@ -14,7 +14,7 @@ const VerifyUser = () => {
   async function verifyToken() {
     try {
       console.log(`${API_URL}/confirm/${jwt}`);
-      const response = await axios.post(`${API_URL}/confirm/${jwt}`);
+      await axios.post(`${API_URL}/confirm/${jwt}`);
 
       //navigate('/check-email'); // Redirect to protected route
 

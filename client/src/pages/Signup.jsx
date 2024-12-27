@@ -22,12 +22,12 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    // defaultValues: {
-    //   signup_name: 'tso',
-    //   signup_password_1: 'Sirw%+45',
-    //   signup_password_2: 'Sirw%+45',
-    //   signup_email: 'tsotne.meladze.usa@gmail.com',
-    // },
+    defaultValues: {
+      signup_name: 'tso',
+      signup_password_1: 'Sirw%+45',
+      signup_password_2: 'Sirw%+45',
+      signup_email: 'tsotne.meladze.usa@gmail.com',
+    },
   });
 
   async function handleSignup(data) {

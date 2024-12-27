@@ -1,8 +1,7 @@
-import React from 'react';
-import { useState, useContext, useEffect, useCallback, useMemo } from 'react';
+import { useEffect } from 'react';
 
 import { jwtDecode } from 'jwt-decode';
-import { BrowserRouter, Routes, Route, NavLink, Link, useNavigate, Navigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
   const token = sessionStorage.getItem('token');
@@ -24,13 +23,18 @@ const ProtectedRoute = ({ children }) => {
 };
 
 export default ProtectedRoute;
-
 function isTokenExpired(token) {
+  if (!token) {
+    return true; // Return true if the token is not provided
+  }
+
   try {
-    const decoded = jwtDecode(token);
-    const currentTime = Date.now() / 1000; // Current time in seconds
-    return decoded.exp < currentTime; // Returns true if the token is expired
+    const { exp } = jwtDecode(token);
+    const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+
+    return exp < currentTime; // Returns true if the token is expired
   } catch (error) {
-    return true; // Invalid token
+    console.error('Token decoding failed:', error);
+    return true; // Return true for invalid tokens
   }
 }

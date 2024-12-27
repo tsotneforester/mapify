@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import axios from 'axios';
-import { useState, useContext, useEffect, useCallback, useMemo } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { AppContext } from '../Context';
-import { useLocation } from 'react-router-dom';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -11,13 +11,11 @@ import { useParams } from 'react-router-dom';
 
 import DefaultMap from '../components/DefaultMap';
 import Modal from '../components/Modal';
-import MarkerManager from '../components/MarkerManager';
-import Dropdown from '../components/Dropdown';
+
 const API_URL = import.meta.env.VITE_API_URL;
 import { useForm } from 'react-hook-form';
 
 const EditMarker = () => {
-  const token = sessionStorage.getItem('token');
   const navigate = useNavigate();
   const {
     register,
@@ -27,17 +25,13 @@ const EditMarker = () => {
   } = useForm();
 
   const [markers, setMarkers] = useState();
-  const [icons, setIcons] = useState([]);
-  const [selectedIconID, setSelectedIconID] = useState('');
+  const [setIcons] = useState([]);
+
   const [coords, setCoords] = useState({
     lat: '',
     lng: '',
   });
   let { id } = useParams();
-
-  const location = useLocation();
-
-  let params = new URLSearchParams(location.search);
 
   // const context = useContext(AppContext);
 
@@ -95,16 +89,6 @@ const EditMarker = () => {
       //   console.log(`${key}:`, value);
       // }
 
-      let response = await axios.patch(
-        `${API_URL}/api/marker/${id}`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
       // toast.success(`${response.data.data.name} added`);
       setIsModalOpened((e) => !e);
       // fetchMyMarkers();
@@ -113,7 +97,7 @@ const EditMarker = () => {
         lng: '',
       });
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       // toast.error(`${error.response.data.error}`);
     } finally {
       navigate('/mymap');
@@ -121,10 +105,6 @@ const EditMarker = () => {
   }
 
   useEffect(() => {
-    // setCoords({
-    //   lat: params.get('coords').split(',')[0],
-    //   lng: params.get('coords').split(',')[1],
-    // });
     fetchMarker();
     fetchIcons();
     setIsModalOpened((e) => !e);
@@ -218,10 +198,6 @@ S.Container = styled.div`
 `;
 
 S.Form = styled.form`
-  /* display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-start;
-  align-items: flex-start;*/
   gap: 10px;
 
   display: grid;
