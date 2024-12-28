@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Icon from './Icon';
 import { toast } from 'react-toastify';
@@ -36,18 +36,17 @@ const IconsManager = () => {
       let { data: result } = response.data;
       setData(result);
     } catch (error) {
-      toast.error('Error fetching markers:', error);
+      toast.error(`${error.response.data.message}`);
     } finally {
       setLoading(false);
     }
   }
-  fetchMyIcons();
 
   async function handleDelete(e, id) {
     const token = sessionStorage.getItem('token');
     try {
       e.preventDefault();
-    await axios.delete(`${API_URL}/api/icons/${id}`, {
+      await axios.delete(`${API_URL}/api/icons/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -77,13 +76,13 @@ const IconsManager = () => {
         },
       });
 
-      toast.success(response.data);
+      toast.success(response.data.message);
 
       setShowForm((e) => !e);
       setLoading(true);
       fetchMyIcons();
     } catch (error) {
-      toast.error(error.response.data);
+      toast.error(`${error.response.data.message}`);
     } finally {
       setName('');
       setFile(null);
@@ -95,6 +94,10 @@ const IconsManager = () => {
     const file = event.target.files[0];
     setFile(file);
   };
+
+  useEffect(() => {
+    fetchMyIcons();
+  }, []);
 
   return (
     <S.Container>

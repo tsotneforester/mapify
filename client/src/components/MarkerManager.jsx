@@ -41,7 +41,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
       let { data } = response.data;
       setBalance(data);
     } catch (error) {
-      console.error('Error fetching markers:', error);
+      toast.error(`${error.response.data.message}`);
     } finally {
       setLoading((e) => !e);
     }
@@ -91,6 +91,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
 
   useEffect(() => {
     fetchBalance();
+    //TODO if problem with token, logout
   }, []);
 
   return (
