@@ -18,7 +18,7 @@ const CheckEmail = () => {
   async function resendHandler() {
     setLoadingButton(true);
     try {
-      let response = await axios.post(`${API_URL}/resend/${email}`);
+      let response = await axios.post(`${API_URL}/api/resend/${email}`);
       toast.success(`${response.data.message}`);
     } catch (error) {
       toast.error(`${error.response.data.message}`);

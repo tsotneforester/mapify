@@ -24,7 +24,7 @@ const ForgotPassword = () => {
     let { login_email } = data;
     setLoadingButton(true);
     try {
-      const response = await axios.post(`${API_URL}/forgot-password`, {
+      const response = await axios.post(`${API_URL}/api/forgot-password`, {
         email: login_email,
       });
 

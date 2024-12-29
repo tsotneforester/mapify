@@ -13,8 +13,7 @@ const VerifyUser = () => {
 
   async function verifyToken() {
     try {
-      console.log(`${API_URL}/confirm/${jwt}`);
-      await axios.post(`${API_URL}/confirm/${jwt}`);
+      await axios.post(`${API_URL}/api/confirm/${jwt}`);
 
       //navigate('/check-email'); // Redirect to protected route
 

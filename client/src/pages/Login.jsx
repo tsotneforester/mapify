@@ -35,7 +35,7 @@ const Login = () => {
 
     let { login_email, login_password } = data;
     try {
-      const response = await axios.post(`${API_URL}/login`, {
+      const response = await axios.post(`${API_URL}/api/login`, {
         email: login_email,
         password: login_password,
         recaptchaToken,

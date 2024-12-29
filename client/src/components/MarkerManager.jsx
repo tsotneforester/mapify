@@ -66,7 +66,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
         console.log(`${key}:`, value);
       }
 
-      let response = await axios.post(`${API_URL}/api/marker`, formData, {
+      let response = await axios.post(`${API_URL}/api/markers`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,

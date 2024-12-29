@@ -50,7 +50,7 @@ export default function DefaultMap({
 
   const handleDelete = async (markerId) => {
     try {
-      await axios.delete(`${API_URL}/api/marker/${markerId}`, {
+      await axios.delete(`${API_URL}/api/markers/${markerId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
