@@ -11,6 +11,7 @@ import { useRef } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 const API_URL = import.meta.env.VITE_API_URL;
+const DEV_ENV = import.meta.env.VITE_DEV_ENV;
 import SubmitButton from '../components/SubmitButton';
 
 const Login = () => {
@@ -21,12 +22,14 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      login_password: 'Sirw%+45',
-      login_email: 'tsotne.meladze.usa@gmail.com',
-    },
-  });
+  } = useForm(
+    DEV_ENV && {
+      defaultValues: {
+        login_password: 'Sirw%+45',
+        login_email: 'tsotne.meladze.usa@gmail.com',
+      },
+    }
+  );
 
   async function handleLogin(data) {
     setLoadingButton(true);

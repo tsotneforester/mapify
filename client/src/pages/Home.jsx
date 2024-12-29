@@ -78,7 +78,7 @@ export default function Home() {
           zoom={8}
           data={markers}
           editable={true}
-          forceRender={() => fetchMyMarkers()}
+          forceRender={() => fetchMarkers()}
           point={Object.values(coords)}
         >
           <MapEventsHandler />
@@ -112,7 +112,7 @@ export default function Home() {
       <Modal status={isModalOpened}>
         {activeModalContent == 'markers' && (
           <MarkerManager
-            fetchMyMarkers={() => fetchMyMarkers()}
+            fetchMyMarkers={() => fetchMarkers()}
             coordinates={{ coords, setCoords }}
           />
         )}

@@ -10,7 +10,7 @@ import SharedAuth from '../components/SharedAuth';
 import { AppContext } from '../Context';
 import SubmitButton from '../components/SubmitButton';
 const API_URL = import.meta.env.VITE_API_URL;
-
+const DEV_ENV = import.meta.env.VITE_DEV_ENV;
 export default function Login() {
   const navigate = useNavigate();
   let [loadingButton, setLoadingButton] = useState(false);
@@ -21,14 +21,16 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    // defaultValues: {
-    //   signup_name: 'tso',
-    //   signup_password_1: 'Sirw%+45',
-    //   signup_password_2: 'Sirw%+45',
-    //   signup_email: 'tsotne.meladze.usa@gmail.com',
-    // },
-  });
+  } = useForm(
+    DEV_ENV && {
+      defaultValues: {
+        signup_name: 'tso',
+        signup_password_1: 'Sirw%+45',
+        signup_password_2: 'Sirw%+45',
+        signup_email: 'tsotne.meladze.usa@gmail.com',
+      },
+    }
+  );
 
   async function handleSignup(data) {
     setLoadingButton(true);
