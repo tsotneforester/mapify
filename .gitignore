@@ -4,7 +4,6 @@
 *.psd
 *.ai
 *.ts
-*.zip
 *.fig
 *.code-workspace
 /.prettierignore
