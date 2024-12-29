@@ -1,6 +1,8 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 
+import DefaultUserAvatar from '../assets/default.jpg';
+
 import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ConfirmationModal from '../components/ConfirmationModal';
@@ -39,11 +41,7 @@ const SharedLayout = () => {
         <>
           <S.MiniNavbar>
             <S.User2>
-              <img
-                src={`${API_URL}/uploads/avatars/${avatar}`}
-                alt={user}
-                title={user}
-              />
+              <img src={avatar || DefaultUserAvatar} alt={user} title={user} />
               <p>{user}</p>
             </S.User2>
             <MenuIcon onClick={() => setshowModalNav((e) => !e)} />
@@ -53,8 +51,8 @@ const SharedLayout = () => {
             <main>
               <NavbarIcon onClick={() => setExtended((e) => !e)} />
               <S.NavLink to="/" onClick={() => setshowModalNav((e) => !e)}>
-                <UserHomeIcon title="mymap" />
-                <p>MyMap</p>
+                <UserHomeIcon title="home" />
+                <p>Home</p>
               </S.NavLink>
               {/* <S.NavLink to="/mymap" onClick={() => setshowModalNav((e) => !e)}>
                 <UserHomeIcon title="mymap" />
@@ -65,7 +63,8 @@ const SharedLayout = () => {
             <footer>
               <S.User1>
                 <img
-                  src={`${API_URL}/uploads/avatars/${avatar}`}
+                  src={avatar || DefaultUserAvatar}
+                  //IMPROVE role based anc user controlled
                   alt="tso"
                   title={user}
                 />
@@ -75,7 +74,6 @@ const SharedLayout = () => {
               <S.NavLink
                 onClick={() => {
                   setIsModalOpen(true);
-                  console.log('hi');
                 }}
               >
                 <SignoutIcon title="logout" />

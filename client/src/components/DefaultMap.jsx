@@ -1,15 +1,14 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
-import /* useContext */
-'react';
 import { Icon } from 'leaflet';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
 const API_URL = import.meta.env.VITE_API_URL;
-
 const MAP_PROVIDER = import.meta.env.VITE_MAP_PROVIDER;
+import marker from '../assets/leaflet/marker.png';
+import shadow from '../assets/leaflet/shadow.png';
 
 import CloseSVG from '../assets/bin.svg?react';
 
@@ -34,8 +33,8 @@ export default function DefaultMap({
   }
 
   let defaultIcon = new Icon({
-    iconUrl: '/marker-icon.png',
-    shadowUrl: '/marker-shadow.png',
+    iconUrl: marker,
+    shadowUrl: shadow,
 
     iconSize: [25, 41], // Default size of the icon [width, height]
     iconAnchor: [12, 41], // Point of the icon which will correspond to marker's location

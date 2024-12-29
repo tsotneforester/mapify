@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-
+import wind from '../assets/wind.png';
 export default function NoContent() {
   return (
     <S.Container>
       <h1>Nothing!!!</h1>
-      <img src="/wind.png" alt="No Content" />
+      <img src={wind} alt="No Content" />
       <p>your icons collection is empty</p>
     </S.Container>
   );

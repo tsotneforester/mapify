@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { version } from '../../package.json';
+import grassImg from '../assets/grass.png';
+import bg from '../assets/bg.png';
 
 const SharedAuth = ({ children }) => {
   return (
@@ -26,8 +28,7 @@ S.Container = styled.div`
   align-items: center;
   background-color: ${(prop) => prop.theme.body};
 
-  background-image: url('/bg1.png'), url('/bg2.svg');
-  background-image: url('/bg1.png'), url('/grass.png');
+  background-image: url(${bg}), url(${grassImg});
   background-repeat: repeat, repeat-x;
   background-position: 0% 0%, center 110%;
   background-size: auto, auto;
@@ -45,7 +46,6 @@ S.Heading = styled.div`
   h1 {
     font-size: 4rem;
 
-    
     text-shadow: 0 0 5px #ff005e, 0 0 10px #ff005e, 0 0 20px #ff005e,
       0 0 40px #ff005e, 0 0 80px #ff005e;
     animation: glow 1.5s infinite alternate;

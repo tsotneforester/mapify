@@ -1,14 +1,10 @@
 import { HashRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
-import Home from './pages/Home';
 import styled from 'styled-components';
-import MyMap from './pages/MyMap';
+import Home from './pages/Home';
 import { ToastContainer } from 'react-toastify';
 // import HomeSvg from './assets/home.svg?react';
 // import UserHomeSvg from './assets/userhome.svg?react';
 import ProtectedRoute from './components/ProtectedRoute';
-
-import { jwtDecode } from 'jwt-decode';
-import Signout from './pages/Signout';
 import SharedLayout from './components/SharedLayout';
 import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/Login';
@@ -78,7 +74,7 @@ const App = () => {
             path="/"
             element={
               <ProtectedRoute>
-                <MyMap />
+                <Home />
               </ProtectedRoute>
             }
           />
@@ -88,15 +84,15 @@ const App = () => {
   );
 };
 
-function isTokenExpired(token) {
-  try {
-    const decoded = jwtDecode(token);
-    const currentTime = Date.now() / 1000; // Current time in seconds
-    return decoded.exp < currentTime; // Returns true if the token is expired
-  } catch (error) {
-    return true; // Invalid token
-  }
-}
+// function isTokenExpired(token) {
+//   try {
+//     const decoded = jwtDecode(token);
+//     const currentTime = Date.now() / 1000; // Current time in seconds
+//     return decoded.exp < currentTime; // Returns true if the token is expired
+//   } catch (error) {
+//     return true; // Invalid token
+//   }
+// }
 
 const S = {};
 S.Navbar = styled.nav`
