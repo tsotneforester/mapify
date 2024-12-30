@@ -41,14 +41,16 @@ const ResetPassword = () => {
     let { login_password } = data;
     setLoadingButton(true);
     try {
-      await axios.post(`${API_URL}/api/reset/${token}`, {
+      let response = await axios.post(`${API_URL}/api/reset/${token}`, {
         password: login_password,
       });
-      // sessionStorage.setItem('token', response.data.token);
-      // sessionStorage.setItem('user', response.data.user);
-      // sessionStorage.setItem('avatar', response.data.avatar);
-      navigate('/login'); // Redirect to protected route
-      toast.success(`password updated`);
+
+      sessionStorage.setItem('token', response.data.token);
+      sessionStorage.setItem('user', response.data.user);
+      sessionStorage.setItem('avatar', response.data.avatar);
+      navigate('/'); // Redirect to protected route
+
+      toast.success(response.data.message);
     } catch (error) {
       toast.error(`${error.response.data.message}`);
     } finally {
