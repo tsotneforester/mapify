@@ -19,7 +19,7 @@ const ProcessPayment = () => {
 
   async function verifyToken() {
     try {
-      await axios(`${API_URL}/api/mymap`, {
+      await axios(`${API_URL}/api/markers`, {
         headers: {
           Authorization: `Bearer ${token}`, // Include the token in the header
         },

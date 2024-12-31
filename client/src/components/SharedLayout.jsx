@@ -11,8 +11,6 @@ import SignoutSvg from '../assets/signout.svg?react';
 import NavbarSvg from '../assets/navbar.svg?react';
 import MenuSvg from '../assets/Menu.svg?react';
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 const SharedLayout = () => {
   const location = useLocation();
   const user = sessionStorage.getItem('user');
@@ -54,21 +52,17 @@ const SharedLayout = () => {
                 <UserHomeIcon title="home" />
                 <p>Home</p>
               </S.NavLink>
-              {/* <S.NavLink to="/mymap" onClick={() => setshowModalNav((e) => !e)}>
-                <UserHomeIcon title="mymap" />
-
-                <p>Mymap</p>
-              </S.NavLink> */}
             </main>
             <footer>
               <S.User1>
-                <img
-                  src={avatar || DefaultUserAvatar}
-                  //IMPROVE role based anc user controlled
-                  alt="tso"
-                  title={user}
-                />
-                <p>{user}</p>
+                <S.NavLink to="user">
+                  <img
+                    src={avatar || DefaultUserAvatar}
+                    alt="tso"
+                    title={user}
+                  />
+                  <p>{user}</p>
+                </S.NavLink>
               </S.User1>
 
               <S.NavLink

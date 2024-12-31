@@ -17,6 +17,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import ProcessPayment from './pages/ProcessPayment';
 import PageNotFound from './pages/PageNotFound';
+import User from './pages/User';
 
 // import Payment from './pages/Payment';
 
@@ -60,6 +61,14 @@ const App = () => {
         {/* <Route path="/payment" element={<Payment />} /> */}
         {/* <Route path="/reset/:token" element={<ResetPassword />} /> */}
         <Route path="*" element={<PageNotFound />} />
+        <Route
+          path="/user"
+          element={
+            <ProtectedRoute>
+              <User />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/edit/:id"
           element={

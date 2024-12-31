@@ -39,7 +39,7 @@ const EditMarker = () => {
 
   async function fetchMarker() {
     try {
-      const response = await axios(`${API_URL}/api/mymap/${id}`);
+      const response = await axios(`${API_URL}/api/markers/${id}`);
       let contactData = response.data.data;
 
       setMarkers(contactData);
@@ -100,7 +100,7 @@ const EditMarker = () => {
       console.log(error);
       // toast.error(`${error.response.data.error}`);
     } finally {
-      navigate('/mymap');
+      navigate('/');
     }
   }
 
