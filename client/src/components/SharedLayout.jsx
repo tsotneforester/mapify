@@ -39,8 +39,10 @@ const SharedLayout = () => {
         <>
           <S.MiniNavbar>
             <S.User2>
-              <img src={avatar || DefaultUserAvatar} alt={user} title={user} />
-              <p>{user}</p>
+              <S.NavLink to="user">
+                <img src={avatar || DefaultUserAvatar} alt="tso" title={user} />
+                <p>{user}</p>
+              </S.NavLink>
             </S.User2>
             <MenuIcon onClick={() => setshowModalNav((e) => !e)} />
           </S.MiniNavbar>

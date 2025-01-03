@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useState, useContext, useEffect, useCallback, useMemo } from 'react';
 import ContentLoader from 'react-content-loader';
-const API_URL = import.meta.env.VITE_API_URL;
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import mapbg from '../assets/mappattern.png';
@@ -69,7 +68,7 @@ S.Container = styled.div`
   background-color: #abc5ab;
   min-height: 100vh;
   min-height: 100svh;
-
+  padding: 10px;
   background-image: url(${mapbg});
   background-repeat: repeat; //repeat-y/repeat-x/no-repeat/space/round
   background-position: 0% 0%; // center/bottom/left/right/(%, px)

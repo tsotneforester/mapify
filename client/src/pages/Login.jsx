@@ -34,7 +34,6 @@ const Login = () => {
   async function handleLogin(data) {
     setLoadingButton(true);
     const recaptchaToken = recaptchaRef.current.getValue();
-    //recaptchaRef.current.reset();
 
     let { login_email, login_password } = data;
     try {
@@ -55,6 +54,7 @@ const Login = () => {
       }
     } finally {
       setLoadingButton(false);
+      recaptchaRef.current.reset();
     }
   }
 
