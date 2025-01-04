@@ -7,8 +7,6 @@ import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import SharedAuth from '../components/SharedAuth';
-import { useRef } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const DEV_ENV = import.meta.env.VITE_DEV_ENV;
@@ -17,7 +15,7 @@ import SubmitButton from '../components/SubmitButton';
 const Login = () => {
   let [loadingButton, setLoadingButton] = useState(false);
   const navigate = useNavigate();
-  const recaptchaRef = useRef();
+
   const {
     register,
     handleSubmit,
@@ -35,7 +33,6 @@ const Login = () => {
 
   async function handleLogin(data) {
     setLoadingButton(true);
-    const recaptchaToken = recaptchaRef.current.getValue();
 
     let { login_email, login_password } = data;
     try {
@@ -44,7 +41,6 @@ const Login = () => {
         {
           email: login_email,
           password: login_password,
-          recaptchaToken,
         },
         { withCredentials: true }
       );
@@ -64,7 +60,6 @@ const Login = () => {
       }
     } finally {
       setLoadingButton(false);
-      recaptchaRef.current.reset();
     }
   }
 
@@ -100,10 +95,7 @@ const Login = () => {
         <Form.Control.Feedback type="invalid">
           {errors.login_password?.message}
         </Form.Control.Feedback>
-        <ReCAPTCHA
-          ref={recaptchaRef}
-          sitekey="6LcccKEqAAAAAApe09zfARz-zs2Nf87tmGJ5Vo72"
-        />
+
         <SubmitButton
           label="Login"
           loading={loadingButton}

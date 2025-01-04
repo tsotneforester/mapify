@@ -40,7 +40,7 @@ const SharedLayout = () => {
         <>
           <S.MiniNavbar>
             <S.User2>
-              <S.NavLink to="user">
+              <S.NavLink /* to="user" */>
                 <img src={avatar || DefaultUserAvatar} alt="tso" title={user} />
                 <p>{user}</p>
               </S.NavLink>
@@ -58,7 +58,7 @@ const SharedLayout = () => {
             </main>
             <footer>
               <S.User1>
-                <S.NavLink to="user">
+                <S.NavLink /* to="user" */>
                   <img
                     src={avatar || DefaultUserAvatar}
                     alt="tso"
