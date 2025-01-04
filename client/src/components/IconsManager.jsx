@@ -14,7 +14,6 @@ import NoContent from './NoContent';
 import SubmitButton from '../components/SubmitButton';
 
 const IconsManager = () => {
-  const token = sessionStorage.getItem('token');
   const [data, setData] = useState([]);
 
   let [loading, setLoading] = useState(true);
@@ -29,9 +28,7 @@ const IconsManager = () => {
     // setLoading(true);
     try {
       const response = await axios(`${API_URL}/api/myicons`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the header
-        },
+        withCredentials: true,
       });
       let { data: result } = response.data;
       setData(result);
@@ -43,13 +40,10 @@ const IconsManager = () => {
   }
 
   async function handleDelete(e, id) {
-    const token = sessionStorage.getItem('token');
     try {
       e.preventDefault();
       await axios.delete(`${API_URL}/api/icons/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        withCredentials: true,
       });
       toast.success('Icon deleted');
 
@@ -62,7 +56,6 @@ const IconsManager = () => {
   }
 
   const handleSubmit = async (e) => {
-    const token = sessionStorage.getItem('token');
     setLoadingButton(true);
     try {
       e.preventDefault();
@@ -71,9 +64,7 @@ const IconsManager = () => {
       formData.append('name', name);
 
       let response = await axios.post(`${API_URL}/api/icons`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        withCredentials: true,
       });
 
       toast.success(response.data.message);

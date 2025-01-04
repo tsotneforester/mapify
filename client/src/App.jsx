@@ -57,7 +57,14 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/verify/:jwt" element={<VerifyUser />} />
         <Route path="/reset/:token" element={<ResetPassword />} />
-        <Route path="/processing" element={<ProcessPayment />} />
+        <Route
+          path="/processing"
+          element={
+            <ProtectedRoute>
+              <ProcessPayment />
+            </ProtectedRoute>
+          }
+        />
         {/* <Route path="/payment" element={<Payment />} /> */}
         {/* <Route path="/reset/:token" element={<ResetPassword />} /> */}
         <Route path="*" element={<PageNotFound />} />

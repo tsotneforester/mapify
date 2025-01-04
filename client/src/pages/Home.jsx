@@ -23,12 +23,9 @@ export default function Home() {
   const [activeModalContent, setActiveModalContent] = useState();
 
   async function fetchMarkers() {
-    const token = sessionStorage.getItem('token');
     try {
       const response = await axios(`${API_URL}/api/markers`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the header
-        },
+        withCredentials: true,
       });
       setMarkers(response.data.data);
     } catch (error) {

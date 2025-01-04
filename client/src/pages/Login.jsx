@@ -31,21 +31,31 @@ const Login = () => {
     }
   );
 
+  axios.defaults.withCredentials = true;
+
   async function handleLogin(data) {
     setLoadingButton(true);
     const recaptchaToken = recaptchaRef.current.getValue();
 
     let { login_email, login_password } = data;
     try {
-      const response = await axios.post(`${API_URL}/api/login`, {
-        email: login_email,
-        password: login_password,
-        recaptchaToken,
-      });
-      sessionStorage.setItem('token', response.data.token);
+      const response = await axios.post(
+        `${API_URL}/api/login`,
+        {
+          email: login_email,
+          password: login_password,
+          recaptchaToken,
+        },
+        { withCredentials: true }
+      );
+
       sessionStorage.setItem('user', response.data.user);
       sessionStorage.setItem('avatar', response.data.avatar);
       navigate('/'); // Redirect to protected route
+
+      // await axios.get(`${API_URL}/get-cookie`, {
+      //   withCredentials: true,
+      // });
     } catch (error) {
       if (error.response.data.message == 'check email for verification') {
         toast.success(`${error.response.data.message}`);

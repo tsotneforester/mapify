@@ -13,17 +13,13 @@ const ProcessPayment = () => {
     return new URLSearchParams(useLocation().search);
   };
   const query = useQuery();
-  const token = query.get('token');
+  // const token = query.get('token');
 
   const navigate = useNavigate();
 
   async function verifyToken() {
     try {
-      await axios(`${API_URL}/api/markers`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the header
-        },
-      });
+      //await axios(`${API_URL}/api/markers`, {});
 
       navigate('/'); // Redirect to protected route
 

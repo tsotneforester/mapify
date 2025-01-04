@@ -12,7 +12,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
 
 const PaymentManager = () => {
-  const token = sessionStorage.getItem('token');
   let [loadingButton, setLoadingButton] = useState(false);
 
   const [qnt, setQnt] = useState('');
@@ -26,11 +25,9 @@ const PaymentManager = () => {
 
       let response = await axios.post(
         `${API_URL}/api/payment`,
-        { qnt, token },
+        { qnt },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         }
       );
 

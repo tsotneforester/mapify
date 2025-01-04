@@ -16,7 +16,6 @@ import Dropdown from './Dropdown';
 import { useNavigate } from 'react-router-dom';
 
 const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
-  const token = sessionStorage.getItem('token');
   const navigate = useNavigate();
   let { coords, setCoords } = coordinates;
   let [loadingButton, setLoadingButton] = useState(false);
@@ -31,12 +30,9 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
   } = useForm();
 
   async function fetchBalance() {
-    const token = sessionStorage.getItem('token');
     try {
       const response = await axios(`${API_URL}/api/balance`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the header
-        },
+        withCredentials: true,
       });
       let { data } = response.data;
       setBalance(data);
@@ -69,8 +65,8 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
       let response = await axios.post(`${API_URL}/api/markers`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
         },
+        withCredentials: true,
       });
       toast.success(`${response.data.data.name} added`);
       setIsModalOpened((e) => !e);

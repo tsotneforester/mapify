@@ -7,15 +7,11 @@ const useFetchIcons = (endpoint) => {
   const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
 
-  const token = sessionStorage.getItem('token');
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios(`${API_URL}/${endpoint}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         });
 
         let { data: icons } = response.data;

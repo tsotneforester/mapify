@@ -54,12 +54,9 @@ const EditMarker = () => {
     }
   }
   async function fetchIcons() {
-    const token = sessionStorage.getItem('token');
     try {
       const response = await axios(`${API_URL}/api/icons`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the header
-        },
+        withCredentials: true,
       });
       let { data } = response.data;
       setIcons(data);

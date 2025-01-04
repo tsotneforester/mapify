@@ -11,7 +11,6 @@ const User = () => {
   const [userData, setUserData] = useState({});
 
   async function fetchUserInfo() {
-    const token = sessionStorage.getItem('token');
     try {
       setTimeout(() => {
         setUserData({ name: 'tsotne', email: 'sada@fsdf', balance: '10/20' });

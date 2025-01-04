@@ -45,15 +45,9 @@ export default function DefaultMap({
     shadowAnchor: [12, 41],
   });
 
-  const token = sessionStorage.getItem('token');
-
   const handleDelete = async (markerId) => {
     try {
-      await axios.delete(`${API_URL}/api/markers/${markerId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.delete(`${API_URL}/api/markers/${markerId}`, {});
       forceRender();
       toast.success('Marker Deleted');
     } catch (error) {
