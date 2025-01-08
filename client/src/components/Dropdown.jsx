@@ -3,22 +3,34 @@ import ArrowSvg from '../assets/arrow.svg?react';
 import styled from 'styled-components';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import useFetchIcons from '../hooks/useFetchIcons';
+import api from '../axiosInterseptor';
 
-export default function Dropdown({
-  /* data, */ selectHandler,
-  selected = null,
-}) {
+export default function Dropdown({ selectHandler, selected = null }) {
   const [isOptionBoxVisible, setIsOptionBoxVisible] = useState(false);
   const [activeId, setActiveId] = useState(selected);
   const [searchString, setSearchString] = useState('');
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const { data, loading } = useFetchIcons('api/icons');
+  const fetchIcons = async () => {
+    setLoading((e) => !e);
+    try {
+      const response = await api(`/api/icons`);
 
-  const filteredData = data.filter((iconName) =>
-    iconName.name.toLowerCase().includes(searchString)
+      let { data: icons } = response.data;
+
+      setData(icons);
+      setLoading((e) => !e);
+    } catch (err) {
+      console.error('Error fetching markers:', err);
+    }
+  };
+
+  const filteredData = data.filter((icon) =>
+    icon.name.toLowerCase().includes(searchString)
   );
 
-  const activeIcon = data.find((icon) => icon.id === activeId);
+  const activeIcon = data.find((icon) => icon._id === activeId);
 
   const handleChange = (event) => {
     setSearchString(event.target.value);
@@ -30,13 +42,15 @@ export default function Dropdown({
         <S.Select
           onClick={() => {
             setIsOptionBoxVisible((e) => !e);
-            // fetchAllIcons();
+            if (data.length == 0) {
+              fetchIcons();
+            }
           }}
         >
           <div>
             {activeIcon ? (
               <>
-                <img src={activeIcon.url} alt={activeIcon.name} />
+                <img src={activeIcon.imageUrl} alt={activeIcon.name} />
                 <p style={{ color: activeId ? 'black' : '#999' }}>
                   {activeIcon.name}
                 </p>
@@ -69,20 +83,20 @@ export default function Dropdown({
               ) : filteredData.length == 0 ? (
                 'Icon list is empty'
               ) : (
-                filteredData.map((option) => {
-                  const { name, url, id } = option;
+                filteredData.map((icon) => {
+                  const { name, imageUrl, _id } = icon;
                   return (
                     <S.Option
-                      $active={name == activeId}
+                      $active={_id == activeId}
                       onClick={() => {
                         setIsOptionBoxVisible((e) => !e);
-                        setActiveId(id);
-                        selectHandler(id);
+                        setActiveId(_id);
+                        selectHandler(_id);
                         setSearchString('');
                       }}
-                      key={id}
+                      key={_id}
                     >
-                      <img src={url} alt={name} />
+                      <img src={imageUrl} alt={name} />
                       <p>{name}</p>
                     </S.Option>
                   );
@@ -162,7 +176,7 @@ S.Option = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
-  background-color: ${(prop) => (prop.$active ? 'red' : 'transparent')};
+  background-color: ${(prop) => (prop.$active ? '#abc5ab' : 'transparent')};
   cursor: pointer;
 
   &:hover {

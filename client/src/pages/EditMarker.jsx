@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import axios from 'axios';
+import api from '../axiosInterseptor';
 import { useState, useContext, useEffect } from 'react';
 import { AppContext } from '../Context';
 
@@ -39,7 +39,7 @@ const EditMarker = () => {
 
   async function fetchMarker() {
     try {
-      const response = await axios(`${API_URL}/api/markers/${id}`);
+      const response = await api(`/api/markers/${id}`);
       let contactData = response.data.data;
 
       setMarkers(contactData);
@@ -55,9 +55,7 @@ const EditMarker = () => {
   }
   async function fetchIcons() {
     try {
-      const response = await axios(`${API_URL}/api/icons`, {
-        withCredentials: true,
-      });
+      const response = await api(`/api/icons`);
       let { data } = response.data;
       setIcons(data);
     } catch (error) {

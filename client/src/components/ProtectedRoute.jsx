@@ -1,23 +1,32 @@
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import axios from 'axios';
-const API_URL = import.meta.env.VITE_API_URL;
+import api from '../axiosInterseptor';
+
 import styled from 'styled-components';
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
+  // const refreshAccessToken = async () => {
+  //   try {
+  //     await api.post('/api/token'); // Call refresh endpoint
+  //     console.log('Access token refreshed');
+  //     return true;
+  //   } catch (error) {
+  //     console.error('Failed to refresh token:', error);
+  //     return false;
+  //   }
+  // };
+
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get(`${API_URL}/api/auth/verify`, {
-          withCredentials: true,
-        });
+        const response = await api.get(`/api/auth/verify`);
 
         if (response.data.success) {
           setTimeout(() => {
             setIsAuthenticated(true);
-          }, 1000);
+          }, 700);
         } else {
           setIsAuthenticated(false);
         }

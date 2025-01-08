@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../axiosInterseptor';
 import { useState } from 'react';
 import styled from 'styled-components';
 
@@ -8,7 +8,6 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import SharedAuth from '../components/SharedAuth';
 
-const API_URL = import.meta.env.VITE_API_URL;
 const DEV_ENV = import.meta.env.VITE_DEV_ENV;
 import SubmitButton from '../components/SubmitButton';
 
@@ -29,21 +28,15 @@ const Login = () => {
     }
   );
 
-  axios.defaults.withCredentials = true;
-
   async function handleLogin(data) {
     setLoadingButton(true);
 
     let { login_email, login_password } = data;
     try {
-      const response = await axios.post(
-        `${API_URL}/api/login`,
-        {
-          email: login_email,
-          password: login_password,
-        },
-        { withCredentials: true }
-      );
+      const response = await api.post(`/api/login`, {
+        email: login_email,
+        password: login_password,
+      });
 
       sessionStorage.setItem('user', response.data.user);
       sessionStorage.setItem('avatar', response.data.avatar);

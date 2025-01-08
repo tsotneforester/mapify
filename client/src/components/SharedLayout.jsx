@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../axiosInterseptor';
 import DefaultUserAvatar from '../assets/default.jpg';
 const API_URL = import.meta.env.VITE_API_URL;
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -28,7 +28,7 @@ const SharedLayout = () => {
 
   const handleConfirm = async () => {
     sessionStorage.clear();
-    await axios.post(`${API_URL}/api/auth/logout`, { withCredentials: true });
+    await api.post(`/api/auth/logout`);
     navigate('/login');
 
     handleCloseModal();
@@ -40,7 +40,7 @@ const SharedLayout = () => {
         <>
           <S.MiniNavbar>
             <S.User2>
-              <S.NavLink /* to="user" */>
+              <S.NavLink to="user">
                 <img src={avatar || DefaultUserAvatar} alt="tso" title={user} />
                 <p>{user}</p>
               </S.NavLink>
@@ -58,7 +58,7 @@ const SharedLayout = () => {
             </main>
             <footer>
               <S.User1>
-                <S.NavLink /* to="user" */>
+                <S.NavLink to="user">
                   <img
                     src={avatar || DefaultUserAvatar}
                     alt="tso"

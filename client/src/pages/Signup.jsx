@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../axiosInterseptor';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
@@ -40,7 +40,7 @@ export default function Login() {
       return toast.warning(`Passwords do not match`);
     }
     try {
-      await axios.post(`${API_URL}/api/signup`, {
+      await api.post(`/api/signup`, {
         email: signup_email,
         password: signup_password_1,
         passwordConfirm: signup_password_2,

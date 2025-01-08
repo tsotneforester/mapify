@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../axiosInterseptor';
 import styled from 'styled-components';
 
 import { useNavigate, useParams } from 'react-router-dom';
@@ -25,7 +25,7 @@ const ResetPassword = () => {
 
   async function checkToken(token) {
     try {
-      await axios.post(`${API_URL}/api/check-reset-token/${token}`);
+      await api.post(`/api/check-reset-token/${token}`);
       // sessionStorage.setItem('token', response.data.token);
       // sessionStorage.setItem('user', response.data.user);
       // sessionStorage.setItem('avatar', response.data.avatar);
@@ -41,7 +41,7 @@ const ResetPassword = () => {
     let { login_password } = data;
     setLoadingButton(true);
     try {
-      let response = await axios.post(`${API_URL}/api/reset/${token}`, {
+      let response = await api.post(`/api/reset/${token}`, {
         password: login_password,
       });
 

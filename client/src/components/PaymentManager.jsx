@@ -1,7 +1,6 @@
 import { useEffect, useState /* useContext */ } from 'react';
 //import { AppContext } from '../Context';
-
-import axios from 'axios';
+import api from '../axiosInterseptor';
 import SubmitButton from '../components/SubmitButton';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -23,13 +22,7 @@ const PaymentManager = () => {
     try {
       e.preventDefault();
 
-      let response = await axios.post(
-        `${API_URL}/api/payment`,
-        { qnt },
-        {
-          withCredentials: true,
-        }
-      );
+      let response = await api.post(`/api/payment`, { qnt });
 
       window.location.href = response.data.session;
 

@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
-const API_URL = import.meta.env.VITE_API_URL;
+import api from '../axiosInterseptor';
 import SharedAuth from '../components/SharedAuth';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +12,7 @@ const VerifyUser = () => {
 
   async function verifyToken() {
     try {
-      await axios.post(`${API_URL}/api/confirm/${jwt}`);
+      await api.post(`/api/confirm/${jwt}`);
 
       //navigate('/check-email'); // Redirect to protected route
 

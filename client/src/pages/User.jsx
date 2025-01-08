@@ -1,62 +1,175 @@
 import styled from 'styled-components';
-import axios from 'axios';
-import { useState, useContext, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ContentLoader from 'react-content-loader';
-import Skeleton from 'react-loading-skeleton';
+import api from '../axiosInterseptor';
 import 'react-loading-skeleton/dist/skeleton.css';
 import mapbg from '../assets/mappattern.png';
+import CameraSVG from '../assets/camera.svg?react';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const User = () => {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState({});
+  const hiddenFileInput = useRef(null);
+  const [file, setFile] = useState(null);
 
-  async function fetchUserInfo() {
+  const navigate = useNavigate();
+
+  async function fetchUser() {
     try {
-      setTimeout(() => {
-        setUserData({ name: 'tsotne', email: 'sada@fsdf', balance: '10/20' });
-        setLoading((e) => !e);
-      }, 2000);
-    } catch (error) {}
+      let response = await api(`/api/user`);
+      setUserData(response.data.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   }
+
   useEffect(() => {
-    fetchUserInfo();
+    fetchUser();
   }, []);
 
-  return (
-    <S.Container>
-      <ProfileCard>
-        <LeftSection>
-          <ProfileImage
-            src="https://via.placeholder.com/80"
-            alt="Profile Picture"
-          />
-          <Name>{userData.name || <Skeleton />}</Name>
-        </LeftSection>
+  useEffect(() => {
+    console.log('asdad');
+    if (file) {
+      updateUser();
+    }
+  }, [file]);
 
-        <RightSection>
+  async function updateUser() {
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append('avatar', file);
+
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+
+      let response = await api.patch(`/api/user`, formData);
+      fetchUser();
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleClick = () => {
+    hiddenFileInput.current.click(); // Trigger the hidden file input
+  };
+
+  const handleChange = (event) => {
+    const fileUploaded = event.target.files[0];
+    setFile(fileUploaded);
+  };
+
+  let { avatar, name, email, balance, markers, icons } = userData;
+  return (
+    <S.Container
+      onClick={() => {
+        navigate('/');
+      }}
+    >
+      <S.ProfileCard
+        onClick={
+          (e) => {
+            e.stopPropagation();
+          } // Prevent click from propagating to the container
+        }
+      >
+        <S.UpperSection>
           {loading ? (
-            <MyLoader />
+            <AvatarLoader />
           ) : (
-            <InfoSection>
-              <InfoText>
-                {<strong>Email: {userData.email}</strong> || <Skeleton />}
-              </InfoText>
-              <InfoText>
-                <strong>Phone:</strong> 98979989898
-              </InfoText>
-              <InfoText>
-                <strong>Marker Balance:</strong>
-                {userData.balance}
-              </InfoText>
-            </InfoSection>
+            <S.Avatar>
+              <ProfileImage src={avatar} alt={name} />
+
+              <S.EditAvatar onClick={handleClick}>
+                <S.CameraIcon />
+
+                <input
+                  type="file"
+                  name="avatar"
+                  ref={hiddenFileInput}
+                  onChange={handleChange}
+                  style={{ display: 'none' }} // Hide the default file input
+                />
+                <p>Edit</p>
+              </S.EditAvatar>
+
+              <Name>{name}</Name>
+            </S.Avatar>
           )}
-        </RightSection>
-      </ProfileCard>
+        </S.UpperSection>
+
+        <S.LowerSection>
+          <InfoSection>
+            <InfoText>
+              {<strong>Email:</strong>}
+              {loading ? <EmailLoader /> : <p>{email}</p>}
+            </InfoText>
+            <InfoText>
+              <strong>Balance:</strong>
+              {loading ? <NumberLoader /> : <p> {balance}</p>}
+            </InfoText>
+            <InfoText>
+              <strong>Markers:</strong>
+              {loading ? <NumberLoader /> : <p>{markers.length}</p>}
+            </InfoText>
+            <InfoText>
+              <strong>Icons:</strong>
+              {loading ? <NumberLoader /> : <p>{icons.length}</p>}
+            </InfoText>
+          </InfoSection>
+        </S.LowerSection>
+      </S.ProfileCard>
     </S.Container>
   );
 };
 
 export default User;
+
+const EmailLoader = (props) => (
+  <ContentLoader
+    speed={1}
+    width={160}
+    height={24}
+    backgroundColor="#cdc6c6"
+    foregroundColor="#9d9b9b"
+    {...props}
+  >
+    <rect x="0" y="0" rx="7" ry="7" width="160" height="24" />
+  </ContentLoader>
+);
+const NumberLoader = (props) => (
+  <ContentLoader
+    speed={1}
+    width={30}
+    height={24}
+    backgroundColor="#cdc6c6"
+    foregroundColor="#9d9b9b"
+    {...props}
+  >
+    <rect x="0" y="0" rx="7" ry="7" width="30" height="24" />
+  </ContentLoader>
+);
+
+const AvatarLoader = (props) => (
+  <ContentLoader
+    speed={1}
+    width={148}
+    height={200}
+    backgroundColor="#cdc6c6"
+    foregroundColor="#9d9b9b"
+    {...props}
+  >
+    <circle cx="74" cy="74" r="74" />
+    <rect x="0" y="160" rx="7" ry="7" width="148" height="34" />
+  </ContentLoader>
+);
 
 const S = {};
 S.Container = styled.div`
@@ -75,11 +188,10 @@ S.Container = styled.div`
   background-size: auto; //length/cover/contain
 `;
 
-const ProfileCard = styled.div`
+S.ProfileCard = styled.div`
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
-
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -88,7 +200,7 @@ const ProfileCard = styled.div`
   width: 100%;
 `;
 
-const LeftSection = styled.div`
+S.UpperSection = styled.div`
   background: linear-gradient(135deg, #5178b7, #3db993);
   color: #fff;
   padding: 20px;
@@ -100,11 +212,39 @@ const LeftSection = styled.div`
   align-items: center;
 `;
 
+S.Avatar = styled.div`
+  position: relative;
+`;
+
+S.EditAvatar = styled.div`
+  position: absolute;
+  top: -8px;
+  right: -36px;
+  background-color: #ffffff;
+  height: auto;
+  border-radius: 7px;
+  border: 1px gray solid;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  padding: 3px 6px;
+
+  p {
+    color: gray;
+  }
+`;
+
+S.CameraIcon = styled(CameraSVG)`
+  color: #808080;
+  width: 25px;
+`;
+
 const ProfileImage = styled.img`
   border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  margin-bottom: 10px;
+  width: 148px;
+  height: 148px;
 `;
 
 const Name = styled.h2`
@@ -112,12 +252,7 @@ const Name = styled.h2`
   margin: 10px 0 5px;
 `;
 
-const JobTitle = styled.p`
-  font-size: 1em;
-  margin: 0;
-`;
-
-const RightSection = styled.div`
+S.LowerSection = styled.div`
   flex: 2;
   padding: 20px;
 `;
@@ -126,45 +261,11 @@ const InfoSection = styled.div`
   margin-bottom: 20px;
 `;
 
-const SectionTitle = styled.h3`
-  margin-bottom: 10px;
-  font-size: 1em;
-  color: #555;
-`;
-
 const InfoText = styled.p`
   margin: 5px 0;
   color: #333;
-`;
-
-const SocialLinks = styled.div`
   display: flex;
-  gap: 10px;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
 `;
-
-const SocialLink = styled.a`
-  color: #555;
-  text-decoration: none;
-  font-size: 1.2em;
-  transition: color 0.3s;
-
-  &:hover {
-    color: #ff758c;
-  }
-`;
-
-const MyLoader = (props) => (
-  <ContentLoader
-    speed={2}
-    width={410}
-    height={102}
-    viewBox="0 0 410 102"
-    backgroundColor="#f3f3f3"
-    foregroundColor="#ecebeb"
-    {...props}
-  >
-    <rect x="2" y="7" rx="0" ry="0" width="200" height="21" />
-    <rect x="3" y="42" rx="0" ry="0" width="200" height="21" />
-    <rect x="2" y="79" rx="0" ry="0" width="200" height="21" />
-  </ContentLoader>
-);

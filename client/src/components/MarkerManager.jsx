@@ -1,13 +1,12 @@
 import { useEffect, useState, useContext } from 'react';
 import { AppContext } from '../Context';
-import axios from 'axios';
+import api from '../axiosInterseptor';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
 import PulseLoader from 'react-spinners/PulseLoader';
 
-const API_URL = import.meta.env.VITE_API_URL;
 import SubmitButton from '../components/SubmitButton';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -31,9 +30,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
 
   async function fetchBalance() {
     try {
-      const response = await axios(`${API_URL}/api/balance`, {
-        withCredentials: true,
-      });
+      const response = await api(`/api/balance`);
       let { data } = response.data;
       setBalance(data);
     } catch (error) {
@@ -47,33 +44,33 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
     let { name, desc } = data;
     setLoadingButton(true);
     try {
-      const formData = new FormData();
-      formData.append('markerName', name);
-      formData.append('desc', desc);
-      formData.append('coords', Object.values(coords));
-      formData.append('iconID', selectedIconID);
+      // const formData = new FormData();
+      // formData.append('markerName', name);
+      // formData.append('desc', desc);
+      // formData.append('coords', Object.values(coords));
+      // formData.append('iconID', selectedIconID);
 
       if (!selectedIconID) {
         alert('Please fill in the required input.');
         return; // Stop the submission if the input is empty
       }
 
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}:`, value);
-      }
+      // for (let [key, value] of formData.entries()) {
+      //   console.log(`${key}:`, value);
+      // }
 
-      let response = await axios.post(`${API_URL}/api/markers`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
+      let response = await api.post(`/api/markers`, {
+        markerName: name,
+        desc,
+        coords: Object.values(coords).reverse(),
+        iconID: selectedIconID,
       });
       toast.success(`${response.data.data.name} added`);
       setIsModalOpened((e) => !e);
       fetchMyMarkers();
       setCoords({
-        lat: '',
         lng: '',
+        lat: '',
       });
     } catch (error) {
       toast.error(`${error.response.data.message}`);

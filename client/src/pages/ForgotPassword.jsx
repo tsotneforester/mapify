@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../axiosInterseptor';
 import styled from 'styled-components';
 
 import { Link, useNavigate } from 'react-router-dom';
@@ -24,7 +24,7 @@ const ForgotPassword = () => {
     let { login_email } = data;
     setLoadingButton(true);
     try {
-      const response = await axios.post(`${API_URL}/api/forgot-password`, {
+      const response = await api.post(`/api/forgot-password`, {
         email: login_email,
       });
 

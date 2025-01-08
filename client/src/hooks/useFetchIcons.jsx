@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-const API_URL = import.meta.env.VITE_API_URL;
-import axios from 'axios';
+import api from '../axiosInterseptor';
 
 const useFetchIcons = (endpoint) => {
   const [data, setData] = useState([]);
@@ -10,9 +9,7 @@ const useFetchIcons = (endpoint) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios(`${API_URL}/${endpoint}`, {
-          withCredentials: true,
-        });
+        const response = await api(`/${endpoint}`);
 
         let { data: icons } = response.data;
 

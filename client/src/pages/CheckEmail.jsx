@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../axiosInterseptor';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import SharedAuth from '../components/SharedAuth';
@@ -18,7 +18,7 @@ const CheckEmail = () => {
   async function resendHandler() {
     setLoadingButton(true);
     try {
-      let response = await axios.post(`${API_URL}/api/resend/${email}`);
+      let response = await api.post(`/api/resend/${email}`);
       toast.success(`${response.data.message}`);
     } catch (error) {
       toast.error(`${error.response.data.message}`);

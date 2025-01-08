@@ -1,11 +1,11 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import axios from 'axios';
+import api from '../axiosInterseptor';
 import 'leaflet/dist/leaflet.css';
 import { Icon } from 'leaflet';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import 'react-toastify/dist/ReactToastify.css';
-const API_URL = import.meta.env.VITE_API_URL;
+
 const MAP_PROVIDER = import.meta.env.VITE_MAP_PROVIDER;
 import marker from '../assets/leaflet/marker.png';
 import shadow from '../assets/leaflet/shadow.png';
@@ -47,7 +47,7 @@ export default function DefaultMap({
 
   const handleDelete = async (markerId) => {
     try {
-      await axios.delete(`${API_URL}/api/markers/${markerId}`, {});
+      await api.delete(`/api/markers/${markerId}`, {});
       forceRender();
       toast.success('Marker Deleted');
     } catch (error) {
@@ -75,9 +75,14 @@ export default function DefaultMap({
       )}
 
       {data.map((marker) => {
-        let { _id, url, coords, name, desc } = marker;
+        let { _id, iconUrl, location, name, desc } = marker;
+
         return (
-          <Marker key={_id} icon={customIcon(url)} position={coords}>
+          <Marker
+            key={_id}
+            icon={customIcon(iconUrl[0].imageUrl)}
+            position={location.coordinates.reverse()}
+          >
             <Popup>
               <S.PopupContent>
                 <h1> {name}</h1>

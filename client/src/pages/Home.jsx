@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-import axios from 'axios';
+import api from '../axiosInterseptor';
 import { useEffect, useState, useContext } from 'react';
 import { AppContext } from '../Context';
 import DefaultMap from '../components/DefaultMap';
-const API_URL = import.meta.env.VITE_API_URL;
 import { useMapEvents } from 'react-leaflet';
 import AddMarkerSvg from '../assets/addmarker.svg?react';
 import HexSvg from '../assets/hex.svg?react';
@@ -16,17 +15,15 @@ import PaymentManager from '../components/PaymentManager';
 export default function Home() {
   const [markers, setMarkers] = useState([]);
   const [coords, setCoords] = useState({
-    lat: '',
     lng: '',
+    lat: '',
   });
   const { isModalOpened, setIsModalOpened } = useContext(AppContext);
   const [activeModalContent, setActiveModalContent] = useState();
 
   async function fetchMarkers() {
     try {
-      const response = await axios(`${API_URL}/api/markers`, {
-        withCredentials: true,
-      });
+      const response = await api(`/api/markers`);
       setMarkers(response.data.data);
     } catch (error) {
       console.error('Error fetching markers:', error);

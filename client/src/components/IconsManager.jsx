@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../axiosInterseptor';
 import Icon from './Icon';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
 import IconsContainer from './IconsContainer';
-const API_URL = import.meta.env.VITE_API_URL;
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
 import HexSvg from '../assets/hexadd.svg?react';
@@ -27,9 +27,7 @@ const IconsManager = () => {
   async function fetchMyIcons() {
     // setLoading(true);
     try {
-      const response = await axios(`${API_URL}/api/myicons`, {
-        withCredentials: true,
-      });
+      const response = await api(`/api/icons`);
       let { data: result } = response.data;
       setData(result);
     } catch (error) {
@@ -42,9 +40,7 @@ const IconsManager = () => {
   async function handleDelete(e, id) {
     try {
       e.preventDefault();
-      await axios.delete(`${API_URL}/api/icons/${id}`, {
-        withCredentials: true,
-      });
+      await api.delete(`/api/icons/${id}`);
       toast.success('Icon deleted');
 
       setActiveIconName('');
@@ -63,9 +59,7 @@ const IconsManager = () => {
       formData.append('icon', file);
       formData.append('name', name);
 
-      let response = await axios.post(`${API_URL}/api/icons`, formData, {
-        withCredentials: true,
-      });
+      let response = await api.post(`/api/icons`, formData);
 
       toast.success(response.data.message);
 
