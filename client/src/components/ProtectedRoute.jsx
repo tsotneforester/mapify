@@ -26,6 +26,8 @@ const ProtectedRoute = ({ children }) => {
         if (response.data.success) {
           setTimeout(() => {
             setIsAuthenticated(true);
+            // sessionStorage.setItem('user', response.data.data.user);
+            // sessionStorage.setItem('avatar', response.data.data.avatar);
           }, 700);
         } else {
           setIsAuthenticated(false);

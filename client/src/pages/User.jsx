@@ -19,6 +19,7 @@ const User = () => {
   async function fetchUser() {
     try {
       let response = await api(`/api/user`);
+      // console.log('fetchuser', response.data.data);
       setUserData(response.data.data);
       setLoading(false);
     } catch (error) {
@@ -31,7 +32,6 @@ const User = () => {
   }, []);
 
   useEffect(() => {
-    console.log('asdad');
     if (file) {
       updateUser();
     }
@@ -39,21 +39,22 @@ const User = () => {
 
   async function updateUser() {
     setLoading(true);
+
     try {
       const formData = new FormData();
       formData.append('avatar', file);
 
-      for (const [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
+      // for (const [key, value] of formData.entries()) {
+      //   console.log(`${key}: ${value}`);
+      // }
 
       let response = await api.patch(`/api/user`, formData);
+      sessionStorage.setItem('user', response.data.data.name);
+      sessionStorage.setItem('avatar', response.data.data.avatar);
       fetchUser();
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response.data.message);
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -109,19 +110,19 @@ const User = () => {
           <InfoSection>
             <InfoText>
               {<strong>Email:</strong>}
-              {loading ? <EmailLoader /> : <p>{email}</p>}
+              {loading ? <EmailLoader /> : <span>{email}</span>}
             </InfoText>
             <InfoText>
               <strong>Balance:</strong>
-              {loading ? <NumberLoader /> : <p> {balance}</p>}
+              {loading ? <NumberLoader /> : <span> {balance}</span>}
             </InfoText>
             <InfoText>
               <strong>Markers:</strong>
-              {loading ? <NumberLoader /> : <p>{markers.length}</p>}
+              {loading ? <NumberLoader /> : <span>{markers.length}</span>}
             </InfoText>
             <InfoText>
               <strong>Icons:</strong>
-              {loading ? <NumberLoader /> : <p>{icons.length}</p>}
+              {loading ? <NumberLoader /> : <span>{icons.length}</span>}
             </InfoText>
           </InfoSection>
         </S.LowerSection>
