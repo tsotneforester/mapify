@@ -11,7 +11,6 @@ import SharedAuth from '../components/SharedAuth';
 import { useState, useEffect } from 'react';
 
 import SubmitButton from '../components/SubmitButton';
-const API_URL = import.meta.env.VITE_API_URL;
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -45,9 +44,9 @@ const ResetPassword = () => {
         password: login_password,
       });
 
-      sessionStorage.setItem('token', response.data.token);
-      sessionStorage.setItem('user', response.data.user);
-      sessionStorage.setItem('avatar', response.data.avatar);
+      // sessionStorage.setItem('token', response.data.token);
+      // sessionStorage.setItem('user', response.data.user);
+      // sessionStorage.setItem('avatar', response.data.avatar);
       navigate('/'); // Redirect to protected route
 
       toast.success(response.data.message);

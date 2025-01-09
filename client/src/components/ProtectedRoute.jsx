@@ -7,27 +7,16 @@ import styled from 'styled-components';
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
-  // const refreshAccessToken = async () => {
-  //   try {
-  //     await api.post('/api/token'); // Call refresh endpoint
-  //     console.log('Access token refreshed');
-  //     return true;
-  //   } catch (error) {
-  //     console.error('Failed to refresh token:', error);
-  //     return false;
-  //   }
-  // };
-
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await api.get(`/api/auth/verify`);
+        const response = await api.get(`/api/auth/verify-protected-route`);
 
         if (response.data.success) {
+          // sessionStorage.setItem('user', response.data.data.name);
+          // sessionStorage.setItem('avatar', response.data.data.avatar);
           setTimeout(() => {
             setIsAuthenticated(true);
-            // sessionStorage.setItem('user', response.data.data.user);
-            // sessionStorage.setItem('avatar', response.data.data.avatar);
           }, 700);
         } else {
           setIsAuthenticated(false);

@@ -114,12 +114,15 @@ const User = () => {
             </InfoText>
             <InfoText>
               <strong>Balance:</strong>
-              {loading ? <NumberLoader /> : <span> {balance}</span>}
+              {loading ? (
+                <NumberLoader />
+              ) : (
+                <span>
+                  {markers.length} / {balance + markers.length}
+                </span>
+              )}
             </InfoText>
-            <InfoText>
-              <strong>Markers:</strong>
-              {loading ? <NumberLoader /> : <span>{markers.length}</span>}
-            </InfoText>
+
             <InfoText>
               <strong>Icons:</strong>
               {loading ? <NumberLoader /> : <span>{icons.length}</span>}

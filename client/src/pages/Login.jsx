@@ -1,5 +1,5 @@
 import api from '../axiosInterseptor';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { Link, useNavigate } from 'react-router-dom';
@@ -55,6 +55,27 @@ const Login = () => {
       setLoadingButton(false);
     }
   }
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await api.get(`/api/auth/verify-protected-route`);
+
+        if (response.data.success) {
+          navigate('/');
+          sessionStorage.setItem('user', response.data.data.name);
+          sessionStorage.setItem('avatar', response.data.data.avatar);
+        }
+      } catch (error) {
+        console.log(error.response.data.message);
+        // if (error.response.data.message == 'Please Login again') {
+        //   toast.error(`${error.response.data.message}`);
+        // }
+      }
+    };
+
+    verifyToken();
+  }, []);
 
   return (
     <SharedAuth>

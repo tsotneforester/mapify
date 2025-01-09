@@ -121,12 +121,8 @@ const IconsManager = () => {
             <SubmitButton label="Upload Icon" loading={loadingButton} />
           </S.Form>
           <p>
-            ჩამოტვირთე სტანდარტული
-            <a href="/default.zip" download>
-              &nbsp; ხატულა
-            </a>
-            , შეცვალე მისი ფერი და ლოგო მის შიგნით შენი სურვილისამებრ.
-            არასტანდარტული ხატულები წაიშლება სერვერიდან
+            png|jpg|jpeg|ico ფორმატის სასურველია კვადრატული ფორმის მინიმალური
+            ზომით 48px * 48px
           </p>
         </S.AddIcon>
       )}
@@ -183,7 +179,7 @@ S.AddIcon = styled.div`
   }
 
   p {
-    font-size: 14px;
+    font-size: 16px;
     color: #042914;
     font-weight: 400;
     text-align: center;

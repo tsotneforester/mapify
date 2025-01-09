@@ -17,14 +17,14 @@ api.interceptors.response.use(
     // Check if the error is due to token expiration and ensure no infinite loops
     if (
       error.response &&
-      error.response.data.message === 'jwt expired' &&
+      error.response.data.message === 'Access token is missing' &&
       !originalRequest._retry
     ) {
       originalRequest._retry = true; // Mark this request as retried
 
       try {
         // Call the refresh token endpoint to get a new access token
-        await api.post('/api/token');
+        await api.post('/api/auth/refresh-token');
         // Retry the original request with the new token
         return api(originalRequest);
       } catch (refreshError) {

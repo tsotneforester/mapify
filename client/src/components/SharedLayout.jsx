@@ -2,7 +2,6 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import api from '../axiosInterseptor';
 import DefaultUserAvatar from '../assets/default.jpg';
-const API_URL = import.meta.env.VITE_API_URL;
 import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ConfirmationModal from '../components/ConfirmationModal';
