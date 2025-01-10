@@ -40,7 +40,7 @@ const ResetPassword = () => {
     let { login_password } = data;
     setLoadingButton(true);
     try {
-      let response = await api.post(`/api/reset/${token}`, {
+      let response = await api.post(`/api/user/reset-password/${token}`, {
         password: login_password,
       });
 

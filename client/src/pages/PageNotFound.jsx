@@ -5,10 +5,8 @@ import { Link } from 'react-router-dom';
 // import { AppContext } from '../Context';
 
 import SharedAuth from '../components/SharedAuth';
-import { useEffect } from 'react';
 
 const PageNotFound = () => {
-  useEffect(() => {}, []);
   return (
     <SharedAuth>
       <S.Container>

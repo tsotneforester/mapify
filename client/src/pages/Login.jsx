@@ -1,7 +1,7 @@
 import api from '../axiosInterseptor';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-
+import useVerifyProtectedRoute from '../hooks/useVerifyProtectedRoute';
 import { Link, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
@@ -33,7 +33,7 @@ const Login = () => {
 
     let { login_email, login_password } = data;
     try {
-      const response = await api.post(`/api/login`, {
+      const response = await api.post(`/api/auth/login`, {
         email: login_email,
         password: login_password,
       });
@@ -56,26 +56,26 @@ const Login = () => {
     }
   }
 
-  useEffect(() => {
-    const verifyToken = async () => {
-      try {
-        const response = await api.get(`/api/auth/verify-protected-route`);
+  // useEffect(() => {
+  //   const verifyToken = async () => {
+  //     try {
+  //       const response = await api.get(`/api/auth/verify-protected-route`);
 
-        if (response.data.success) {
-          navigate('/');
-          sessionStorage.setItem('user', response.data.data.name);
-          sessionStorage.setItem('avatar', response.data.data.avatar);
-        }
-      } catch (error) {
-        console.log(error.response.data.message);
-        // if (error.response.data.message == 'Please Login again') {
-        //   toast.error(`${error.response.data.message}`);
-        // }
-      }
-    };
+  //       if (response.data.status == 'success') {
+  //         navigate('/');
 
-    verifyToken();
-  }, []);
+  //         sessionStorage.setItem('user', response.data.data.name);
+  //         sessionStorage.setItem('avatar', response.data.data.avatar);
+  //       }
+  //     } catch (error) {
+  //       console.log(error.response.data.message);
+  //     }
+  //   };
+
+  //   verifyToken();
+  // }, [navigate]);
+
+  useVerifyProtectedRoute();
 
   return (
     <SharedAuth>

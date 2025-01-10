@@ -5,7 +5,6 @@ import SharedAuth from '../components/SharedAuth';
 import { AppContext } from '../Context';
 import { useContext, useEffect, useState } from 'react';
 import SubmitButton from '../components/SubmitButton';
-const API_URL = import.meta.env.VITE_API_URL;
 
 import { toast } from 'react-toastify';
 
@@ -18,10 +17,13 @@ const CheckEmail = () => {
   async function resendHandler() {
     setLoadingButton(true);
     try {
-      let response = await api.post(`/api/resend/${email}`);
+      let response = await api.post(
+        `/api/user/resend-verification-email/${email}`
+      );
       toast.success(`${response.data.message}`);
     } catch (error) {
-      toast.error(`${error.response.data.message}`);
+      toast.error(error.response.data.message);
+      navigate('/login');
     } finally {
       setLoadingButton(false);
     }

@@ -55,7 +55,7 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/check-email" element={<CheckEmail />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/verify/:jwt" element={<VerifyUser />} />
+        <Route path="/verify-user/:jwt" element={<VerifyUser />} />
         <Route path="/reset/:token" element={<ResetPassword />} />
         <Route
           path="/processing"

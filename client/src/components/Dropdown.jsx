@@ -2,7 +2,6 @@ import { useState } from 'react';
 import ArrowSvg from '../assets/arrow.svg?react';
 import styled from 'styled-components';
 import ScaleLoader from 'react-spinners/ScaleLoader';
-import useFetchIcons from '../hooks/useFetchIcons';
 import api from '../axiosInterseptor';
 
 export default function Dropdown({ selectHandler, selected = null }) {
@@ -20,9 +19,10 @@ export default function Dropdown({ selectHandler, selected = null }) {
       let { data: icons } = response.data;
 
       setData(icons);
-      setLoading((e) => !e);
     } catch (err) {
       console.error('Error fetching markers:', err);
+    } finally {
+      setLoading((e) => !e);
     }
   };
 

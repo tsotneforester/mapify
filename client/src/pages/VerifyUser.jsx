@@ -12,7 +12,7 @@ const VerifyUser = () => {
 
   async function verifyToken() {
     try {
-      await api.post(`/api/confirm/${jwt}`);
+      await api.post(`/api/user/verify-user/${jwt}`);
 
       //navigate('/check-email'); // Redirect to protected route
 

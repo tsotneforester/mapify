@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import api from '../axiosInterseptor';
-
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
 
 const ProtectedRoute = ({ children }) => {
@@ -12,9 +12,7 @@ const ProtectedRoute = ({ children }) => {
       try {
         const response = await api.get(`/api/auth/verify-protected-route`);
 
-        if (response.data.success) {
-          // sessionStorage.setItem('user', response.data.data.name);
-          // sessionStorage.setItem('avatar', response.data.data.avatar);
+        if (response.data.status == 'success') {
           setTimeout(() => {
             setIsAuthenticated(true);
           }, 700);
@@ -22,7 +20,11 @@ const ProtectedRoute = ({ children }) => {
           setIsAuthenticated(false);
         }
       } catch (error) {
-        console.error('Authentication failed:', error);
+        if (error.response.data.message == 'User not found') {
+          toast.error(`${error.response.data.message}`);
+        } else {
+          console.error('Authentication failed:', error);
+        }
         setIsAuthenticated(false);
       }
     };

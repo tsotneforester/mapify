@@ -1,5 +1,5 @@
 import api from '../axiosInterseptor';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
@@ -9,8 +9,9 @@ import { useContext } from 'react';
 import SharedAuth from '../components/SharedAuth';
 import { AppContext } from '../Context';
 import SubmitButton from '../components/SubmitButton';
-
+import useVerifyProtectedRoute from '../hooks/useVerifyProtectedRoute';
 const DEV_ENV = import.meta.env.VITE_DEV_ENV;
+
 export default function Login() {
   const navigate = useNavigate();
   let [loadingButton, setLoadingButton] = useState(false);
@@ -40,7 +41,7 @@ export default function Login() {
       return toast.warning(`Passwords do not match`);
     }
     try {
-      await api.post(`/api/signup`, {
+      await api.post(`/api/auth/signup`, {
         email: signup_email,
         password: signup_password_1,
         passwordConfirm: signup_password_2,
@@ -56,23 +57,7 @@ export default function Login() {
     }
   }
 
-  useEffect(() => {
-    const verifyToken = async () => {
-      try {
-        const response = await api.get(`/api/auth/verify-protected-route`);
-
-        if (response.data.success) {
-          navigate('/');
-          sessionStorage.setItem('user', response.data.data.name);
-          sessionStorage.setItem('avatar', response.data.data.avatar);
-        }
-      } catch (error) {
-        console.log(error.response.data.message);
-      }
-    };
-
-    verifyToken();
-  }, []);
+  useVerifyProtectedRoute();
 
   return (
     <SharedAuth>

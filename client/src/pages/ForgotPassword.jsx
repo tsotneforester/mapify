@@ -1,6 +1,6 @@
 import api from '../axiosInterseptor';
 import styled from 'styled-components';
-
+import useVerifyProtectedRoute from '../hooks/useVerifyProtectedRoute';
 import { Link, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
@@ -24,7 +24,7 @@ const ForgotPassword = () => {
     let { login_email } = data;
     setLoadingButton(true);
     try {
-      const response = await api.post(`/api/forgot-password`, {
+      const response = await api.post(`/api/user/forgot-password`, {
         email: login_email,
       });
 
@@ -36,6 +36,9 @@ const ForgotPassword = () => {
       setLoadingButton(false);
     }
   }
+
+  useVerifyProtectedRoute();
+
   return (
     <SharedAuth>
       <S.Form id="login-form" noValidate onSubmit={handleSubmit(handleLogin)}>
