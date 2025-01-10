@@ -44,20 +44,10 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
     let { name, desc } = data;
     setLoadingButton(true);
     try {
-      // const formData = new FormData();
-      // formData.append('markerName', name);
-      // formData.append('desc', desc);
-      // formData.append('coords', Object.values(coords));
-      // formData.append('iconID', selectedIconID);
-
       if (!selectedIconID) {
         alert('Please fill in the required input.');
         return; // Stop the submission if the input is empty
       }
-
-      // for (let [key, value] of formData.entries()) {
-      //   console.log(`${key}:`, value);
-      // }
 
       let response = await api.post(`/api/markers`, {
         markerName: name,
@@ -84,7 +74,6 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
 
   useEffect(() => {
     fetchBalance();
-    //TODO if problem with token, logout
   }, []);
 
   return (

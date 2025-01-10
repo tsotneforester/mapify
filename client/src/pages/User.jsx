@@ -55,6 +55,21 @@ const User = () => {
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function deleteUser() {
+    setLoading(true);
+
+    try {
+      await api.delete(`/api/user`);
+      navigate('/login');
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -128,6 +143,7 @@ const User = () => {
               {loading ? <NumberLoader /> : <span>{icons.length}</span>}
             </InfoText>
           </InfoSection>
+          <button onClick={deleteUser}>Delete user</button>
         </S.LowerSection>
       </S.ProfileCard>
     </S.Container>

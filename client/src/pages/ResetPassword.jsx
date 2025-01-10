@@ -22,20 +22,6 @@ const ResetPassword = () => {
     formState: { errors },
   } = useForm();
 
-  async function checkToken(token) {
-    try {
-      await api.post(`/api/check-reset-token/${token}`);
-      // sessionStorage.setItem('token', response.data.token);
-      // sessionStorage.setItem('user', response.data.user);
-      // sessionStorage.setItem('avatar', response.data.avatar);
-      // Redirect to protected route
-      // toast.success(`password reseted`);
-    } catch (error) {
-      toast.error(`${error.response.data.message}`);
-      navigate('/login');
-    }
-  }
-
   async function handleLogin(data) {
     let { login_password } = data;
     setLoadingButton(true);
@@ -43,11 +29,7 @@ const ResetPassword = () => {
       let response = await api.post(`/api/user/reset-password/${token}`, {
         password: login_password,
       });
-
-      // sessionStorage.setItem('token', response.data.token);
-      // sessionStorage.setItem('user', response.data.user);
-      // sessionStorage.setItem('avatar', response.data.avatar);
-      navigate('/'); // Redirect to protected route
+      navigate('/');
 
       toast.success(response.data.message);
     } catch (error) {
@@ -56,9 +38,7 @@ const ResetPassword = () => {
       setLoadingButton(false);
     }
   }
-  useEffect(() => {
-    checkToken(token);
-  }, []);
+
   return (
     <SharedAuth>
       <S.Form id="login-form" noValidate onSubmit={handleSubmit(handleLogin)}>

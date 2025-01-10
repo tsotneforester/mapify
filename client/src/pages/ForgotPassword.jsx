@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 import SharedAuth from '../components/SharedAuth';
 import { useState } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL;
 import SubmitButton from '../components/SubmitButton';
 const ForgotPassword = () => {
   const navigate = useNavigate();
