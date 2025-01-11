@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { useState, useEffect, useRef } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import ContentLoader from 'react-content-loader';
 import api from '../axiosInterseptor';
 import 'react-loading-skeleton/dist/skeleton.css';
 import mapbg from '../assets/mappattern.png';
 import CameraSVG from '../assets/camera.svg?react';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 
 const User = () => {
   const [loading, setLoading] = useState(true);
@@ -144,6 +144,7 @@ const User = () => {
             </InfoText>
           </InfoSection>
           <button onClick={deleteUser}>Delete user</button>
+          <NavLink to="/user/change-password">change password</NavLink>
         </S.LowerSection>
       </S.ProfileCard>
     </S.Container>

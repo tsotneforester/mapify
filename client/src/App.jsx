@@ -18,6 +18,7 @@ import ResetPassword from './pages/ResetPassword';
 import ProcessPayment from './pages/ProcessPayment';
 import PageNotFound from './pages/PageNotFound';
 import User from './pages/User';
+import PasswordChange from './pages/PasswordChange';
 
 // import Payment from './pages/Payment';
 
@@ -77,6 +78,14 @@ const App = () => {
           }
         />
         <Route
+          path="/user/change-password"
+          element={
+            <ProtectedRoute>
+              <PasswordChange />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/edit/:id"
           element={
             <ProtectedRoute>
@@ -84,7 +93,6 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-
         <Route element={<SharedLayout />}>
           <Route
             path="/"

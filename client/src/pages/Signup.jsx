@@ -116,11 +116,11 @@ export default function Login() {
           autoComplete="signup_password_1"
           {...register('signup_password_1', {
             required: 'Password is required',
-            pattern: {
-              value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
-              message:
-                'Valid Password required: at least 8 characters long with minimum 1 uppercase letter, 1 lowercase letter, and 1 number. Can contain special characters',
-            },
+            // pattern: {
+            //   value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+            //   message:
+            //     'Valid Password required: at least 8 characters long with minimum 1 uppercase letter, 1 lowercase letter, and 1 number. Can contain special characters',
+            // },
           })}
         />
         <Form.Control.Feedback type="invalid">
@@ -133,11 +133,11 @@ export default function Login() {
           autoComplete="signup_password_2"
           {...register('signup_password_2', {
             required: 'Password is required',
-            pattern: {
-              value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
-              message:
-                'Valid Password required: at least 8 characters long with minimum 1 uppercase letter, 1 lowercase letter, and 1 number. Can contain special characters',
-            },
+            // pattern: {
+            //   value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+            //   message:
+            //     'Valid Password required: at least 8 characters long with minimum 1 uppercase letter, 1 lowercase letter, and 1 number. Can contain special characters',
+            // },
           })}
         />
         <Form.Control.Feedback type="invalid">
