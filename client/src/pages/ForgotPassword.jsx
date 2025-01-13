@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import SharedAuth from '../components/SharedAuth';
 import { useState } from 'react';
-
+const DEV_ENV = import.meta.env.VITE_DEV_ENV;
 import SubmitButton from '../components/SubmitButton';
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -17,14 +17,20 @@ const ForgotPassword = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm(
+    DEV_ENV && {
+      defaultValues: {
+        email: 'tsotne.meladze.usa@gmail.com',
+      },
+    }
+  );
 
   async function handleLogin(data) {
-    let { login_email } = data;
+    let { email } = data;
     setLoadingButton(true);
     try {
       const response = await api.post(`/api/user/forgot-password`, {
-        email: login_email,
+        email,
       });
 
       navigate('/login'); // Redirect to protected route
@@ -42,12 +48,12 @@ const ForgotPassword = () => {
     <SharedAuth>
       <S.Form id="login-form" noValidate onSubmit={handleSubmit(handleLogin)}>
         <Form.Control
-          isInvalid={errors.login_email}
+          isInvalid={errors.email}
           type="text"
-          id="login_email"
+          id="email"
           placeholder="Email"
           required
-          {...register('login_email', {
+          {...register('email', {
             required: 'Email Address is required',
             pattern: {
               value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -56,7 +62,7 @@ const ForgotPassword = () => {
           })}
         />
         <Form.Control.Feedback type="invalid">
-          {errors.login_email?.message}
+          {errors.email?.message}
         </Form.Control.Feedback>
 
         <SubmitButton label="Reset Password" loading={loadingButton} />

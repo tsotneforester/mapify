@@ -1,14 +1,14 @@
 import api from '../axiosInterseptor';
 import styled from 'styled-components';
-
-import { useNavigate, useParams } from 'react-router-dom';
+const DEV_ENV = import.meta.env.VITE_DEV_ENV;
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 // import { AppContext } from '../Context';
-
+import useVerifyProtectedRoute from '../hooks/useVerifyProtectedRoute';
 import SharedAuth from '../components/SharedAuth';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import SubmitButton from '../components/SubmitButton';
 
@@ -18,48 +18,83 @@ const ResetPassword = () => {
   let [loadingButton, setLoadingButton] = useState(false);
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm(
+    DEV_ENV && {
+      defaultValues: {
+        password: 'Sirw%+45',
+        confirmPassword: 'Sirw%+45',
+      },
+    }
+  );
 
   async function handleLogin(data) {
-    let { login_password } = data;
+    let { password, confirmPassword } = data;
+    if (password != confirmPassword) {
+      return toast.error('Passwords does not match');
+    }
     setLoadingButton(true);
     try {
       let response = await api.post(`/api/user/reset-password/${token}`, {
-        password: login_password,
+        password,
       });
       navigate('/');
-
       toast.success(response.data.message);
+      reset();
     } catch (error) {
       toast.error(`${error.response.data.message}`);
     } finally {
       setLoadingButton(false);
     }
   }
-
+  useVerifyProtectedRoute();
   return (
     <SharedAuth>
       <S.Form id="login-form" noValidate onSubmit={handleSubmit(handleLogin)}>
         <Form.Control
-          isInvalid={errors.login_password}
+          isInvalid={errors.password}
           type="password"
-          id="login_password"
+          id="password"
           placeholder="Password"
-          {...register('login_password', {
+          {...register('password', {
             required: 'Password is required',
+            pattern: {
+              value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+              message:
+                'Valid Password required: at least 8 characters long with minimum 1 uppercase letter, 1 lowercase letter, and 1 number. Can contain special characters',
+            },
+          })}
+        />{' '}
+        <Form.Control.Feedback type="invalid">
+          {errors.password?.message}
+        </Form.Control.Feedback>
+        <Form.Control
+          isInvalid={errors.confirmPassword}
+          type="password"
+          id="confirmPassword"
+          placeholder="Confirm your password"
+          {...register('confirmPassword', {
+            required: 'Password is required',
+            pattern: {
+              value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+              message:
+                'Valid Password required: at least 8 characters long with minimum 1 uppercase letter, 1 lowercase letter, and 1 number. Can contain special characters',
+            },
           })}
         />
         <Form.Control.Feedback type="invalid">
-          {errors.login_password?.message}
+          {errors.confirmPassword?.message}
         </Form.Control.Feedback>
-
         <SubmitButton
           label="Submit Password"
           loading={loadingButton}
           style={{ width: '100%', gridArea: 'submit' }}
         />
+        <S.Help>
+          <Link to="/login">Login</Link>
+        </S.Help>
       </S.Form>
     </SharedAuth>
   );
@@ -76,4 +111,10 @@ S.Form = styled(Form)`
   align-items: center;
   gap: 10px;
   max-width: 300px;
+`;
+S.Help = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  width: 100%;
 `;
