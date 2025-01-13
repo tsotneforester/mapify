@@ -61,7 +61,7 @@ const EditMarker = () => {
     } catch (error) {
       console.error('Error fetching markers:', error);
     } finally {
-      setLoading((e) => !e); //FIX a???
+      setLoading((e) => !e);
     }
   }
 

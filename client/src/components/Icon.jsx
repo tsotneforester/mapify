@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import CloseIcon from '../assets/close.svg?react';
+import CloseSVG from '../assets/close.svg?react';
 // const API_URL = import.meta.env.VITE_API_URL;
 // const IMG_URL = import.meta.env.VITE_CLOUDINARY_ICONS_FOLDER;
 export default function Icon({
@@ -31,6 +31,14 @@ export default function Icon({
 }
 
 const S = {};
+
+const CloseIcon = styled(CloseSVG)`
+  width: 12px;
+  height: 12px;
+  color: #ff0000;
+  cursor: pointer;
+`;
+
 S.Form = styled.form`
   padding: 8px;
   position: relative;
@@ -39,7 +47,7 @@ S.Form = styled.form`
   height: auto;
   border-radius: 0;
   /* background-color: #ffffffd9; */
-  background-color: ${(prop) => (prop.$active ? '#434343d9' : '#ffffffd9')};
+  background-color: ${(prop) => (prop.$active ? '#a3a3a3d9;' : '#ffffffd9')};
 
   border-width: 3px;
   border-style: solid;

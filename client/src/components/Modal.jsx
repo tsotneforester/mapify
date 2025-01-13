@@ -1,18 +1,22 @@
 import styled from 'styled-components';
 import { AppContext } from '../Context';
 import { useContext } from 'react';
+import CloseSVG from '../assets/close.svg?react';
+import CloseButton from './CloseButton';
 
 export default function Modal({ children, status }) {
   const { setIsModalOpened } = useContext(AppContext);
 
   return (
     status && (
-      <S.ModalOverlay onClick={() => setIsModalOpened((pre) => !pre)}>
+      <S.ModalOverlay>
         <S.Modal
           onClick={(e) => {
             e.stopPropagation();
           }}
         >
+          <CloseIcon onClick={() => setIsModalOpened((pre) => !pre)} />
+
           {children}
         </S.Modal>
       </S.ModalOverlay>
@@ -21,6 +25,14 @@ export default function Modal({ children, status }) {
 }
 
 const S = {};
+
+const CloseIcon = styled(CloseSVG)`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  color: #dc8080;
+`;
 
 S.ModalOverlay = styled.div`
   position: absolute;

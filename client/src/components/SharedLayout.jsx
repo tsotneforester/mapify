@@ -82,7 +82,18 @@ const SharedLayout = () => {
             <ConfirmationModal
               onClose={handleCloseModal}
               onConfirm={handleConfirm}
-            />
+            >
+              <h2
+                style={{
+                  fontSize: '22px',
+                  textAlign: 'center',
+                  fontWeight: '600',
+                }}
+              >
+                Are you sure?
+              </h2>
+              <p>Do you really want to sign out?</p>
+            </ConfirmationModal>
           )}
         </>
       )}

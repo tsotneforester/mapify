@@ -12,6 +12,8 @@ import HexSvg from '../assets/hexadd.svg?react';
 import ReturnSvg from '../assets/return.svg?react';
 import NoContent from './NoContent';
 import SubmitButton from '../components/SubmitButton';
+import { useForm } from 'react-hook-form';
+import { Input } from 'antd';
 
 const IconsManager = () => {
   const [data, setData] = useState([]);
@@ -20,9 +22,13 @@ const IconsManager = () => {
   let [loadingButton, setLoadingButton] = useState(false);
   let [showForm, setShowForm] = useState(false);
   const [activeIconName, setActiveIconName] = useState(false);
-  //form
-  const [name, setName] = useState('');
-  const [file, setFile] = useState(null);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   async function fetchMyIcons() {
     // setLoading(true);
@@ -51,13 +57,12 @@ const IconsManager = () => {
     }
   }
 
-  const handleSubmit = async (e) => {
+  const onSubmit = async (data) => {
     setLoadingButton(true);
     try {
-      e.preventDefault();
       const formData = new FormData();
-      formData.append('icon', file);
-      formData.append('name', name);
+      formData.append('icon', data.file[0]);
+      formData.append('name', data.iconName);
 
       let response = await api.post(`/api/icons`, formData);
 
@@ -69,15 +74,9 @@ const IconsManager = () => {
     } catch (error) {
       toast.error(`${error.response.data.message}`);
     } finally {
-      setName('');
-      setFile(null);
       setLoadingButton(false);
+      reset();
     }
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setFile(file);
   };
 
   useEffect(() => {
@@ -102,21 +101,27 @@ const IconsManager = () => {
 
       {showForm && (
         <S.AddIcon>
-          <S.Form onSubmit={handleSubmit}>
+          <S.Form onSubmit={handleSubmit(onSubmit)}>
             <Form.Control
+              isInvalid={!!errors.iconName}
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              {...register('iconName', {
+                required: 'This field is required',
+              })}
               placeholder="Icon Name"
             />
-
+            {errors.iconName && (
+              <p style={{ color: 'red' }}>* {errors.iconName.message}</p>
+            )}
             <Form.Control
+              isInvalid={!!errors.file}
               type="file"
-              name="icon"
               accept="image/png"
-              onChange={handleFileChange}
-              required
+              {...register('file', { required: 'This field is required' })}
             />
+            {errors.file && (
+              <p style={{ color: 'red' }}>* {errors.file.message}</p>
+            )}
 
             <SubmitButton label="Upload Icon" loading={loadingButton} />
           </S.Form>
@@ -206,17 +211,19 @@ S.LoaderContainer = styled.div`
 `;
 
 const HexIcon = styled(HexSvg)`
-  width: 25px;
+  width: 30px;
   position: absolute;
-  right: -25px;
-  top: -24px;
+  left: -19px;
+  top: -20px;
   color: white;
+  cursor: pointer;
 `;
 
 const ReturnIcon = styled(ReturnSvg)`
   width: 30px;
   position: absolute;
-  right: -24px;
-  top: -35px;
+  right: -19px;
+  bottom: -27px;
   color: white;
+  cursor: pointer;
 `;

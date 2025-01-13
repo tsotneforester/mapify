@@ -6,10 +6,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
 import PulseLoader from 'react-spinners/PulseLoader';
-
 import SubmitButton from '../components/SubmitButton';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import Form from 'react-bootstrap/Form';
 import Dropdown from './Dropdown';
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +20,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
   const { setIsModalOpened } = useContext(AppContext);
   const [balance, setBalance] = useState('');
   const [selectedIconID, setSelectedIconID] = useState('');
+
   const {
     register,
     handleSubmit,
@@ -45,7 +44,7 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
     setLoadingButton(true);
     try {
       if (!selectedIconID) {
-        alert('Please fill in the required input.');
+        setSelectedIconID(null);
         return; // Stop the submission if the input is empty
       }
 
@@ -83,11 +82,9 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
           <Form.Control
             type="text"
             isInvalid={errors.name}
-            // value={nameInput}
-            // onChange={(e) => setNameInput(e.target.value)}
             placeholder="Marker label"
             {...register('name', {
-              required: 'Marker name is required',
+              required: '* Marker name is required',
             })}
           />
           <Form.Control.Feedback type="invalid">
@@ -134,10 +131,8 @@ const MarkerManager = ({ fetchMyMarkers, coordinates, redirect }) => {
           style={{ width: '100%', gridArea: 'submit' }}
         />
 
-        <Dropdown selectHandler={setSelectedIconID} />
-        <Form.Control.Feedback type="invalid">
-          {errors.name?.message}
-        </Form.Control.Feedback>
+        <Dropdown selectHandler={setSelectedIconID} selected={selectedIconID} />
+
         <S.Balance>
           <p>მონიშვნების ბალანსი შეადგენს</p>
 

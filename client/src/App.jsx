@@ -15,10 +15,10 @@ import CheckEmail from './pages/CheckEmail';
 import VerifyUser from './pages/VerifyUser';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
-import ProcessPayment from './pages/ProcessPayment';
+import PaymentSuccess from './pages/PaymentSuccess';
 import PageNotFound from './pages/PageNotFound';
 import User from './pages/User';
-import PasswordChange from './pages/PasswordChange';
+import ChangePassword from './pages/ChangePassword';
 
 // import Payment from './pages/Payment';
 
@@ -59,10 +59,10 @@ const App = () => {
         <Route path="/verify-user/:jwt" element={<VerifyUser />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route
-          path="/processing"
+          path="/payment-processing-success"
           element={
             <ProtectedRoute>
-              <ProcessPayment />
+              <PaymentSuccess />
             </ProtectedRoute>
           }
         />
@@ -81,7 +81,7 @@ const App = () => {
           path="/user/change-password"
           element={
             <ProtectedRoute>
-              <PasswordChange />
+              <ChangePassword />
             </ProtectedRoute>
           }
         />

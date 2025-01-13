@@ -4,9 +4,8 @@ import styled from 'styled-components';
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import api from '../axiosInterseptor';
 
-export default function Dropdown({ selectHandler, selected = null }) {
+export default function Dropdown({ selectHandler, selected }) {
   const [isOptionBoxVisible, setIsOptionBoxVisible] = useState(false);
-  const [activeId, setActiveId] = useState(selected);
   const [searchString, setSearchString] = useState('');
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -30,7 +29,7 @@ export default function Dropdown({ selectHandler, selected = null }) {
     icon.name.toLowerCase().includes(searchString)
   );
 
-  const activeIcon = data.find((icon) => icon._id === activeId);
+  const activeIcon = data.find((icon) => icon._id === selected);
 
   const handleChange = (event) => {
     setSearchString(event.target.value);
@@ -46,17 +45,18 @@ export default function Dropdown({ selectHandler, selected = null }) {
               fetchIcons();
             }
           }}
+          $empty={selected}
         >
           <div>
             {activeIcon ? (
               <>
                 <img src={activeIcon.imageUrl} alt={activeIcon.name} />
-                <p style={{ color: activeId ? 'black' : '#999' }}>
+                <p style={{ color: selected ? 'black' : '#999' }}>
                   {activeIcon.name}
                 </p>
               </>
             ) : (
-              <p style={{ color: activeId ? 'black' : '#999' }}>Select Icon</p>
+              <p style={{ color: selected ? 'black' : '#999' }}>Select Icon</p>
             )}
           </div>
           <ArrowSvg />
@@ -87,10 +87,10 @@ export default function Dropdown({ selectHandler, selected = null }) {
                   const { name, imageUrl, _id } = icon;
                   return (
                     <S.Option
-                      $active={_id == activeId}
+                      $active={_id == selected}
                       onClick={() => {
                         setIsOptionBoxVisible((e) => !e);
-                        setActiveId(_id);
+                        // setActiveId(_id);
                         selectHandler(_id);
                         setSearchString('');
                       }}
@@ -106,6 +106,9 @@ export default function Dropdown({ selectHandler, selected = null }) {
           </S.OptionsBox>
         )}
       </S.DropDown>
+      {selected == null && (
+        <p style={{ color: 'red' }}>* Select icon for marker</p>
+      )}
     </S.Container>
   );
 }
@@ -123,6 +126,7 @@ S.Select = styled.div`
   border-radius: 5px;
   /* border: 1px solid green; */
   background-color: #ffffff;
+  border: 1px solid ${(props) => (props.$empty == null ? 'red' : 'none')};
   padding: 0.375rem 0.75rem;
   display: flex;
   flex-flow: row nowrap;

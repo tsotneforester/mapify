@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
 
-const ConfirmationModal = ({ onClose, onConfirm }) => {
+const ConfirmationModal = ({ children, onClose, onConfirm }) => {
   return (
     <S.Background onClick={onClose}>
       <S.Container onClick={(e) => e.stopPropagation()}>
-        <h2>Are you sure?</h2>
-        <p>Do you really want to sign out?</p>
+        {children}
+
         <S.ButtonContainer>
           <Button
             onClick={onClose}
@@ -50,6 +50,7 @@ S.Container = styled.div`
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 450px;
 `;
 S.ButtonContainer = styled.div`
   display: flex;

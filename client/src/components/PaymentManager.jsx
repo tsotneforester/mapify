@@ -7,41 +7,46 @@ import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
+import { useForm } from 'react-hook-form';
 
 const PaymentManager = () => {
   let [loadingButton, setLoadingButton] = useState(false);
-
   const [qnt, setQnt] = useState('');
 
-  useEffect(() => {}, []);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = async (e) => {
+  const onSubmit = async (data) => {
     setLoadingButton(true);
     try {
-      e.preventDefault();
-
-      let response = await api.post(`/api/payment`, { qnt });
-
+      let response = await api.post(`/api/payment`, { qnt: data.quantity });
+      console.log(response.data.session);
       window.location.href = response.data.session;
-
-      setQnt('');
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
       setLoadingButton(false);
+      reset();
     }
   };
 
   return (
     <S.Container>
-      <S.Form onSubmit={handleSubmit}>
+      <S.Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Control
           type="number"
-          required
-          value={qnt}
-          onChange={(e) => setQnt(e.target.value)}
-          placeholder="10"
+          {...register('quantity', {
+            required: 'This field is required',
+          })}
+          placeholder="Quantity"
         />
+        {errors.quantity && (
+          <p style={{ color: 'red' }}>* {errors.quantity.message}</p>
+        )}
         <SubmitButton label="Checkout" loading={loadingButton} />
       </S.Form>
       <div>

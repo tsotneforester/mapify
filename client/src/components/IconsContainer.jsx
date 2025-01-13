@@ -46,8 +46,8 @@ S.Container = styled.div`
 `;
 S.IconName = styled.div`
   position: absolute;
-  top: -24px;
-  right: 8px;
+  top: -22px;
+  right: 22px;
   p {
     font-size: 16px;
     color: #4d4d4d;

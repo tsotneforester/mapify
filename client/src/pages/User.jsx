@@ -7,12 +7,18 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import mapbg from '../assets/mappattern.png';
 import CameraSVG from '../assets/camera.svg?react';
 import { toast } from 'react-toastify';
+import { Form, Button } from 'react-bootstrap';
+import CamoContainer from '../components/CamoContainer';
+import CloseSVG from '../assets/close.svg?react';
+import CloseButton from '../components/CloseButton';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 const User = () => {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState({});
   const hiddenFileInput = useRef(null);
   const [file, setFile] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -62,7 +68,7 @@ const User = () => {
 
   async function deleteUser() {
     setLoading(true);
-
+    setIsModalOpen(false);
     try {
       await api.delete(`/api/user`);
       navigate('/login');
@@ -84,70 +90,88 @@ const User = () => {
 
   let { avatar, name, email, balance, markers, icons } = userData;
   return (
-    <S.Container
-      onClick={() => {
-        navigate('/');
-      }}
-    >
-      <S.ProfileCard
-        onClick={
-          (e) => {
-            e.stopPropagation();
-          } // Prevent click from propagating to the container
-        }
-      >
-        <S.UpperSection>
-          {loading ? (
-            <AvatarLoader />
-          ) : (
-            <S.Avatar>
-              <ProfileImage src={avatar} alt={name} />
+    <CamoContainer>
+      <CloseButton color="#ffffff8a" route="/" />
 
-              <S.EditAvatar onClick={handleClick}>
-                <S.CameraIcon />
+      <S.UpperSection>
+        {loading ? (
+          <AvatarLoader />
+        ) : (
+          <S.Avatar>
+            <ProfileImage src={avatar} alt={name} />
 
-                <input
-                  type="file"
-                  name="avatar"
-                  ref={hiddenFileInput}
-                  onChange={handleChange}
-                  style={{ display: 'none' }} // Hide the default file input
-                />
-                <p>Edit</p>
-              </S.EditAvatar>
+            <S.EditAvatar onClick={handleClick}>
+              <S.CameraIcon />
 
-              <Name>{name}</Name>
-            </S.Avatar>
-          )}
-        </S.UpperSection>
+              <input
+                type="file"
+                name="avatar"
+                ref={hiddenFileInput}
+                onChange={handleChange}
+                style={{ display: 'none' }} // Hide the default file input
+              />
+              <p>Edit</p>
+            </S.EditAvatar>
 
-        <S.LowerSection>
-          <InfoSection>
-            <InfoText>
-              {<strong>Email:</strong>}
-              {loading ? <EmailLoader /> : <span>{email}</span>}
-            </InfoText>
-            <InfoText>
-              <strong>Balance:</strong>
-              {loading ? (
-                <NumberLoader />
-              ) : (
-                <span>
-                  {markers.length} / {balance + markers.length}
-                </span>
-              )}
-            </InfoText>
+            <Name>{name}</Name>
+          </S.Avatar>
+        )}
+      </S.UpperSection>
+      <S.LowerSection>
+        <InfoSection>
+          <InfoText>
+            {<strong>Email:</strong>}
+            {loading ? <EmailLoader /> : <span>{email}</span>}
+          </InfoText>
+          <InfoText>
+            <strong>Balance:</strong>
+            {loading ? (
+              <NumberLoader />
+            ) : (
+              <span>
+                {markers.length} / {balance + markers.length}
+              </span>
+            )}
+          </InfoText>
 
-            <InfoText>
-              <strong>Icons:</strong>
-              {loading ? <NumberLoader /> : <span>{icons.length}</span>}
-            </InfoText>
-          </InfoSection>
-          <button onClick={deleteUser}>Delete user</button>
-          <NavLink to="/user/change-password">change password</NavLink>
-        </S.LowerSection>
-      </S.ProfileCard>
-    </S.Container>
+          <InfoText>
+            <strong>Icons:</strong>
+            {loading ? <NumberLoader /> : <span>{icons.length}</span>}
+          </InfoText>
+        </InfoSection>
+        <Button
+          style={{ gridArea: 'delete' }}
+          onClick={() => setIsModalOpen(true)}
+          variant="danger"
+        >
+          Delete user
+        </Button>
+        <Button
+          style={{ gridArea: 'change' }}
+          onClick={() => navigate('/user/change-password')}
+          variant="warning"
+        >
+          Change password
+        </Button>
+      </S.LowerSection>
+      {isModalOpen && (
+        <ConfirmationModal
+          onClose={() => setIsModalOpen(false)}
+          onConfirm={deleteUser}
+        >
+          <h2
+            style={{ fontSize: '22px', textAlign: 'center', fontWeight: '600' }}
+          >
+            Are you sure?
+          </h2>
+          <p>
+            You are about to delete your account. Please be aware that this
+            action is irreversible, and all your data will be permanently wiped
+            from our system.
+          </p>
+        </ConfirmationModal>
+      )}
+    </CamoContainer>
   );
 };
 
@@ -177,7 +201,6 @@ const NumberLoader = (props) => (
     <rect x="0" y="0" rx="7" ry="7" width="30" height="24" />
   </ContentLoader>
 );
-
 const AvatarLoader = (props) => (
   <ContentLoader
     speed={1}
@@ -193,33 +216,6 @@ const AvatarLoader = (props) => (
 );
 
 const S = {};
-S.Container = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
-  background-color: #abc5ab;
-  min-height: 100vh;
-  min-height: 100svh;
-  padding: 10px;
-  background-image: url(${mapbg});
-  background-repeat: repeat; //repeat-y/repeat-x/no-repeat/space/round
-  background-position: 0% 0%; // center/bottom/left/right/(%, px)
-  background-attachment: scroll; //fixed / local
-  background-size: auto; //length/cover/contain
-`;
-
-S.ProfileCard = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-start;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  max-width: 450px;
-  width: 100%;
-`;
 
 S.UpperSection = styled.div`
   background: linear-gradient(135deg, #5178b7, #3db993);
@@ -274,12 +270,19 @@ const Name = styled.h2`
 `;
 
 S.LowerSection = styled.div`
-  flex: 2;
   padding: 20px;
+  display: grid;
+  grid-template-areas:
+    'info  info'
+    'delete  change';
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  gap: 20px;
 `;
 
 const InfoSection = styled.div`
   margin-bottom: 20px;
+  grid-area: info;
 `;
 
 const InfoText = styled.p`
